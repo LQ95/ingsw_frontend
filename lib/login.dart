@@ -56,7 +56,14 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                   ],
                 ),Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-
+                      children: [SizedBox(
+                          width: 250,
+                          child:TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Inserisci nome:',
+                          ),
+                      ),)]
                 ),
                   ],
                 ),
