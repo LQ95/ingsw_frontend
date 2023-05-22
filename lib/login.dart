@@ -32,10 +32,11 @@ class LoginHomePageState extends State <LoginHomePage> {
             )
           ]
       ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(64),
+      body:
+          FractionallySizedBox(
+            widthFactor: 0.6,
+            heightFactor: 0.6,
+            alignment: FractionalOffset.center,
             child: DecoratedBox(
                 decoration: BoxDecoration(
                   border: Border.all(width: 1),
@@ -60,8 +61,6 @@ class LoginHomePageState extends State <LoginHomePage> {
                 )
             ),
           ),
-        ],
-      ),
     );
   }
 }
