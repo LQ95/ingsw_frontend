@@ -38,8 +38,8 @@ class LoginHomePageState extends State<LoginHomePage> {
                   BoxShadow(
                     blurRadius: 7,
                     spreadRadius: 5,
-                    color: Color(0x00000000),
-                    offset: Offset(-8, 0),
+                    color: Color(0xAA110505),
+                    offset: Offset(-8, 8),
                   )
                 ],
                 color: Color(0xFFC89117),
