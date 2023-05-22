@@ -33,34 +33,34 @@ class LoginHomePageState extends State <LoginHomePage> {
           ]
       ),
       body:
-          FractionallySizedBox(
-            widthFactor: 0.6,
-            heightFactor: 0.6,
-            alignment: FractionalOffset.center,
-            child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 1),
-                  borderRadius: const BorderRadius.all(Radius.circular(6)),
-                ),
-                child: Padding(
-                    padding: const EdgeInsets.all(64),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            const Column( children: <Widget>[Text("Width:"), Text("Height;")],),
-                            Column( children: <Widget>[Text(width.toString()), Text(height.toString())],),
-                            const Column( children: <Widget>[Text("PR:"), Text("AR;")],),
-                            Column( children: <Widget>[Text(devicePixelRatio.toString()), Text(aspectRatio)],),
-                          ],
-                        ),
-                        Text(orientation.toString()),
-                      ],
-                    )
-                )
+      FractionallySizedBox(
+        widthFactor: 0.8,
+        heightFactor: 0.8,
+        alignment: FractionalOffset.center,
+        child: DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border.all(width: 1),
+              borderRadius: const BorderRadius.all(Radius.circular(6)),
             ),
-          ),
+            child: Padding(
+                padding: const EdgeInsets.all(64),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        const Column( children: <Widget>[Text("Width:"), Text("Height;")],),
+                        Column( children: <Widget>[Text(width.toString()), Text(height.toString())],),
+                        const Column( children: <Widget>[Text("PR:"), Text("AR;")],),
+                        Column( children: <Widget>[Text(devicePixelRatio.toString()), Text(aspectRatio)],),
+                      ],
+                    ),
+                    Text(orientation.toString()),
+                  ],
+                )
+            )
+        ),
+      ),
     );
   }
 }
