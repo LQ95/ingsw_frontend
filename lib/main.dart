@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+          fontFamily: 'Segoe UI',
         colorScheme: const ColorScheme(brightness:Brightness.light,primary:Color(0xFF66420f),
             background:Color(0xFFeac953),error:CupertinoColors.lightBackgroundGray,onBackground:Colors.black,
             onError:Color(0xFFa81528),onPrimary:Colors.white54,onSecondary:Colors.black45,onSurface:Colors.black45,
