@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,7 +29,10 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme(brightness:Brightness.light,primary:Color(0xFF66420f),
+            background:Color(0xFFeac953),error:CupertinoColors.lightBackgroundGray,onBackground:Colors.black,
+            onError:Color(0xFFa81528),onPrimary:Colors.white54,onSecondary:Colors.black45,onSurface:Colors.black45,
+        secondary:Color(0xFFC89117),surface:Color(0xFF728514)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
