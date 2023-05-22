@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class LoginHomePage extends StatefulWidget {
+class InitAmministratoreHomePage extends StatefulWidget {
   final String title = "Te prego";
 
-  const LoginHomePage({super.key});
+  const InitAmministratoreHomePage({super.key});
 
   @override
-  LoginHomePageState createState() => LoginHomePageState();
+  InitAmministratoreHomePageState createState() => InitAmministratoreHomePageState();
 }
 
-class LoginHomePageState extends State<LoginHomePage> {
+class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> {
   @override
   Widget build(BuildContext context) {
     int width = MediaQuery.of(context).size.width.toInt();
@@ -19,7 +19,7 @@ class LoginHomePageState extends State<LoginHomePage> {
         MediaQuery.of(context).size.aspectRatio.toStringAsFixed(4);
     Orientation orientation = MediaQuery.of(context).orientation;
 
-    return Scaffold(
+    return const Scaffold(
       // drawer: const Drawer(),
       // appBar: AppBar(title: Text(widget.title), actions: <Widget>[
       //   IconButton(
@@ -33,7 +33,7 @@ class LoginHomePageState extends State<LoginHomePage> {
           heightFactor: 0.6,
           alignment: FractionalOffset.topCenter,
           child: DecoratedBox(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 7,
@@ -47,35 +47,19 @@ class LoginHomePageState extends State<LoginHomePage> {
                 borderRadius: BorderRadius.all(Radius.circular(25)),
               ),
               child: Padding(
-                  padding: const EdgeInsets.all(64),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          const Column(
-                            children: <Widget>[Text("Width:"), Text("Height;")],
-                          ),
-                          Column(
-                            children: <Widget>[
-                              Text(width.toString()),
-                              Text(height.toString())
-                            ],
-                          ),
-                          const Column(
-                            children: <Widget>[Text("PR:"), Text("AR;")],
-                          ),
-                          Column(
-                            children: <Widget>[
-                              Text(devicePixelRatio.toString()),
-                              Text(aspectRatio)
-                            ],
-                          ),
-                        ],
-                      ),
-                      Text(orientation.toString()),
-                    ],
-                  ))),
+                  padding: EdgeInsets.all(32),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Benvenuto su Ratatouille23", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),)
+                      ],
+                    )
+                  ],
+                ),
+                  )
+          ),
         ),
       ),
     );

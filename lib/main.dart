@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         secondary:Color(0xFFC89117),surface:Color(0xFF728514)),
         useMaterial3: true,
       ),
-      home: const LoginHomePage(),
+      home: const InitAmministratoreHomePage(),
     );
   }
 }
