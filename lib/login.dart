@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,8 +18,16 @@ class InitAmministratoreHomePage extends StatefulWidget {
 class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> {
   //Ma
   void sendData(String name, String pass) async {
-    var apiUrl=Uri.https("localhost:8080/api/v1/utente"); //URL del punto di contatto della API
-    var response = await http.post(apiUrl,body:{'nome': name,'password': pass,'ruolo':'AMMINISTRATORE'}); //TODO Bisogna capire come passare il valore da interpretare come enum
+    var apiUrl=Uri.http('localhost:8080','/api/v1/utente'); //URL del punto di contatto della API
+    var response = await http.post(apiUrl,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body:jsonEncode(<String, String>{'nome': name,
+          'password': pass,
+          'ruolo':'AMMINISTRATORE'})
+    );
+
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
   }
