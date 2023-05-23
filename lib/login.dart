@@ -12,7 +12,8 @@ class InitAmministratoreHomePage extends StatefulWidget {
 class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
       // drawer: const Drawer(),
       // appBar: AppBar(title: Text(widget.title), actions: <Widget>[
       //   IconButton(
@@ -26,7 +27,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
           heightFactor: 0.6,
           alignment: FractionalOffset.topCenter,
           child: DecoratedBox(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 7,
@@ -44,46 +45,59 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
+                      children: <Widget>[Center(child:
                         Expanded(child: Text("Benvenuto su Ratatouille23", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87), maxLines: 2, overflow: TextOverflow.ellipsis,),)
-                      ],
+                      ),
+                        ],
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[ Expanded(child: Text("Inserisci le seguenti informazioni per inizializzare il sistema!", style: TextStyle(fontSize: 16, color: Colors.white60), overflow: TextOverflow.ellipsis, maxLines: 3,))
                   ],
                 ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [SizedBox(
-                          width: 250,
-                          child:TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Nome Account:',
-                          ),
-                      ),)]
-                ),
-                    Row(
+                    const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [SizedBox(
-                          width: 250,
+                        children: [Expanded( child:
+                        Padding(
+                          padding: EdgeInsets.only(left: 64, right: 64,),
+                          child:TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Nome Account:',
+                            ),
+                          ),),)]
+                    ),
+                    const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Expanded( child:
+                          Padding(
+                          padding: EdgeInsets.only(left: 64, right: 64,),
                           child:TextField(
                               obscureText: true,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Password:',
                             ),
-                          ),)]
+                          ),),)]
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ElevatedButton(onPressed: () {}, child: Text("Conferma"),)
+                        ElevatedButton(onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF66420F),
+                            ),
+                          child: const Text("Conferma", style: TextStyle(color: Colors.white70),),
+                        )
                       ],
-                    )
+                    ),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[ Expanded(child: Text("Attenzione, l'account così creato sarà quello di amministratore del sistema e non potrà essere modificato successivamente", style: TextStyle(fontSize: 16, color: Color(0xFFA52A70)), overflow: TextOverflow.ellipsis, maxLines: 3,))
+                      ],
+                    ),
                   ],
                 ),
                   )
