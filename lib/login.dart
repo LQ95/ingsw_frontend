@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 
 class InitAmministratoreHomePage extends StatefulWidget {
+
+
   final String title = "Te prego";
 
   const InitAmministratoreHomePage({super.key});
@@ -10,8 +14,20 @@ class InitAmministratoreHomePage extends StatefulWidget {
 }
 
 class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> {
+  //Ma
+  void sendData(String name, String pass) async {
+    var apiUrl=Uri.https("localhost:8080/api/v1/utente"); //URL del punto di contatto della API
+    var response = await http.post(apiUrl,body:{'nome': name,'password': pass,'ruolo':'AMMINISTRATORE'}); //TODO Bisogna capire come passare il valore da interpretare come enum
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+  }
+
   @override
   Widget build(BuildContext context) {
+    //ritrovano il testo immesso nei textfield
+    final Controller1= TextEditingController();
+    final Controller2= TextEditingController();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       // drawer: const Drawer(),
@@ -57,24 +73,26 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                       children: <Widget>[ Expanded(child: Text("Inserisci le seguenti informazioni per inizializzare il sistema!", style: TextStyle(fontSize: 16, color: Colors.white60), overflow: TextOverflow.ellipsis, maxLines: 3,))
                   ],
                 ),
-                    const Row(
+                    Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [Expanded( child:
                         Padding(
                           padding: EdgeInsets.only(left: 64, right: 64,),
                           child:TextField(
+                            controller: Controller1,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Nome Account:',
                             ),
                           ),),)]
                     ),
-                    const Row(
+                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [Expanded( child:
                           Padding(
                           padding: EdgeInsets.only(left: 64, right: 64,),
                           child:TextField(
+                              controller: Controller2,
                               obscureText: true,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
@@ -85,7 +103,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ElevatedButton(onPressed: () {},
+                        ElevatedButton(onPressed: (){ sendData(Controller1.text,Controller2.text);},
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF66420F),
                             ),
