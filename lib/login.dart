@@ -81,7 +81,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ElevatedButton(onPressed: () {}, child: Text("Conferma"),)
+                        ElevatedButton(onPressed: null , child: Text("Conferma"),),
                       ],
                     )
                   ],
