@@ -23,8 +23,8 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
       // ]),
       body: Center(
         child: FractionallySizedBox(
-          widthFactor: 0.6,
-          heightFactor: 0.6,
+          widthFactor: 0.7,
+          heightFactor: 0.7,
           alignment: FractionalOffset.topCenter,
           child: DecoratedBox(
               decoration: const BoxDecoration(
