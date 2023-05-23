@@ -47,24 +47,43 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Benvenuto su Ratatouille23", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),),
+                        Expanded(child: Text("Benvenuto su Ratatouille23", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87), maxLines: 2, overflow: TextOverflow.ellipsis,),)
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[Text("Inserisci le seguenti informazioni per inizializzare il sistema!", style: TextStyle(fontSize: 16, color: Colors.white60),)
+                      children: <Widget>[ Expanded(child: Text("Inserisci le seguenti informazioni per inizializzare il sistema!", style: TextStyle(fontSize: 16, color: Colors.white60), overflow: TextOverflow.ellipsis, maxLines: 3,))
                   ],
-                ),Row(
+                ),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [SizedBox(
                           width: 250,
                           child:TextField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Inserisci nome:',
+                            labelText: 'Nome Account:',
                           ),
                       ),)]
                 ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [SizedBox(
+                          width: 250,
+                          child:TextField(
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Password:',
+                            ),
+                          ),)]
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(onPressed: () {}, child: Text("Conferma"),)
+                      ],
+                    )
                   ],
                 ),
                   )
