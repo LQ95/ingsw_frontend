@@ -1,3 +1,5 @@
+import 'package:quickalert/quickalert.dart';
+
 import 'DatabaseControl.dart';
 import 'package:flutter/material.dart';
 
@@ -97,7 +99,14 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ElevatedButton(onPressed: (){ DatabaseControl db = DatabaseControl(); db.sendData(controller1.text,controller2.text, "AMMINISTRATORE");},
+                        ElevatedButton(onPressed: (){
+                          if(controller1.text.isNotEmpty && controller2.text.isNotEmpty) {
+                            DatabaseControl db = DatabaseControl(); db.sendData(controller1.text,controller2.text, "AMMINISTRATORE");
+                            }
+                          else {
+                            showAllert();
+                          }
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF66420F),
                             ),
@@ -116,6 +125,15 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
           ),
         ),
       ),
+    );
+  }
+
+
+  void showAllert() {
+    QuickAlert.show(context: context,
+    type: QuickAlertType.error,
+    text: "Attenzione, i campi non sono stati compilati correttamente!",
+    title: "Errore"
     );
   }
 }
