@@ -1,7 +1,5 @@
-import 'dart:convert';
-
+import 'DatabaseControl.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 
 class InitAmministratoreHomePage extends StatefulWidget {
@@ -17,26 +15,12 @@ class InitAmministratoreHomePage extends StatefulWidget {
 
 class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> {
   //Ma
-  void sendData(String name, String pass) async {
-    var apiUrl=Uri.http('localhost:8080','/api/v1/utente'); //URL del punto di contatto della API
-    var response = await http.post(apiUrl, //questa è la response,in cui è definita anche la request, direttamente
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body:jsonEncode(<String, String>{'nome': name,
-          'password': pass,
-          'ruolo':'AMMINISTRATORE'})
-    );
-
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-  }
 
   @override
   Widget build(BuildContext context) {
     //ritrovano il testo immesso nei textfield
-    final Controller1= TextEditingController();
-    final Controller2= TextEditingController();
+    final controller1= TextEditingController();
+    final controller2= TextEditingController();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -67,7 +51,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                 borderRadius: BorderRadius.all(Radius.circular(25)),
               ),
               child: Padding(
-                  padding: EdgeInsets.all(32),
+                  padding: const EdgeInsets.all(32),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -87,10 +71,10 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [Expanded( child:
                         Padding(
-                          padding: EdgeInsets.only(left: 64, right: 64,),
+                          padding: const EdgeInsets.only(left: 64, right: 64,),
                           child:TextField(
-                            controller: Controller1,
-                            decoration: InputDecoration(
+                            controller: controller1,
+                            decoration:  const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Nome Account:',
                             ),
@@ -100,11 +84,11 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [Expanded( child:
                           Padding(
-                          padding: EdgeInsets.only(left: 64, right: 64,),
+                          padding: const EdgeInsets.only(left: 64, right: 64,),
                           child:TextField(
-                              controller: Controller2,
+                              controller: controller2,
                               obscureText: true,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Password:',
                             ),
@@ -113,7 +97,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ElevatedButton(onPressed: (){ sendData(Controller1.text,Controller2.text);},
+                        ElevatedButton(onPressed: (){ DatabaseControl db = DatabaseControl(); db.sendData(controller1.text,controller2.text, "AMMINISTRATORE");},
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF66420F),
                             ),
