@@ -17,8 +17,11 @@ class DatabaseControl {
 
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
-    } else {
+    } else if(response.statusCode.toInt() == 500){
       return "FALLIMENTO";
+    }
+      else {
+        return "ERRORE INASPETTATO";
     }
     // print('Response status: ${response.statusCode}');
     // print('Response body: ${response.body}');
