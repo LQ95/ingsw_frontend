@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'GlobImport.dart';
 
 class SchermataBase extends StatelessWidget{
   String title="";
@@ -11,15 +12,7 @@ class SchermataBase extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
-          title: Text(this.title),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () => {},
-            )
-          ]
-      ),
+      appBar:GlobalAppBar,
     );
   }
 
