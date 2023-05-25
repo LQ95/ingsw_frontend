@@ -2,6 +2,7 @@ import 'package:quickalert/quickalert.dart';
 
 import 'DatabaseControl.dart';
 import 'package:flutter/material.dart';
+import 'SchermataBase.dart';
 
 
 class InitAmministratoreHomePage extends StatefulWidget {
@@ -171,7 +172,8 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
     QuickAlert.show(context: context,
         type: QuickAlertType.success,
         text: "Eccellente, l'account è stato creato con successo!",
-        title: "Successo!"
+        title: "Successo!",
+        onConfirmBtnTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataBase("Mammt")));}
     );
   }
 }
