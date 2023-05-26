@@ -1,5 +1,4 @@
 import 'package:quickalert/quickalert.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'DatabaseControl.dart';
@@ -8,6 +7,8 @@ import 'GlobImport.dart';
 class  SchermataLogin extends StatelessWidget{
   final controller1 = TextEditingController();
   final controller2 = TextEditingController();
+
+  SchermataLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -125,17 +126,6 @@ class  SchermataLogin extends StatelessWidget{
                     child: const Text("Conferma", style: TextStyle(
                         color: Colors.white70),),
                   )
-                ],
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(child: Text(
-                    "Attenzione, l'account così creato sarà quello di amministratore del sistema e non potrà essere modificato successivamente",
-                    style: TextStyle(fontSize: 16,
-                        color: Color(0xFFA52A70)),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,))
                 ],
               ),
             ],
