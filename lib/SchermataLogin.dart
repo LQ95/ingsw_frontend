@@ -1,5 +1,4 @@
 import 'package:quickalert/quickalert.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'DatabaseControl.dart';
@@ -8,6 +7,8 @@ import 'GlobImport.dart';
 class  SchermataLogin extends StatelessWidget{
   final controller1 = TextEditingController();
   final controller2 = TextEditingController();
+
+  SchermataLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
