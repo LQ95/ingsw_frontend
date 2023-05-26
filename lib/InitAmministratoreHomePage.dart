@@ -1,8 +1,8 @@
+import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'package:quickalert/quickalert.dart';
 
 import 'DatabaseControl.dart';
 import 'package:flutter/material.dart';
-import 'SchermataBase.dart';
 
 
 class InitAmministratoreHomePage extends StatefulWidget {
@@ -116,7 +116,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                           if (controller1.text.isNotEmpty && controller2.text
                               .isNotEmpty) {
                             DatabaseControl db = DatabaseControl();
-                            String creazioneAvvenutaConSuccesso = await db.sendData(controller1.text, controller2.text, "AMMINISTRATORE");  //Il client attende la risposta del server prima di proseguire, in modo che
+                            String creazioneAvvenutaConSuccesso = await db.sendUserData(controller1.text, controller2.text, "AMMINISTRATORE");  //Il client attende la risposta del server prima di proseguire, in modo che
                             if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
                               showAllertSuccesso();
                             } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
@@ -173,7 +173,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
         type: QuickAlertType.success,
         text: "Eccellente, l'account è stato creato con successo!",
         title: "Successo!",
-        onConfirmBtnTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataBase("Mammt")));}
+        onConfirmBtnTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataLogin()));}
     );
   }
 }
