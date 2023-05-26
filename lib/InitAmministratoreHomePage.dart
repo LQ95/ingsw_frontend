@@ -4,6 +4,8 @@ import 'package:quickalert/quickalert.dart';
 import 'DatabaseControl.dart';
 import 'package:flutter/material.dart';
 
+import 'MenuPrincipale.dart';
+
 
 class InitAmministratoreHomePage extends StatefulWidget {
 
@@ -173,7 +175,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
         type: QuickAlertType.success,
         text: "Eccellente, l'account è stato creato con successo!",
         title: "Successo!",
-        onConfirmBtnTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataLogin()));}
+        onConfirmBtnTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPrincipale()));}
     );
   }
 }

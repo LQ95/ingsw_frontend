@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 var GlobalAppBar=
 AppBar(
-  title: const Text("Ratatuille23",),
+  title: const Text("Ratatouille23",),
       );
 
 var globalDrawer=
