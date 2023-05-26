@@ -127,17 +127,6 @@ class  SchermataLogin extends StatelessWidget{
                   )
                 ],
               ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(child: Text(
-                    "Attenzione, l'account così creato sarà quello di amministratore del sistema e non potrà essere modificato successivamente",
-                    style: TextStyle(fontSize: 16,
-                        color: Color(0xFFA52A70)),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,))
-                ],
-              ),
             ],
           ),
         )
