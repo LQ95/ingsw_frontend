@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ingsw_frontend/SchermataLogin.dart';
 
 import 'InitAmministratoreHomePage.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         secondary:Color(0xFFC89117),surface:Color(0xFF728514)),
         useMaterial3: true,
       ),
-      home: const InitAmministratoreHomePage(),
+      home: SchermataLogin(),
     );
   }
 }
