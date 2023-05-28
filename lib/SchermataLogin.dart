@@ -77,8 +77,8 @@ class  SchermataLogin extends StatelessWidget{
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Expanded(child: Text(
-                          "Inserisci le tue credenziali",
-                          style: TextStyle(fontSize: 16, color: Colors.black45),
+                          "Inserisci le tue credenziali:",
+                          style: TextStyle(fontSize: 16, color: Colors.black,fontWeight:FontWeight.w400),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,))
                       ],
