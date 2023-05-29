@@ -15,6 +15,9 @@ class DatabaseControl {
           'ruolo': ruolo})
     );
 
+    //print('Response status: ${response.statusCode}');
+    //print('Response body: ${response.body}');
+
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
     } else if(response.statusCode.toInt() == 500){
@@ -23,8 +26,7 @@ class DatabaseControl {
       else {
         return "ERRORE INASPETTATO";
     }
-    // print('Response status: ${response.statusCode}');
-    // print('Response body: ${response.body}');
+
   }
 
   sendLoginData(String name, String pass) async{ //Usa metodo GET
@@ -41,17 +43,19 @@ class DatabaseControl {
           'Content-Type': 'application/json; charset=UTF-8',
         },
     );
-
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    print('Response headers: ${response.headers}');
+    String? ruolo = response.headers['ruolo'];
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
-    } else if(response.statusCode.toInt() == 500){
+    } else if(response.statusCode.toInt() == 404){
       return "FALLIMENTO";
     }
     else {
       return "ERRORE INASPETTATO";
     }
-    // print('Response status: ${response.statusCode}');
-    // print('Response body: ${response.body}');
+
   }
 
 }

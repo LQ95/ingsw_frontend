@@ -14,6 +14,8 @@ class  SchermataLogin extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    int width = MediaQuery.of(context).size.width.toInt();
+    int height = MediaQuery.of(context).size.height.toInt();
 
     void showAllertErrore(String errore) {
       QuickAlert.show(context: context,
@@ -27,7 +29,7 @@ class  SchermataLogin extends StatelessWidget{
     void showAllertSuccesso() {
       QuickAlert.show(context: context,
           type: QuickAlertType.success,
-          text: "Eccellente, l'account è stato creato con successo!",
+          text: "Login effettuato.",
           title: "Successo!",
           onConfirmBtnTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPrincipale()));}
       );
@@ -61,6 +63,14 @@ class  SchermataLogin extends StatelessWidget{
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
+                    Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                       children:[Image(
+                        image: const AssetImage('contents/images/Placeholder.png'),
+                        width: width*0.2,
+                        height: height*0.2,
+                      ),]
+                ),
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[Center(child:
@@ -123,7 +133,7 @@ class  SchermataLogin extends StatelessWidget{
                             if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
                               showAllertSuccesso();
                             } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
-                              showAllertErrore("Il nome che hai selezionato è già stato scelto...");
+                              showAllertErrore("Le credenziali non sono corrette.");
                             } else {
                               showAllertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
                             }
