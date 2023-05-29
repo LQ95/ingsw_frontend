@@ -38,18 +38,11 @@ class  SchermataLogin extends StatelessWidget{
     return Scaffold(
       appBar:GlobalAppBar,
       resizeToAvoidBottomInset: false,
-      // drawer: const Drawer(),
-      // appBar: AppBar(title: Text(widget.title), actions: <Widget>[
-      //   IconButton(
-      //     icon: const Icon(Icons.settings),
-      //     onPressed: () => {},
-      //   )
-      // ]),
 
       body: Center(
         child: FractionallySizedBox(
-          widthFactor: 0.7,
-          heightFactor: 0.7,
+          widthFactor: 0.6,
+          heightFactor: 0.8,
           alignment: FractionalOffset.topCenter,
           child: DecoratedBox(
               decoration: const BoxDecoration(
@@ -66,7 +59,7 @@ class  SchermataLogin extends StatelessWidget{
                     Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                        children:[Image(
-                        image: const AssetImage('contents/images/Placeholder.png'),
+                        image: const AssetImage('contents/images/Icona Ratatouille.png'),
                         width: width*0.2,
                         height: height*0.2,
                       ),]
@@ -84,13 +77,13 @@ class  SchermataLogin extends StatelessWidget{
                       ],
                     ),
                     const Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        Expanded(child: Text(
+                        Text(
                           "Inserisci le tue credenziali:",
                           style: TextStyle(fontSize: 16, color: Colors.black,fontWeight:FontWeight.w400),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,))
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3)
                       ],
                     ),
                     Row(

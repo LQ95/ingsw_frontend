@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class DatabaseControl {
   Future<String> sendUserData(String name, String pass, String ruolo) async {
-    var apiUrl = Uri.http('192.168.1.3:8080', //Ip Marco  192.168.1.138:8080
+    var apiUrl = Uri.http('192.168.1.138:8080', //Ip Marco  192.168.1.138:8080
         '/api/v1/utente'); //URL del punto di contatto della API
     var response = await http.post(apiUrl,
         //questa è la response,in cui è definita anche la request, direttamente
@@ -35,7 +35,7 @@ class DatabaseControl {
       'password': pass,
     };
 
-    var apiUrl = Uri.http('192.168.1.3:8080',
+    var apiUrl = Uri.http('192.168.1.138:8080',
         '/api/v1/utente/auth',loginParameters); //URL del punto di contatto della API,più udsername e pass come parametri
     var response = await http.get(apiUrl,
         //questa è la response,in cui è definita anche la request, direttamente

@@ -1,17 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/SchermataLogin.dart';
+import 'package:window_size/window_size.dart';
+import 'dart:io' show Platform;
 
 import 'InitAmministratoreHomePage.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    setWindowTitle('My App');
+    setWindowMinSize(const Size(1280, 720));
+  }
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
