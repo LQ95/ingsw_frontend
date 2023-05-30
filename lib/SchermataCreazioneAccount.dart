@@ -4,6 +4,7 @@ import 'package:quickalert/quickalert.dart';
 import 'DatabaseControl.dart';
 import 'package:flutter/material.dart';
 
+import 'GlobImport.dart';
 import 'MenuPrincipale.dart';
 
 
@@ -27,15 +28,13 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
     final controller1 = TextEditingController();
     final controller2 = TextEditingController();
 
+    const List<String> listaRuoli = <String>['AMMINISTRATORE', 'SUPERVISORE', 'SALA', 'CUCINA;'];
+    String dropdownValue=listaRuoli.first;
+    localcontext=context;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // drawer: const Drawer(),
-      // appBar: AppBar(title: Text(widget.title), actions: <Widget>[
-      //   IconButton(
-      //     icon: const Icon(Icons.settings),
-      //     onPressed: () => {},
-      //   )
-      // ]),
+      drawer: globalDrawer,
+      appBar: GlobalAppBar,
       body: Center(
         child: FractionallySizedBox(
           widthFactor: 0.7,
@@ -63,7 +62,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[Center(child:
-                      Expanded(child: Text("Benvenuto su Ratatouille23",
+                      Expanded(child: Text("Crea Account",
                         style: TextStyle(fontSize: 28,
                             fontWeight: FontWeight.bold,
                             color: Colors.black87),
@@ -76,7 +75,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Expanded(child: Text(
-                          "Inserisci le seguenti informazioni per inizializzare il sistema!",
+                          "Inserisci le seguenti informazioni per creare un account:",
                           style: TextStyle(fontSize: 16, color: Colors.white60),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,))
@@ -111,12 +110,32 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                           ),),)
                         ]
                     ),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-
-                      ],
+                        DropdownButton<String>(
+                          value: dropdownValue,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.black),
+                            underline: Container(
+                            height: 1,
+                            color: Colors.black,
+                          ),
+                      onChanged: (String? value) {
+                        // This is called when the user selects an item.
+                        setState(() {
+                          dropdownValue = value!;
+                        });
+                      },
+                      items: listaRuoli.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
+                      ],
+              ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -124,7 +143,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                           if (controller1.text.isNotEmpty && controller2.text
                               .isNotEmpty) {
                             DatabaseControl db = DatabaseControl();
-                            String creazioneAvvenutaConSuccesso = await db.sendUserData(controller1.text, controller2.text, "AMMINISTRATORE");  //Il client attende la risposta del server prima di proseguire, in modo che
+                            String creazioneAvvenutaConSuccesso = await db.sendUserData(controller1.text, controller2.text, dropdownValue);  //Il client attende la risposta del server prima di proseguire, in modo che
                             if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
                               showAllertSuccesso();
                             } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
