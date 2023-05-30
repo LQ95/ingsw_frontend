@@ -123,12 +123,13 @@ class  SchermataLogin extends StatelessWidget{
                               .isNotEmpty) {
                             DatabaseControl db = DatabaseControl();
                             String creazioneAvvenutaConSuccesso = await db.sendLoginData(controller1.text, controller2.text);  //Il client attende la risposta del server prima di proseguire, in modo che
-                            if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
-                              showAllertSuccesso();
-                            } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
+                             if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
                               showAllertErrore("Le credenziali non sono corrette.");
-                            } else {
+                            } else if (creazioneAvvenutaConSuccesso == "ERRORE INASPETTATO"){
                               showAllertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
+                            }
+                            else  {                                                               //il valore di ritorno di tipo Future ottenga uno stato
+                              showAllertSuccesso();
                             }
                           }
                           else {
