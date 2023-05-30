@@ -19,7 +19,7 @@ class MenuPrincipaleState extends State<MenuPrincipale>{
 
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
-
+    localcontext=context;
     return Scaffold(
       appBar:GlobalAppBar,
       drawer: globalDrawer,
