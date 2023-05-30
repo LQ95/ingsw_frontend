@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'GlobImport.dart';
 import 'MenuPrincipale.dart';
 
+const List<String> listaRuoli = <String>['AMMINISTRATORE', 'SUPERVISORE', 'SALA', 'CUCINA'];
+String dropdownValue=listaRuoli.first;
 
 class SchermataCreazioneAccount extends StatefulWidget {
 
@@ -28,8 +30,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
     final controller1 = TextEditingController();
     final controller2 = TextEditingController();
 
-    const List<String> listaRuoli = <String>['AMMINISTRATORE', 'SUPERVISORE', 'SALA', 'CUCINA;'];
-    String dropdownValue=listaRuoli.first;
+
     localcontext=context;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -123,9 +124,11 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                           ),
                       onChanged: (String? value) {
                         // This is called when the user selects an item.
-                        setState(() {
+
+                        setState(() { //Questo mostra il fatto che la scritta sul dropdown cambia quando selezioni, tutavia al momento cambia lo stato dell'intero widget e non solo del dropdown
                           dropdownValue = value!;
                         });
+
                       },
                       items: listaRuoli.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
