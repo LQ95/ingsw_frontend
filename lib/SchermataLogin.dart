@@ -133,8 +133,6 @@ class  SchermataLogin extends StatelessWidget{
                               Utente utente = Utente();
                               utente.ruolo = creazioneAvvenutaConSuccesso;
                               utente.nome = controller1.text;
-                              print(utente.nome);
-                              print(utente.ruolo);
                               showAllertSuccesso();
                             }
                           }
