@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'DatabaseControl.dart';
 import 'GlobImport.dart';
 import 'MenuPrincipale.dart';
+import 'entity/Utente.dart';
 
 class  SchermataLogin extends StatelessWidget{
   final controller1 = TextEditingController();
@@ -118,7 +119,7 @@ class  SchermataLogin extends StatelessWidget{
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ElevatedButton(onPressed: () async {
+                        ElevatedButton(onPressed: () async {                     //il valore di ritorno di tipo Future ottenga uno stato
                           if (controller1.text.isNotEmpty && controller2.text
                               .isNotEmpty) {
                             DatabaseControl db = DatabaseControl();
@@ -128,7 +129,12 @@ class  SchermataLogin extends StatelessWidget{
                             } else if (creazioneAvvenutaConSuccesso == "ERRORE INASPETTATO"){
                               showAllertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
                             }
-                            else  {                                                               //il valore di ritorno di tipo Future ottenga uno stato
+                            else  {
+                              Utente utente = Utente();
+                              utente.ruolo = creazioneAvvenutaConSuccesso;
+                              utente.nome = controller1.text;
+                              print(utente.nome);
+                              print(utente.ruolo);
                               showAllertSuccesso();
                             }
                           }
