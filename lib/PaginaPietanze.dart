@@ -13,6 +13,7 @@ class PaginaPietanze extends StatefulWidget{
 class PaginaPietanzeState extends State<PaginaPietanze> {
   @override
   Widget build(BuildContext context) {
+    localcontext=context;
     return Scaffold(
         appBar:GlobalAppBar,
         drawer: globalDrawer,

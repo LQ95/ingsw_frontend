@@ -13,6 +13,7 @@ class PaginaOrdinazioni extends StatefulWidget{
 class PaginaOrdinazioniState extends State<PaginaOrdinazioni> {
   @override
   Widget build(BuildContext context) {
+    localcontext=context;
     return Scaffold(
         appBar:GlobalAppBar,
         drawer: globalDrawer,
