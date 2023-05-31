@@ -48,8 +48,16 @@ class DatabaseControl {
     print('Response body: ${response.body}');
     print('Response headers: ${response.headers}');
     String? ruolo = response.headers['ruolo'];
+    String? primoAccesso = response.headers['primo accesso'];
     if(response.statusCode.toInt() == 200) {
-      return ruolo;
+      if(primoAccesso == 'true')
+      {
+        return "primoAccesso";
+      }
+      else
+      {
+        return ruolo;
+      }
     } else if(response.statusCode.toInt() == 404){
       return "FALLIMENTO";
     }

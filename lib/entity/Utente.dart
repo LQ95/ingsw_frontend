@@ -2,11 +2,18 @@ import '../GlobImport.dart';
 class Utente{//Singleton
   String _nome="";
   String _ruolo="";
+  String _primoAccesso="";
   static final Utente _instance=Utente._internal();
   factory Utente(){
     return _instance;
   }
 
+
+  String get primoAccesso => _primoAccesso;
+
+  set primoAccesso(String value) {
+    _primoAccesso = value;
+  }
 
   String get nome => _nome;
 
