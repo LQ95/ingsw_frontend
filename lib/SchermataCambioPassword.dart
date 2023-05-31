@@ -7,20 +7,21 @@ import 'DatabaseControl.dart';
 import 'package:flutter/material.dart';
 
 import 'MenuPrincipale.dart';
+import 'entity/Utente.dart';
 
 
-class InitAmministratoreHomePage extends StatefulWidget {
+class SchermataCambioPassword extends StatefulWidget {
 
 
   final String title = "Te prego";
 
-  const InitAmministratoreHomePage({super.key});
+  const SchermataCambioPassword({super.key});
 
   @override
-  InitAmministratoreHomePageState createState() => InitAmministratoreHomePageState();
+  SchermataCambioPasswordState createState() => SchermataCambioPasswordState();
 }
 
-class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> {
+class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
   //Ma
 
   @override
@@ -102,7 +103,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: <Widget>[
                                         Expanded(child: Text(
-                                          "Inserisci le seguenti informazioni per inizializzare il sistema!",
+                                          "Questo è il primo accesso a questo account. Per favore inserisci una nuova Password",
                                           style: TextStyle(fontSize: 16, color: Colors.white60),
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 3,))
@@ -115,9 +116,10 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                                           padding: const EdgeInsets.only(left: 64, right: 64,),
                                           child: TextField(
                                             controller: controller1,
+                                            obscureText: true,
                                             decoration: const InputDecoration(
                                               border: OutlineInputBorder(),
-                                              labelText: 'Nome Account:',
+                                              labelText: 'Nuova Password:',
                                             ),
                                           ),),)
                                         ]
@@ -132,7 +134,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                                             obscureText: true,
                                             decoration: const InputDecoration(
                                               border: OutlineInputBorder(),
-                                              labelText: 'Password:',
+                                              labelText: 'Conferma Password:',
                                             ),
                                           ),),)
                                         ]
@@ -143,15 +145,17 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                                         ElevatedButton(onPressed: () async {
                                           if (controller1.text.isNotEmpty && controller2.text
                                               .isNotEmpty) {
-                                            DatabaseControl db = DatabaseControl();
-                                            String creazioneAvvenutaConSuccesso = await db.sendUserData(controller1.text, controller2.text, "AMMINISTRATORE");  //Il client attende la risposta del server prima di proseguire, in modo che
-                                            if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
-                                              showAllertSuccesso();
-                                            } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
-                                              showAllertErrore("Il nome che hai selezionato è già stato scelto...");
-                                            } else {
-                                              showAllertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
+                                            if(controller1.text != controller2.text){
+                                              showAllertErrore(
+                                                  "Attenzione, le password inserite sono diverse fra di loro!");
                                             }
+                                            else {
+                                              DatabaseControl db = DatabaseControl();
+                                              Utente utente = Utente();
+                                              db.updateUtenteData(utente.getNome, controller1.text, utente.getRuolo, utente.getId.toString());
+                                              showAllertSuccesso();
+                                            }
+
                                           }
                                           else {
                                             showAllertErrore(
@@ -164,17 +168,6 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                                           child: const Text("Conferma", style: TextStyle(
                                               color: Colors.white70),),
                                         )
-                                      ],
-                                    ),
-                                    const Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        Expanded(child: Text(
-                                          "Attenzione, l'account così creato sarà quello di amministratore del sistema e non potrà essere modificato successivamente",
-                                          style: TextStyle(fontSize: 16,
-                                              color: Color(0xFFA52A70)),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 3,))
                                       ],
                                     ),
                                   ],
@@ -210,9 +203,9 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
   void showAllertSuccesso() {
     QuickAlert.show(context: context,
         type: QuickAlertType.success,
-        text: "Eccellente, l'account è stato creato con successo!",
+        text: "Eccellente, la password è stata aggiornata correttamente!",
         title: "Successo!",
-        onConfirmBtnTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPrincipale()));}
+        onConfirmBtnTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPrincipale()));}
     );
   }
 }

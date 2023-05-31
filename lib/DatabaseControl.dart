@@ -27,8 +27,8 @@ class DatabaseControl {
     } else if(response.statusCode.toInt() == 500){
       return "FALLIMENTO";
     }
-      else {
-        return "ERRORE INASPETTATO";
+    else {
+      return "ERRORE INASPETTATO";
     }
 
   }
@@ -43,10 +43,10 @@ class DatabaseControl {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente/auth',loginParameters); //URL del punto di contatto della API,più udsername e pass come parametri
     var response = await http.get(apiUrl,
-        //questa è la response,in cui è definita anche la request, direttamente
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
+      //questa è la response,in cui è definita anche la request, direttamente
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
     );
     //print('Response status: ${response.statusCode}');
     //print('Response body: ${response.body}');
@@ -89,31 +89,31 @@ class DatabaseControl {
     else {
       return 2; //error
     }
-}
+  }
 
-  Future<String?> updateAfterFirstAccess(String username,String newPassword,String ruolo,String id) async{
+  Future<String?> updateUtenteData(String username,String newPassword,String ruolo,String id) async{
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente/firstupdate'); //URL del punto di contatto della API
     var response = await http.put(apiUrl,
         //questa è la response,in cui è definita anche la request, direttamente
         headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{'Id':id,
           'username':username,
-        'password': newPassword,
-        'ruolo':ruolo,
-    }));
+          'password': newPassword,
+          'ruolo':ruolo,
+        }));
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
     print('Response headers: ${response.headers}');
     if(response.statusCode.toInt() == 200) {
-        return "SUCCESSO";
+      return "SUCCESSO";
     } else if(response.statusCode.toInt() == 404){
       return "FALLIMENTO";
     }
     else {
       return "ERRORE INASPETTATO";
     }
-    }
+  }
 }
