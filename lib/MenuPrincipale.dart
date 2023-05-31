@@ -20,32 +20,35 @@ class MenuPrincipaleState extends State<MenuPrincipale>{
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
     localcontext=context;
-    return Scaffold(
-      appBar:GlobalAppBar,
-      drawer: globalDrawer,
-      body:  Center(
-        child:
-          Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            InkWell(
-              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => PaginaOrdinazioni()));},
-              child: Ink.image(
-                image: const AssetImage('contents/images/Bottone Ordinazioni.png'),
-                width: width*0.4,
-                height: height*0.4,
-              ),
-            ),
-            InkWell(
-              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => PaginaMenu()));},
-              child: Ink.image(
-                image: const AssetImage('contents/images/Bottone Menù.png'),
-                width: width*0.4,
-                height: height*0.4,
-              ),
-            ),
-          ]
-        )
+    return WillPopScope(onWillPop: () async => false,
+      child:
+      Scaffold(
+        appBar:GlobalAppBar,
+        drawer: globalDrawer,
+        body:  Center(
+            child:
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                    onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => PaginaOrdinazioni()));},
+                    child: Ink.image(
+                      image: const AssetImage('contents/images/Bottone Ordinazioni.png'),
+                      width: width*0.4,
+                      height: height*0.4,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => PaginaMenu()));},
+                    child: Ink.image(
+                      image: const AssetImage('contents/images/Bottone Menù.png'),
+                      width: width*0.4,
+                      height: height*0.4,
+                    ),
+                  ),
+                ]
+            )
+        ),
       ),
     );
   }

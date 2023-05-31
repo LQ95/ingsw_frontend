@@ -175,7 +175,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
         type: QuickAlertType.success,
         text: "Eccellente, l'account è stato creato con successo!",
         title: "Successo!",
-        onConfirmBtnTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPrincipale()));}
+        onConfirmBtnTap: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const MenuPrincipale()));}
     );
   }
 }

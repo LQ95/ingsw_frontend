@@ -32,7 +32,7 @@ class  SchermataLogin extends StatelessWidget{
           type: QuickAlertType.success,
           text: "Login effettuato.",
           title: "Successo!",
-          onConfirmBtnTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPrincipale()));}
+          onConfirmBtnTap: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const MenuPrincipale()));}
       );
     }
 
