@@ -83,23 +83,24 @@ class DatabaseControl {
     }
 }
 
-  Future<String?> updateAfterFirstAccess(String newPassword) async{
+  Future<String?> updateAfterFirstAccess(String username,String newPassword,String ruolo,String id) async{
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente/firstupdate'); //URL del punto di contatto della API
-    var response = await http.post(apiUrl,
+    var response = await http.put(apiUrl,
         //questa è la response,in cui è definita anche la request, direttamente
         headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, String>{'Id':id,
+          'username':username,
         'password': newPassword,
+        'ruolo':ruolo,
     }));
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
     print('Response headers: ${response.headers}');
-    String? ruolo = response.headers['ruolo'];
     if(response.statusCode.toInt() == 200) {
-        return ruolo;
+        return "SUCCESSO";
     } else if(response.statusCode.toInt() == 404){
       return "FALLIMENTO";
     }
