@@ -7,30 +7,37 @@ import 'dart:io' show Platform;
 
 import 'InitAmministratoreHomePage.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('My App');
     setWindowMinSize(const Size(1280, 720));
   }
-  runApp(const MyApp());
+  DatabaseControl db= DatabaseControl();
+  Widget schermataHome;
+  int initialized = await db.isSistemInitialized() ;
+  if (initialized == 1) {
+    schermataHome=const InitAmministratoreHomePage();
+  } else {
+    schermataHome= SchermataLogin();
+  }
+  runApp(MyApp(schermataHome));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
 
+  MyApp(this.schermataHome, {super.key})
+  {
+    super.key;
+  }
+
+  Widget schermataHome=SchermataLogin();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    DatabaseControl db= DatabaseControl();
-    Widget schermataHome;
-    if (db.isSistemInitialized() == 1) {
-      schermataHome=const InitAmministratoreHomePage();
-    } else {
-      schermataHome= SchermataLogin();
-    }
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
