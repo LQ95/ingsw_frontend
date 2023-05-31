@@ -44,9 +44,9 @@ class DatabaseControl {
           'Content-Type': 'application/json; charset=UTF-8',
         },
     );
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-    print('Response headers: ${response.headers}');
+    //print('Response status: ${response.statusCode}');
+    //print('Response body: ${response.body}');
+    //print('Response headers: ${response.headers}');
     String? ruolo = response.headers['ruolo'];
     String? primoAccesso = response.headers['primo accesso'];
     if(response.statusCode.toInt() == 200) {
@@ -83,5 +83,28 @@ class DatabaseControl {
     }
 }
 
-
+  Future<String?> updateAfterFirstAccess(String newPassword) async{
+    var apiUrl = Uri.http(baseUrl,
+        '/api/v1/utente/firstupdate'); //URL del punto di contatto della API
+    var response = await http.post(apiUrl,
+        //questa è la response,in cui è definita anche la request, direttamente
+        headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+        'password': newPassword,
+    }));
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    print('Response headers: ${response.headers}');
+    String? ruolo = response.headers['ruolo'];
+    if(response.statusCode.toInt() == 200) {
+        return ruolo;
+    } else if(response.statusCode.toInt() == 404){
+      return "FALLIMENTO";
+    }
+    else {
+      return "ERRORE INASPETTATO";
+    }
+    }
 }
