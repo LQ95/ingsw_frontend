@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ingsw_frontend/DatabaseControl.dart';
 import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'package:window_size/window_size.dart';
 import 'dart:io' show Platform;
@@ -13,7 +14,7 @@ void main() {
     setWindowTitle('My App');
     setWindowMinSize(const Size(1280, 720));
   }
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,7 +24,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
+    DatabaseControl db= DatabaseControl();
+    Widget schermataHome;
+    if (db.isSistemInitialized() == 1) {
+      schermataHome=const InitAmministratoreHomePage();
+    } else {
+      schermataHome= SchermataLogin();
+    }
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -34,7 +41,7 @@ class MyApp extends StatelessWidget {
         secondary:Color(0xFFC89117),surface:Color(0xFF728514)),
         useMaterial3: true,
       ),
-      home: SchermataLogin(),
+      home: schermataHome,
     );
   }
 }

@@ -1,31 +1,39 @@
+import 'dart:ffi';
 import '../GlobImport.dart';
 class Utente{//Singleton
   String _nome="";
   String _ruolo="";
   String _primoAccesso="";
+  int _id=0;
+
+  String get getNome => _nome;
+
+  set setNome(String value) {
+    _nome = value;
+  }
+
   static final Utente _instance=Utente._internal();
   factory Utente(){
     return _instance;
   }
 
+  Utente._internal();
 
-  String get primoAccesso => _primoAccesso;
+  String get getRuolo => _ruolo;
 
-  set primoAccesso(String value) {
+  set setRuolo(String value) {
+    _ruolo = value;
+  }
+
+  String get isPrimoAccesso => _primoAccesso;
+
+  set setPrimoAccesso(String value) {
     _primoAccesso = value;
   }
 
-  String get nome => _nome;
+  int get getId => _id;
 
-  set nome(String value) {
-    _nome = value;
-  }
-
-  Utente._internal();
-
-  String get ruolo => _ruolo;
-
-  set ruolo(String value) {
-    _ruolo = value;
+  set setId(int value) {
+    _id = value;
   }
 }

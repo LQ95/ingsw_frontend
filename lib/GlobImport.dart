@@ -45,8 +45,8 @@ void showAllertConferma() {
       cancelBtnText: "no",
       onConfirmBtnTap: () {
         Utente utente = Utente();
-        utente.nome = "";
-        utente.ruolo= "";
+        utente.setNome = "";
+        utente.setRuolo= "";
         Navigator.pushReplacement(localcontext, MaterialPageRoute(builder: (context) =>SchermataLogin()));  //Cancella lo stack e naviga verso login
       },
       onCancelBtnTap: () => Navigator.pop(localcontext),

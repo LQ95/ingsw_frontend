@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:http/http.dart' as http;
+
+import 'entity/Utente.dart';
 
 class DatabaseControl {
   final String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
@@ -31,6 +34,7 @@ class DatabaseControl {
   }
 
   sendLoginData(String name, String pass) async{ //Usa metodo GET
+    var User= Utente();
     var loginParameters = {
       'username': name,
       'password': pass,
@@ -46,10 +50,14 @@ class DatabaseControl {
     );
     //print('Response status: ${response.statusCode}');
     //print('Response body: ${response.body}');
-    //print('Response headers: ${response.headers}');
+    print('Response headers: ${response.headers}');
     String? ruolo = response.headers['ruolo'];
-    String? primoAccesso = response.headers['primo accesso'];
+    String? primoAccesso = response.headers['primo_accesso'];
+    String? id = response.headers['id'];
     if(response.statusCode.toInt() == 200) {
+      User.setRuolo=ruolo!;
+      User.setId=int.parse(id!);
+      User.setNome=name;
       if(primoAccesso == 'true')
       {
         return "primoAccesso";

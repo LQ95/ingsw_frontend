@@ -139,9 +139,6 @@ class  SchermataLogin extends StatelessWidget{
                                         showAllertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
                                       }
                                       else  {
-                                        Utente utente = Utente();
-                                        utente.ruolo = creazioneAvvenutaConSuccesso;
-                                        utente.nome = controller1.text;
                                         showAllertSuccesso();
                                       }
                                     }
