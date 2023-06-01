@@ -60,7 +60,7 @@ class DatabaseControl {
       User.setNome=name;
       if(primoAccesso == 'true')
       {
-        return "primoAccesso";
+        return 'primoAccesso';
       }
       else
       {
@@ -99,17 +99,18 @@ class DatabaseControl {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{'Id':id,
-          'username':username,
+        body: jsonEncode(<String, String>{
+          'nome':username,
           'password': newPassword,
           'ruolo':ruolo,
+          'id':id,
         }));
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
     print('Response headers: ${response.headers}');
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
-    } else if(response.statusCode.toInt() == 404){
+    } else if(response.statusCode.toInt() == 500){
       return "FALLIMENTO";
     }
     else {

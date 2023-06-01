@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'DatabaseControl.dart';
 import 'GlobImport.dart';
 import 'MenuPrincipale.dart';
+import 'SchermataCambioPassword.dart';
 import 'entity/Utente.dart';
 
 class  SchermataLogin extends StatelessWidget{
@@ -20,7 +21,7 @@ class  SchermataLogin extends StatelessWidget{
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
 
-    void showAllertErrore(String errore) {
+    void showAlertErrore(String errore) {
       QuickAlert.show(context: context,
           type: QuickAlertType.error,
           text: errore,
@@ -29,7 +30,7 @@ class  SchermataLogin extends StatelessWidget{
     }
 
 
-    void showAllertSuccesso() {
+    void showAlertSuccesso() {
       QuickAlert.show(context: context,
           type: QuickAlertType.success,
           text: "Login effettuato.",
@@ -38,6 +39,14 @@ class  SchermataLogin extends StatelessWidget{
       );
     }
 
+    void showAlertPrimoAccesso() {
+      QuickAlert.show(context: context,
+          type: QuickAlertType.success,
+          text: "Login effettuato. dato che è la tua prima volta, ti chiediamo di cambiare password",
+          title: "Successo!",
+          onConfirmBtnTap: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const SchermataCambioPassword()));}
+      );
+    }
     return WillPopScope(onWillPop: ()=> exit(0),
       child:
       Scaffold(
@@ -132,18 +141,19 @@ class  SchermataLogin extends StatelessWidget{
                                     if (controller1.text.isNotEmpty && controller2.text
                                         .isNotEmpty) {
                                       DatabaseControl db = DatabaseControl();
-                                      String creazioneAvvenutaConSuccesso = await db.sendLoginData(controller1.text, controller2.text);  //Il client attende la risposta del server prima di proseguire, in modo che
-                                      if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
-                                        showAllertErrore("Le credenziali non sono corrette.");
-                                      } else if (creazioneAvvenutaConSuccesso == "ERRORE INASPETTATO"){
-                                        showAllertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
-                                      }
-                                      else  {
-                                        showAllertSuccesso();
+                                      String esitoLogin = await db.sendLoginData(controller1.text, controller2.text);  //Il client attende la risposta del server prima di proseguire, in modo che
+                                      if (esitoLogin == "FALLIMENTO"){
+                                        showAlertErrore("Le credenziali non sono corrette.");
+                                      } else if (esitoLogin == "ERRORE INASPETTATO"){
+                                        showAlertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
+                                      } else if(esitoLogin == 'primoAccesso') {
+                                        showAlertPrimoAccesso();
+                                      } else  {
+                                        showAlertSuccesso();
                                       }
                                     }
                                     else {
-                                      showAllertErrore(
+                                      showAlertErrore(
                                           "Attenzione, i campi non sono stati compilati correttamente!");
                                     }
                                   },

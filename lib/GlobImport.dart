@@ -28,7 +28,7 @@ var globalDrawer=
           ),
           ListTile(
             title: const Text("Logout"),
-            onTap: () {showAllertConferma();},
+            onTap: () {showAlertConferma();},
             trailing: const Icon(Icons.logout),
           )
         ],
@@ -36,7 +36,7 @@ var globalDrawer=
       ),
     );
 
-void showAllertConferma() {
+void showAlertConferma() {
   QuickAlert.show(context: localcontext,
       type: QuickAlertType.confirm,
       text: "",
