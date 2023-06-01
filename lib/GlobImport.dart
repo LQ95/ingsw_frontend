@@ -59,7 +59,7 @@ void showAlertConferma() {
     text: "",
     title: "Sei sicuro di voler uscire?",
     confirmBtnText: "Si",
-    cancelBtnText: "no",
+    cancelBtnText: "No",
     onConfirmBtnTap: () {
       Utente utente = Utente();
       utente.setNome = "";

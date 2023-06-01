@@ -34,6 +34,32 @@ class DatabaseControl {
 
   }
 
+  Future<String> sendMessaggioToDb(String mittente, String corpo) async{
+
+    var apiUrl = Uri.http(baseUrl,
+        '/api/v1/Messaggio'); //URL del punto di contatto della API
+    var response = await http.post(apiUrl,
+        //questa è la response,in cui è definita anche la request, direttamente
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{'mittente': mittente,
+          'corpo': corpo,})
+    );
+
+    //print('Response status: ${response.statusCode}');
+    //print('Response body: ${response.body}');
+
+    if(response.statusCode.toInt() == 200) {
+      return "SUCCESSO";
+    } else if(response.statusCode.toInt() == 500){
+      return "FALLIMENTO";
+    }
+    else {
+      return "ERRORE INASPETTATO";
+    }
+  }
+
   sendLoginData(String name, String pass) async{ //Usa metodo GET
     var User= Utente();
     var loginParameters = {
