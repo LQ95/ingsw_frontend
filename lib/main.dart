@@ -12,7 +12,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    setWindowTitle('My App');
+    setWindowTitle('Ratatouille23');
     setWindowMinSize(const Size(1280, 720));
   }
   DatabaseControl db= DatabaseControl();
