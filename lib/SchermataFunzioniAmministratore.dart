@@ -15,26 +15,41 @@ class SchermataFunzioniAmministratore extends StatelessWidget{
       drawer: globalDrawer,
       body:  Center(
           child:
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {},
-                  child: Ink.image(
-                    image: const AssetImage('contents/images/Bottone Statistiche.png'),
-                    width: width*0.4,
-                    height: height*0.4,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(padding: const EdgeInsets.only(left: 18, top: 9, bottom: 36),
+                child:
+                ElevatedButton(onPressed: ()  {Navigator.of(context).pop();},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF66420F),
                   ),
+                  child: const Text("Torna Indietro", style: TextStyle(
+                      color: Colors.white70),),
                 ),
-                InkWell(
-                  onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataCreazioneAccount()));},
-                  child: Ink.image(
-                    image: const AssetImage('contents/images/Bottone Creazione Account.png'),
-                    width: width*0.4,
-                    height: height*0.4,
-                  ),
-                ),
-              ]
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: () {},
+                      child: Ink.image(
+                        image: const AssetImage('contents/images/Bottone Statistiche.png'),
+                        width: width*0.4,
+                        height: height*0.4,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataCreazioneAccount()));},
+                      child: Ink.image(
+                        image: const AssetImage('contents/images/Bottone Creazione Account.png'),
+                        width: width*0.4,
+                        height: height*0.4,
+                      ),
+                    ),
+                  ]
+              ),
+            ],
           )
       ),
     );

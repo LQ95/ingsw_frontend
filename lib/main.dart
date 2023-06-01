@@ -4,6 +4,7 @@ import 'package:ingsw_frontend/DatabaseControl.dart';
 import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'package:window_size/window_size.dart';
 import 'dart:io' show Platform;
+import 'SchermataMessaggi.dart';
 
 import 'InitAmministratoreHomePage.dart';
 

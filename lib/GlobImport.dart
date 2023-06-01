@@ -3,6 +3,7 @@ import 'package:ingsw_frontend/SchermataFunzioniAmministratore.dart';
 import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'entity/Utente.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:ingsw_frontend/SchermataMessaggi.dart';
 
 ListTile funzioniAdmin=ListTile(
   title:  const Text("Funzioni Admin"),
@@ -12,7 +13,7 @@ ListTile funzioniAdmin=ListTile(
 
 ListTile notifiche=ListTile(
   title: const Text("Notifiche"),
-  onTap: () {},
+  onTap: () {Navigator.push(localcontext, MaterialPageRoute(builder: (context) =>const SchermataMessaggi()));},
   trailing: const Icon(Icons.mail_outlined),
 );
 ListTile logout= ListTile(
@@ -25,49 +26,49 @@ var localcontext=null;
 var GlobalAppBar=
 AppBar(
   title: const Text("Ratatouille23",),
-      );
+);
 
 var globalDrawer=null;
 
- var adminDrawer= Drawer(
-   child: ListView(
-     children: [
-       funzioniAdmin,
-       notifiche,
-       logout
-     ],
-   ),
- );
- var userDrawer=Drawer(
-   child: ListView(
-     children: [
-       notifiche,
-       logout
-     ],
-   ),
- );
+var adminDrawer= Drawer(
+  child: ListView(
+    children: [
+      funzioniAdmin,
+      notifiche,
+      logout
+    ],
+  ),
+);
+var userDrawer=Drawer(
+  child: ListView(
+    children: [
+      notifiche,
+      logout
+    ],
+  ),
+);
 
- void selectDrawer(){
-   if(Utente().getRuolo == "AMMINISTRATORE")
-     globalDrawer=adminDrawer;
-   else globalDrawer=userDrawer;
- }
+void selectDrawer(){
+  if(Utente().getRuolo == "AMMINISTRATORE")
+    globalDrawer=adminDrawer;
+  else globalDrawer=userDrawer;
+}
 void showAlertConferma() {
   QuickAlert.show(context: localcontext,
-      type: QuickAlertType.confirm,
-      text: "",
-      title: "Sei sicuro di voler uscire?",
-      confirmBtnText: "Si",
-      cancelBtnText: "no",
-      onConfirmBtnTap: () {
-        Utente utente = Utente();
-        utente.setNome = "";
-        utente.setRuolo= "";
-        utente.setPrimoAccesso= "";
-        utente.setId = -1;
-        Navigator.pushReplacement(localcontext, MaterialPageRoute(builder: (context) =>SchermataLogin()));  //Cancella lo stack e naviga verso login
-      },
-      onCancelBtnTap: () => Navigator.pop(localcontext),
+    type: QuickAlertType.confirm,
+    text: "",
+    title: "Sei sicuro di voler uscire?",
+    confirmBtnText: "Si",
+    cancelBtnText: "no",
+    onConfirmBtnTap: () {
+      Utente utente = Utente();
+      utente.setNome = "";
+      utente.setRuolo= "";
+      utente.setPrimoAccesso= "";
+      utente.setId = -1;
+      Navigator.pushReplacement(localcontext, MaterialPageRoute(builder: (context) =>SchermataLogin()));  //Cancella lo stack e naviga verso login
+    },
+    onCancelBtnTap: () => Navigator.pop(localcontext),
   );
 }
 
