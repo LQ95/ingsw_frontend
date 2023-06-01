@@ -47,6 +47,8 @@ void showAlertConferma() {
         Utente utente = Utente();
         utente.setNome = "";
         utente.setRuolo= "";
+        utente.setPrimoAccesso= "";
+        utente.setId = -1;
         Navigator.pushReplacement(localcontext, MaterialPageRoute(builder: (context) =>SchermataLogin()));  //Cancella lo stack e naviga verso login
       },
       onCancelBtnTap: () => Navigator.pop(localcontext),
