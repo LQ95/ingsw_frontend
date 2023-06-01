@@ -4,7 +4,22 @@ import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'entity/Utente.dart';
 import 'package:quickalert/quickalert.dart';
 
+ListTile funzioniAdmin=ListTile(
+  title:  const Text("Funzioni Admin"),
+  onTap: () {Navigator.push(localcontext, MaterialPageRoute(builder: (context) =>SchermataFunzioniAmministratore()));}, //IMPORTANTE SETTARE LOCALCONTEXT OGNI VOLTA OPPURE TROVRE UN MODO PER RICOSTRUIRLO
+  trailing: const Icon(Icons.admin_panel_settings),
+);
 
+ListTile notifiche=ListTile(
+  title: const Text("Notifiche"),
+  onTap: () {},
+  trailing: const Icon(Icons.mail_outlined),
+);
+ListTile logout= ListTile(
+  title: const Text("Logout"),
+  onTap: () {showAlertConferma();},
+  trailing: const Icon(Icons.logout),
+);
 
 var localcontext=null;
 var GlobalAppBar=
@@ -12,30 +27,31 @@ AppBar(
   title: const Text("Ratatouille23",),
       );
 
-var globalDrawer=
-     Drawer(
-      child: ListView(
-        children: [
-          ListTile(
-            title:  const Text("Funzioni Admin"),
-            onTap: () {Navigator.push(localcontext, MaterialPageRoute(builder: (context) =>SchermataFunzioniAmministratore()));}, //IMPORTANTE SETTARE LOCALCONTEXT OGNI VOLTA OPPURE TROVRE UN MODO PER RICOSTRUIRLO
-            trailing: const Icon(Icons.admin_panel_settings),
-          ),
-          ListTile(
-            title: const Text("Notifiche"),
-            onTap: () {},
-            trailing: const Icon(Icons.mail_outlined),
-          ),
-          ListTile(
-            title: const Text("Logout"),
-            onTap: () {showAlertConferma();},
-            trailing: const Icon(Icons.logout),
-          )
-        ],
+var globalDrawer=null;
 
-      ),
-    );
+ var adminDrawer= Drawer(
+   child: ListView(
+     children: [
+       funzioniAdmin,
+       notifiche,
+       logout
+     ],
+   ),
+ );
+ var userDrawer=Drawer(
+   child: ListView(
+     children: [
+       notifiche,
+       logout
+     ],
+   ),
+ );
 
+ void selectDrawer(){
+   if(Utente().getRuolo == "AMMINISTRATORE")
+     globalDrawer=adminDrawer;
+   else globalDrawer=userDrawer;
+ }
 void showAlertConferma() {
   QuickAlert.show(context: localcontext,
       type: QuickAlertType.confirm,

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'package:http/http.dart' as http;
 
+import 'GlobImport.dart';
 import 'entity/Utente.dart';
 
 class DatabaseControl {
@@ -59,6 +60,7 @@ class DatabaseControl {
       User.setId=int.parse(id!);
       User.setPrimoAccesso = primoAccesso!;
       User.setNome=name;
+      selectDrawer();
       if(primoAccesso == 'true')
       {
         return 'primoAccesso';
