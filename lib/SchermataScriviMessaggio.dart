@@ -77,6 +77,8 @@ class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
         DatabaseControl db = DatabaseControl();
         Utente utente = Utente();
         String result = await db.sendMessaggioToDb(utente.getNome, controller1.text);
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
       },
       onCancelBtnTap: () => Navigator.pop(localcontext),
     );
