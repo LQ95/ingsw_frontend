@@ -152,12 +152,11 @@ class DatabaseControl {
 
 }
 @pragma('vm:entry-point')
-void NotificationCheck(message) {
+void NotificationCheck(message) { //TODO capire come killare sto thread al logout
   Utente user=Utente();
   var response;
-  var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread');
+  var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId});
   String unreadMessagesFound="";
-  int howMany,i;
   Map<String, String> messages;
   Iterator messageIterator;
   while(user.getNome!=""){
@@ -170,7 +169,7 @@ void NotificationCheck(message) {
       while(messageIterator.moveNext() == true)
         {
           //TODO inserisci i messaggi nel sistema
-          
+
         }
     }
   }
