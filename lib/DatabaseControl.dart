@@ -158,15 +158,20 @@ void NotificationCheck(message) {
   var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread');
   String unreadMessagesFound="";
   int howMany,i;
+  Map<String, String> messages;
+  Iterator messageIterator;
   while(user.getNome!=""){
   response= http.get(apiUrl);
   if(response.statusCode.toInt() == 200) {
     unreadMessagesFound = response.headers['unreadMessagesFound'];
     if (unreadMessagesFound == 'true') {
-      howMany = int.parse(response.headers['howMany']);
-      for (i = 0; i < howMany; i++) {
-
-      }
+      messages= json.decode(response.body);
+      messageIterator= messages.entries.iterator;
+      while(messageIterator.moveNext() == true)
+        {
+          //TODO inserisci i messaggi nel sistema
+          
+        }
     }
   }
   }
