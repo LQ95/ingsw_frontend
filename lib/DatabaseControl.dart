@@ -161,9 +161,7 @@ void NotificationCheck(message) { //TODO capire come killare sto thread al logou
   Iterator messageIterator;
   while(user.getNome!=""){
   response= http.get(apiUrl);
-  if(response.statusCode.toInt() == 200) {
-    unreadMessagesFound = response.headers['unreadMessagesFound'];
-    if (unreadMessagesFound == 'true') {
+  if(response.statusCode.toInt() == 200) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
       messages= json.decode(response.body);
       messageIterator= messages.entries.iterator;
       while(messageIterator.moveNext() == true)
@@ -171,7 +169,7 @@ void NotificationCheck(message) { //TODO capire come killare sto thread al logou
           //TODO inserisci i messaggi nel sistema
 
         }
-    }
+
   }
   }
   print("thread notifiche finito.è stato effettuato il logout?");
