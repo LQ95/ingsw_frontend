@@ -145,48 +145,6 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
     );
   }
 
-/*Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 32),
-                    child: Container(
-                      width: double.infinity,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(height: 300,
-                                width: width*0.7,
-                                child: const DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 7,
-                                        spreadRadius: 5,
-                                        color: Color(0xAA110505),
-                                        offset: Offset(-8, 8),
-                                      )
-                                    ],
-                                    color: Color(0xFFC89117),
-                                    //border: Border.all(width: 0),
-                                    borderRadius: BorderRadius.all(Radius.circular(25)),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Center(child: Text("Franco"),),
-                                        Text("Ti prego funziona e appari decentemente!")
-                                      ]
-                                    ),
-                                  ),
-                                )
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                )*/
+
 
 }
