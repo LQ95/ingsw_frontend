@@ -1,4 +1,7 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
+import 'package:ingsw_frontend/DatabaseControl.dart';
 import 'package:ingsw_frontend/SchermataFunzioniAmministratore.dart';
 import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'entity/Utente.dart';
@@ -66,9 +69,11 @@ void showAlertConferma() {
       utente.setRuolo= "";
       utente.setPrimoAccesso= "";
       utente.setId = -1;
+      //NotificationCheck.kill();
       Navigator.pushReplacement(localcontext, MaterialPageRoute(builder: (context) =>SchermataLogin()));  //Cancella lo stack e naviga verso login
     },
     onCancelBtnTap: () => Navigator.pop(localcontext),
   );
 }
+
 

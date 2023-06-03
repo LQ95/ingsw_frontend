@@ -1,9 +1,12 @@
+import 'dart:isolate';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/DatabaseControl.dart';
 import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'package:window_size/window_size.dart';
 import 'dart:io' show Platform;
+import 'GlobImport.dart';
 import 'SchermataMessaggi.dart';
 
 import 'InitAmministratoreHomePage.dart';
@@ -53,6 +56,8 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
 
 
 

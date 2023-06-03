@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:isolate';
 import 'package:http/http.dart' as http;
 
 import 'GlobImport.dart';
 import 'entity/Utente.dart';
 
 class DatabaseControl {
-  final String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
+  static final String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
   Future<String> sendUserData(String name, String pass, String ruolo) async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente'); //URL del punto di contatto della API
@@ -87,6 +88,7 @@ class DatabaseControl {
       User.setPrimoAccesso = primoAccesso!;
       User.setNome=name;
       selectDrawer();
+      Isolate.spawn(NotificationCheck,"");
       if(primoAccesso == 'true')
       {
         return 'primoAccesso';
@@ -134,8 +136,7 @@ class DatabaseControl {
           'ruolo':ruolo,
           'id':id,
         }));
-    var User= Utente();
-    User.setPrimoAccesso = "false";
+    Utente().setPrimoAccesso = "false";
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
     print('Response headers: ${response.headers}');
@@ -148,4 +149,27 @@ class DatabaseControl {
       return "ERRORE INASPETTATO";
     }
   }
+
+}
+@pragma('vm:entry-point')
+void NotificationCheck(message) {
+  Utente user=Utente();
+  var response;
+  var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread');
+  String unreadMessagesFound="";
+  int howMany,i;
+  while(user.getNome!=""){
+  response= http.get(apiUrl);
+  if(response.statusCode.toInt() == 200) {
+    unreadMessagesFound = response.headers['unreadMessagesFound'];
+    if (unreadMessagesFound == 'true') {
+      howMany = int.parse(response.headers['howMany']);
+      for (i = 0; i < howMany; i++) {
+
+      }
+    }
+  }
+  }
+  print("thread notifiche finito.è stato effettuato il logout?");
+
 }
