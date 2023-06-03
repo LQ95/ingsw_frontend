@@ -41,7 +41,7 @@ class DatabaseControl {
     var response = await http.get(apiUrl);
     
     if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
+      var jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
       // print(jsonResponse[0]['mittente']);
       return jsonResponse;
     }
