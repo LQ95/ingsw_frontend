@@ -7,7 +7,7 @@ import 'GlobImport.dart';
 import 'entity/Utente.dart';
 
 class DatabaseControl {
-  static final String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
+  static final String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
   Future<String> sendUserData(String name, String pass, String ruolo) async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente'); //URL del punto di contatto della API
@@ -31,6 +31,22 @@ class DatabaseControl {
     }
     else {
       return "ERRORE INASPETTATO";
+    }
+
+  }
+
+  Future<List?> getAllMessaggiFromDB() async {   //Work in Progres
+    var apiUrl = Uri.http(baseUrl,
+        '/api/v1/Messaggio');
+    var response = await http.get(apiUrl);
+    
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+      // print(jsonResponse[0]['mittente']);
+      return jsonResponse;
+    }
+    else {
+      return null;
     }
 
   }
