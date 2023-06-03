@@ -96,7 +96,7 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
                       ),
                       ElevatedButton(onPressed: () {
                         Utente utente = Utente();
-                        if (utente.getRuolo == "AMMINISTRATORE") {
+                        if (utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
                           Navigator.push(
                               localcontext, MaterialPageRoute(builder: (
                               context) => const SchermataScriviMessaggi()));
