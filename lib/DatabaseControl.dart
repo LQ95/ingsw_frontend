@@ -51,6 +51,21 @@ class DatabaseControl {
 
   }
 
+  Future<List?> getAllPietanzeFromDB() async {   //Work in Progres
+    var apiUrl = Uri.http(baseUrl,
+        '/api/v1/petanza');
+    var response = await http.get(apiUrl);
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
+      return jsonResponse;
+    }
+    else {
+      return null;
+    }
+
+  }
+
   Future<String> sendMessaggioToDb(String mittente, String corpo) async{
 
     var apiUrl = Uri.http(baseUrl,
