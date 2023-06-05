@@ -94,7 +94,6 @@ class DatabaseControl {
     );
     //print('Response status: ${response.statusCode}');
     //print('Response body: ${response.body}');
-    print('Response headers: ${response.headers}');
     String? ruolo = response.headers['ruolo'];
     String? primoAccesso = response.headers['primo_accesso'];
     String? id = response.headers['id'];
@@ -104,7 +103,7 @@ class DatabaseControl {
       User.setPrimoAccesso = primoAccesso!;
       User.setNome=name;
       selectDrawer();
-      Isolate.spawn(NotificationCheck,"");
+      Isolate.spawn(NotificationCheck,User);
       if(primoAccesso == 'true')
       {
         return 'primoAccesso';
@@ -168,15 +167,18 @@ class DatabaseControl {
 
 }
 @pragma('vm:entry-point')
-void NotificationCheck(message) { //TODO capire come killare sto thread al logout
-  Utente user=Utente();
+Future<void> NotificationCheck(Utente user) async { //TODO capire come killare sto thread al logout
   var response;
   var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId.toString(),
   'username':Utente().getNome});
   Map<String, String> messages;
   Iterator messageIterator;
-  while(user.getNome!=""){
-  response= http.get(apiUrl);
+  print("utente:"+user.toString());
+  while(user.getNome != ""){
+    print("entra nel loop");
+  response= await http.get(apiUrl);
+  print('Response status: ${response.statusCode}');
+  print('Response body: ${response.body}');
   if(response.statusCode.toInt() == 200) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
       messages= json.decode(response.body);
       messageIterator= messages.entries.iterator;
@@ -184,6 +186,7 @@ void NotificationCheck(message) { //TODO capire come killare sto thread al logou
         {
           //TODO inserisci i messaggi nel sistema
           print(messageIterator.current);
+          print("corpo della response:"+response.toString());
         }
 
   }

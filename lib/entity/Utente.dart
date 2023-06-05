@@ -8,6 +8,11 @@ class Utente{//Singleton
 
   String get getNome => _nome;
 
+  @override
+  String toString() {
+    return 'Utente{_nome: $_nome, _ruolo: $_ruolo, _primoAccesso: $_primoAccesso, _id: $_id}';
+  }
+
   set setNome(String value) {
     _nome = value;
   }
