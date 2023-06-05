@@ -7,7 +7,7 @@ import 'GlobImport.dart';
 import 'entity/Utente.dart';
 
 class DatabaseControl {
-  static final String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
+  static final String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
   Future<String> sendUserData(String name, String pass, String ruolo) async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente'); //URL del punto di contatto della API
@@ -171,8 +171,8 @@ class DatabaseControl {
 void NotificationCheck(message) { //TODO capire come killare sto thread al logout
   Utente user=Utente();
   var response;
-  var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId});
-  String unreadMessagesFound="";
+  var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId.toString(),
+  'username':Utente().getNome});
   Map<String, String> messages;
   Iterator messageIterator;
   while(user.getNome!=""){
@@ -183,7 +183,7 @@ void NotificationCheck(message) { //TODO capire come killare sto thread al logou
       while(messageIterator.moveNext() == true)
         {
           //TODO inserisci i messaggi nel sistema
-
+          print(messageIterator.current);
         }
 
   }
