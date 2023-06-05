@@ -21,7 +21,7 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
     //Calcolo dell'altezza dello schermo
     double width = MediaQuery.of(context).size.width;
 
-    generaWidget() async{
+    generaWidgetMessaggi() async{
 
       DatabaseControl db = DatabaseControl();
       List<dynamic>? listaMessaggi = await  db.getAllMessaggiFromDB();
@@ -121,7 +121,7 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
                         child: Column(
                           children: [
                             FutureBuilder(
-                              future: generaWidget(),
+                              future: generaWidgetMessaggi(),
                               builder: (context, snapshot){
                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                   return const CircularProgressIndicator();
