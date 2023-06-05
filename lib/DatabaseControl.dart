@@ -7,7 +7,7 @@ import 'GlobImport.dart';
 import 'entity/Utente.dart';
 
 class DatabaseControl {
-  static final String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
+  static final String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
   Future<String> sendUserData(String name, String pass, String ruolo) async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente'); //URL del punto di contatto della API
@@ -187,7 +187,7 @@ Future<void> NotificationCheck(Utente user) async { //TODO capire come killare s
   var response;
   var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId.toString(),
   'username':Utente().getNome});
-  Map<String, String> messages;
+  Map<String, dynamic> messages;
   Iterator messageIterator;
   print("utente:"+user.toString());
   while(user.getNome != ""){
@@ -196,7 +196,8 @@ Future<void> NotificationCheck(Utente user) async { //TODO capire come killare s
   print('Response status: ${response.statusCode}');
   print('Response body: ${response.body}');
   if(response.statusCode.toInt() == 200) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
-      messages= json.decode(response.body);
+      messages= jsonDecode(response.body);
+      print(messages);
       messageIterator= messages.entries.iterator;
       while(messageIterator.moveNext() == true)
         {
