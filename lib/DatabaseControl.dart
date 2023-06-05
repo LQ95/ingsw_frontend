@@ -7,7 +7,7 @@ import 'GlobImport.dart';
 import 'entity/Utente.dart';
 
 class DatabaseControl {
-  static final String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
+  static final String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
   Future<String> sendUserData(String name, String pass, String ruolo) async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente'); //URL del punto di contatto della API
@@ -43,6 +43,22 @@ class DatabaseControl {
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
       // print(jsonResponse[0]['mittente']);
+      return jsonResponse;
+    }
+    else {
+      return null;
+    }
+
+  }
+
+  Future<List?> getAllPietanzeFromDB() async {   //Work in Progres
+    var apiUrl = Uri.http(baseUrl,
+        '/api/v1/pietanza');
+    var response = await http.get(apiUrl);
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
+      // print(jsonResponse);
       return jsonResponse;
     }
     else {
