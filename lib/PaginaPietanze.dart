@@ -1,3 +1,5 @@
+// import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'GlobImport.dart';
 import 'entity/Utente.dart';
@@ -13,11 +15,22 @@ class PaginaPietanze extends StatefulWidget{
 }
 
 class PaginaPietanzeState extends State<PaginaPietanze> {
+
+  //Popup per inserimento e modifica dati
+  OverlayEntry? entry;
+  bool overlayAperto = false;
+  final controllerTitolo = TextEditingController();
+  final controllerDescrizione = TextEditingController();
+  final controllerAllergeni = TextEditingController();
+  final controllerCosto = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
 
 
+
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     generaWidgetPietanze() async{
 
@@ -104,77 +117,132 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
 
 
 
-    return Scaffold(
-      appBar: GlobalAppBar,
-      drawer: globalDrawer,
-      body: Center(
-          child:
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 18, top: 9, right: 18),
-                  child:
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF66420F),
+    return GestureDetector(
+      onTap: () => hideOverlay(),
+      child: Scaffold(
+        appBar: GlobalAppBar,
+        drawer: globalDrawer,
+        body: Center(
+            child:
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18, top: 9, right: 18),
+                    child:
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(onPressed: () {
+                          if(overlayAperto){
+                            overlayAperto = false;
+                            hideOverlay();
+                          }
+                          Navigator.of(context).pop();
+                        },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF66420F),
+                          ),
+                          child: const Text("Torna Indietro", style: TextStyle(
+                              color: Colors.white70),),
                         ),
-                        child: const Text("Torna Indietro", style: TextStyle(
-                            color: Colors.white70),),
-                      ),
-                      ElevatedButton(onPressed: () {
-                        Utente utente = Utente();
-                        if (utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
-                          // Navigator.push(
-                          //     localcontext, MaterialPageRoute(builder: (
-                          //     context) => const SchermataScriviMessaggi()));
-                        }
-                      },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF66420F),
+                        ElevatedButton(onPressed: () {
+                          Utente utente = Utente();
+                          if ((utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") && overlayAperto == false) {
+                            // Navigator.push(
+                            //     localcontext, MaterialPageRoute(builder: (
+                            //     context) => const SchermataScriviMessaggi()));
+                            overlayAperto = true;
+                            WidgetsBinding.instance!.addPostFrameCallback((timeStamp) => showOverlay());
+                          }
+                        },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF66420F),
+                          ),
+                          child: const Text("Aggiungi", style: TextStyle(
+                              color: Colors.white70),),
                         ),
-                        child: const Text("Aggiungi", style: TextStyle(
-                            color: Colors.white70),),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 32),
-                    child: Container(
-                      width: double.infinity,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            FutureBuilder(
-                              future: generaWidgetPietanze(),
-                              builder: (context, snapshot){
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return const CircularProgressIndicator();
-                                }
-                                if (snapshot.hasError){
-                                  return Text(snapshot.error.toString());
-                                } else {
-                                  return snapshot.data!;
-                                }
-                              },
-                            )
-                          ],
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 32),
+                      child: Container(
+                        width: double.infinity,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              FutureBuilder(
+                                future: generaWidgetPietanze(),
+                                builder: (context, snapshot){
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return const CircularProgressIndicator();
+                                  }
+                                  if (snapshot.hasError){
+                                    return Text(snapshot.error.toString());
+                                  } else {
+                                    return snapshot.data!;
+                                  }
+                                },
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              ]
-          )
+                  )
+                ]
+            )
+        ),
       ),
     );
   }
+
+  void showOverlay() {
+    final overlay = Overlay.of(context)!;
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    final size = renderBox.size;
+
+    entry = OverlayEntry(builder: (context) => Positioned(
+        width: size.width,
+        height: size.height,
+        child: buildOverlay()
+    ),
+    );
+
+    overlay.insert(entry!);
+  }
+
+  Widget buildOverlay() {
+
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return FractionallySizedBox(
+      widthFactor: 0.7,
+      heightFactor: 0.7,
+      child: DecoratedBox(
+        decoration: const BoxDecoration( boxShadow: [
+          BoxShadow(
+            blurRadius: 7,
+            spreadRadius: 5,
+            color: Color(0xAA110505),
+            offset: Offset(-8, 8),
+          )
+        ],
+          color: Color(0xFFD9D9D9),
+          //border: Border.all(width: 0),
+          borderRadius: BorderRadius.all(Radius.circular(25)),
+        ),
+      ),
+    );
+  }
+
+  void hideOverlay() {
+    entry?.remove();
+    entry = null;
+    overlayAperto = false;
+  }
+
 }
