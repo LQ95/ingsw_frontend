@@ -7,7 +7,7 @@ import 'GlobImport.dart';
 import 'entity/Utente.dart';
 
 class DatabaseControl {
-  static final String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
+  static final String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
   Future<String> sendUserData(String name, String pass, String ruolo) async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente'); //URL del punto di contatto della API
@@ -78,6 +78,35 @@ class DatabaseControl {
         },
         body: jsonEncode(<String, String>{'mittente': mittente,
           'corpo': corpo,})
+    );
+
+    //print('Response status: ${response.statusCode}');
+    //print('Response body: ${response.body}');
+
+    if(response.statusCode.toInt() == 200) {
+      return "SUCCESSO";
+    } else if(response.statusCode.toInt() == 500){
+      return "FALLIMENTO";
+    }
+    else {
+      return "ERRORE INASPETTATO";
+    }
+  }
+
+  Future<String> sendPietanzaToDb(String titolo, String descrizione, String allergeni, String costo) async{
+
+    var apiUrl = Uri.http(baseUrl,
+        '/api/v1/pietanza'); //URL del punto di contatto della API
+    var response = await http.post(apiUrl,
+        //questa è la response,in cui è definita anche la request, direttamente
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'name': titolo,
+          'descrizione': descrizione,
+          'allergeni' : allergeni,
+          'costo' : costo})
     );
 
     //print('Response status: ${response.statusCode}');
@@ -191,6 +220,7 @@ Future<void> NotificationCheck(Utente user) async { //TODO capire come killare s
   Iterator messageIterator;
   print("utente:"+user.toString());
   while(user.getNome != ""){
+    await Future.delayed(const Duration(seconds: 1));
     print("entra nel loop");
   response= await http.get(apiUrl);
   print('Response status: ${response.statusCode}');

@@ -1,6 +1,8 @@
 // import 'dart:js';
 
 import 'package:flutter/material.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'GlobImport.dart';
 import 'entity/Utente.dart';
 import 'DatabaseControl.dart';
@@ -222,18 +224,116 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
     return FractionallySizedBox(
       widthFactor: 0.7,
       heightFactor: 0.7,
-      child: DecoratedBox(
-        decoration: const BoxDecoration( boxShadow: [
-          BoxShadow(
-            blurRadius: 7,
-            spreadRadius: 5,
-            color: Color(0xAA110505),
-            offset: Offset(-8, 8),
-          )
-        ],
-          color: Color(0xFFD9D9D9),
-          //border: Border.all(width: 0),
-          borderRadius: BorderRadius.all(Radius.circular(25)),
+      child: Scaffold(
+        body: DecoratedBox(
+          decoration: const BoxDecoration( boxShadow: [
+            BoxShadow(
+              blurRadius: 7,
+              spreadRadius: 5,
+              color: Color(0xAA110505),
+              offset: Offset(-8, 8),
+            )
+          ],
+            color: Color(0xFFD9D9D9),
+            //border: Border.all(width: 0),
+            borderRadius: BorderRadius.all(Radius.circular(25)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Expanded(child:
+                    Padding(
+                    padding: const EdgeInsets.only(left: 64, right: 64),
+                    child: TextField(
+                      controller: controllerTitolo,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Titolo piatto:',
+                      ),
+                    ),),)
+                  ]
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Expanded(child:
+                  Padding(
+                    padding: const EdgeInsets.only(left: 64, right: 64),
+                    child: TextField(
+                      controller: controllerDescrizione,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Descrizione:',
+                      ),
+                    ),),)
+                  ]
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Expanded(child:
+                  Padding(
+                    padding: const EdgeInsets.only(left: 64, right: 64),
+                    child: TextField(
+                      controller: controllerAllergeni,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Allergeni:',
+                      ),
+                    ),),)
+                  ]
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Expanded(child:
+                  Padding(
+                    padding: const EdgeInsets.only(left: 64, right: 64),
+                    child: TextField(
+                      controller: controllerCosto,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Prezzo:',
+                      ),
+                    ),),)
+                  ]
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(onPressed: () async {
+                    if (controllerTitolo.text.isNotEmpty && controllerCosto.text
+                        .isNotEmpty) {
+                      DatabaseControl db = DatabaseControl();
+                      String creazioneAvvenutaConSuccesso = await db.sendPietanzaToDb(
+                          controllerTitolo.text, controllerDescrizione.text, controllerAllergeni.text, controllerCosto.text);  //Il client attende la risposta del server prima di proseguire, in modo che
+                      if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
+                        showAllertSuccesso();
+                        Navigator.pop(context);
+                      } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
+                        showAllertErrore("Ops, riprova...");
+                        Navigator.pop(context);
+                      } else {
+                        showAllertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
+                        Navigator.pop(context);
+                      }
+                    }
+                    else {
+                      showAllertErrore(
+                          "Attenzione, i campi non sono stati compilati correttamente!");
+                          Navigator.pop(context);
+                    }
+                  },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF66420F),
+                    ),
+                    child: const Text("Conferma", style: TextStyle(
+                        color: Colors.white70),),
+                  )
+                ],
+              ),
+
+            ],
+          ),
         ),
       ),
     );
@@ -243,6 +343,24 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
     entry?.remove();
     entry = null;
     overlayAperto = false;
+  }
+
+  void showAllertErrore(String errore) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.error,
+        text: errore,
+        title: "Qualcosa è andato storto"
+    );
+  }
+
+
+  void showAllertSuccesso() {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.success,
+        text: "Eccellente, il piatto è stato inserito con successo!",
+        title: "Successo!",
+        onConfirmBtnTap: () {Navigator.pop(context);}
+    );
   }
 
 }
