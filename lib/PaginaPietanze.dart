@@ -300,34 +300,37 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ElevatedButton(onPressed: () async {
-                    if (controllerTitolo.text.isNotEmpty && controllerCosto.text
-                        .isNotEmpty) {
-                      DatabaseControl db = DatabaseControl();
-                      String creazioneAvvenutaConSuccesso = await db.sendPietanzaToDb(
-                          controllerTitolo.text, controllerDescrizione.text, controllerAllergeni.text, controllerCosto.text);  //Il client attende la risposta del server prima di proseguire, in modo che
-                      if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
-                        showAllertSuccesso();
-                        Navigator.pop(context);
-                      } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
-                        showAllertErrore("Ops, riprova...");
-                        Navigator.pop(context);
-                      } else {
-                        showAllertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
-                        Navigator.pop(context);
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: ElevatedButton(onPressed: () async {
+                      if (controllerTitolo.text.isNotEmpty && controllerCosto.text
+                          .isNotEmpty) {
+                        DatabaseControl db = DatabaseControl();
+                        String creazioneAvvenutaConSuccesso = await db.sendPietanzaToDb(
+                            controllerTitolo.text, controllerDescrizione.text, controllerAllergeni.text, controllerCosto.text);  //Il client attende la risposta del server prima di proseguire, in modo che
+                        if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
+                          showAllertSuccesso();
+                          hideOverlay();
+                        } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
+                          showAllertErrore("Ops, riprova...");
+                          hideOverlay();
+                        } else {
+                          showAllertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
+                          hideOverlay();
+                        }
                       }
-                    }
-                    else {
-                      showAllertErrore(
-                          "Attenzione, i campi non sono stati compilati correttamente!");
-                          Navigator.pop(context);
-                    }
-                  },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF66420F),
+                      else {
+                        showAllertErrore(
+                            "Attenzione, i campi non sono stati compilati correttamente!");
+                            Navigator.pop(context);
+                      }
+                    },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF66420F),
+                      ),
+                      child: const Text("Conferma", style: TextStyle(
+                          color: Colors.white70),),
                     ),
-                    child: const Text("Conferma", style: TextStyle(
-                        color: Colors.white70),),
                   )
                 ],
               ),
@@ -340,6 +343,10 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
   }
 
   void hideOverlay() {
+    controllerTitolo.text = "";
+    controllerDescrizione.text = "";
+    controllerAllergeni.text = "";
+    controllerCosto.text = "";
     entry?.remove();
     entry = null;
     overlayAperto = false;
