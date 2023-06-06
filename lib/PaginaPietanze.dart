@@ -68,13 +68,24 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.create_outlined),
+                                ),
                                 Text(listaPietanze?[index]['name'], style: const TextStyle(fontSize: 28,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black87),
                                   maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
+                                  overflow: TextOverflow.ellipsis,),
+                                IconButton(
+                                  onPressed: () {
+                                    showAlertConferma(listaPietanze?[index]['id']);
+                                  },
+                                  icon: const Icon(Icons.delete_outlined),
+                                  color: Colors.redAccent,
+                                ),
                               ],
                             ),
                             Row(
@@ -309,18 +320,18 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                         String creazioneAvvenutaConSuccesso = await db.sendPietanzaToDb(
                             controllerTitolo.text, controllerDescrizione.text, controllerAllergeni.text, controllerCosto.text);  //Il client attende la risposta del server prima di proseguire, in modo che
                         if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
-                          showAllertSuccesso();
+                          showAlertSuccesso();
                           hideOverlay();
                         } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
-                          showAllertErrore("Ops, riprova...");
+                          showAlertErrore("Ops, riprova...");
                           hideOverlay();
                         } else {
-                          showAllertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
+                          showAlertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
                           hideOverlay();
                         }
                       }
                       else {
-                        showAllertErrore(
+                        showAlertErrore(
                             "Attenzione, i campi non sono stati compilati correttamente!");
                             Navigator.pop(context);
                       }
@@ -352,7 +363,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
     overlayAperto = false;
   }
 
-  void showAllertErrore(String errore) {
+  void showAlertErrore(String errore) {
     QuickAlert.show(context: context,
         type: QuickAlertType.error,
         text: errore,
@@ -361,12 +372,24 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
   }
 
 
-  void showAllertSuccesso() {
+  void showAlertSuccesso() {
     QuickAlert.show(context: context,
         type: QuickAlertType.success,
         text: "Eccellente, il piatto è stato inserito con successo!",
         title: "Successo!",
         onConfirmBtnTap: () {Navigator.pop(context);}
+    );
+  }
+
+  void showAlertConferma(int idPietanza) {
+    QuickAlert.show(context: localcontext,
+      type: QuickAlertType.confirm,
+      text: "",
+      title: "Sei sicuro di voler eliminare questo elemento?",
+      confirmBtnText: "Si",
+      cancelBtnText: "No",
+      onConfirmBtnTap: () {},
+      onCancelBtnTap: () => Navigator.pop(localcontext),
     );
   }
 
