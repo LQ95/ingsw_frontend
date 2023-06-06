@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:isolate';
@@ -216,7 +217,7 @@ Future<void> NotificationCheck(Utente user) async { //TODO capire come killare s
   var response;
   var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId.toString(),
   'username':Utente().getNome});
-  Map<String, dynamic> messages;
+  Map<String, dynamic> messages= HashMap();
   Iterator messageIterator;
   print("utente:"+user.toString());
   while(user.getNome != ""){
@@ -225,7 +226,7 @@ Future<void> NotificationCheck(Utente user) async { //TODO capire come killare s
   response= await http.get(apiUrl);
   print('Response status: ${response.statusCode}');
   print('Response body: ${response.body}');
-  if(response.statusCode.toInt() == 200) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
+  if(response.statusCode.toInt() == 200 && messages.isEmpty) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
       messages= jsonDecode(response.body);
       print(messages);
       messageIterator= messages.entries.iterator;
