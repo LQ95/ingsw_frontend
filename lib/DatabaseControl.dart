@@ -68,6 +68,19 @@ class DatabaseControl {
 
   }
 
+  Future<String> deletePietanzaFromDB(int id) async {   //Work in Progres
+    var apiUrl = Uri.http(baseUrl,
+        '/api/v1/pietanza/delete/$id');
+    var response = await http.delete(apiUrl);
+    if (response.statusCode == 200) {
+      return "SUCCESSO";
+    }
+    else {
+      return "FALLIMENTO";
+    }
+
+  }
+
   Future<String> sendMessaggioToDb(String mittente, String corpo) async{
 
     var apiUrl = Uri.http(baseUrl,
@@ -219,13 +232,13 @@ Future<void> NotificationCheck(Utente user) async { //TODO capire come killare s
   'username':Utente().getNome});
   Map<String, dynamic> messages= HashMap();
   Iterator messageIterator;
-  print("utente:"+user.toString());
+  // print("utente:"+user.toString());
   while(user.getNome != ""){
     await Future.delayed(const Duration(seconds: 1));
-    print("entra nel loop");
+    // print("entra nel loop");
   response= await http.get(apiUrl);
-  print('Response status: ${response.statusCode}');
-  print('Response body: ${response.body}');
+  // print('Response status: ${response.statusCode}');
+  // print('Response body: ${response.body}');
   if(response.statusCode.toInt() == 200 && messages.isEmpty) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
       messages= jsonDecode(response.body);
       print(messages);
@@ -233,8 +246,8 @@ Future<void> NotificationCheck(Utente user) async { //TODO capire come killare s
       while(messageIterator.moveNext() == true)
         {
           //TODO inserisci i messaggi nel sistema
-          print(messageIterator.current);
-          print("corpo della response:"+response.toString());
+          // print(messageIterator.current);
+          // print("corpo della response:"+response.toString());
         }
 
   }

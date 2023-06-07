@@ -320,7 +320,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                         String creazioneAvvenutaConSuccesso = await db.sendPietanzaToDb(
                             controllerTitolo.text, controllerDescrizione.text, controllerAllergeni.text, controllerCosto.text);  //Il client attende la risposta del server prima di proseguire, in modo che
                         if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
-                          showAlertSuccesso();
+                          showAlertSuccesso("Eccellente, il piatto è stato inserito con successo!");
                           hideOverlay();
                         } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
                           showAlertErrore("Ops, riprova...");
@@ -372,10 +372,10 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
   }
 
 
-  void showAlertSuccesso() {
+  void showAlertSuccesso(String testo) {
     QuickAlert.show(context: context,
         type: QuickAlertType.success,
-        text: "Eccellente, il piatto è stato inserito con successo!",
+        text: testo,
         title: "Successo!",
         onConfirmBtnTap: () {Navigator.pop(context);}
     );
@@ -388,7 +388,16 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
       title: "Sei sicuro di voler eliminare questo elemento?",
       confirmBtnText: "Si",
       cancelBtnText: "No",
-      onConfirmBtnTap: () {},
+      onConfirmBtnTap: () async {
+        DatabaseControl db = DatabaseControl();
+        Navigator.pop(localcontext);
+        if(await db.deletePietanzaFromDB(idPietanza) == "SUCCESSO") {
+          showAlertSuccesso("Il piatto è stato eliminato correttamente");
+        }
+        else {
+          showAlertErrore("Non siamo riusciti ad eliminare la pietanza, per favore riprova più tardi...");
+        }
+      },
       onCancelBtnTap: () => Navigator.pop(localcontext),
     );
   }
