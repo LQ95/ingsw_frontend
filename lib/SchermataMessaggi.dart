@@ -99,7 +99,7 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
                         if (utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
                           Navigator.push(
                               localcontext, MaterialPageRoute(builder: (
-                              context) => const SchermataScriviMessaggi()));
+                              context) => const SchermataScriviMessaggi())).then((value) => setState(() {}));
                         }
                       },
                         style: ElevatedButton.styleFrom(

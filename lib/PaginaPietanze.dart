@@ -313,7 +313,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 16),
-                    child: ElevatedButton(onPressed: () async {
+                    child: ElevatedButton(onPressed: () async { //INSERIMENTO DI UN ELEMENTO NEL DB
                       if (controllerTitolo.text.isNotEmpty && controllerCosto.text
                           .isNotEmpty) {
                         DatabaseControl db = DatabaseControl();
@@ -321,6 +321,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                             controllerTitolo.text, controllerDescrizione.text, controllerAllergeni.text, controllerCosto.text);  //Il client attende la risposta del server prima di proseguire, in modo che
                         if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
                           showAlertSuccesso("Eccellente, il piatto è stato inserito con successo!");
+                          setState((){});
                           hideOverlay();
                         } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
                           showAlertErrore("Ops, riprova...");
@@ -392,6 +393,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
         DatabaseControl db = DatabaseControl();
         Navigator.pop(localcontext);
         if(await db.deletePietanzaFromDB(idPietanza) == "SUCCESSO") {
+          setState((){});
           showAlertSuccesso("Il piatto è stato eliminato correttamente");
         }
         else {
