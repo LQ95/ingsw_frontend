@@ -71,7 +71,15 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showOverlay(
+                                        idPietanza: listaPietanze?[index]['id'],
+                                        titolo: listaPietanze?[index]['name'],
+                                        descrizione: listaPietanze?[index]['descrizione'],
+                                        allergeni: listaPietanze?[index]['allergeni'],
+                                        costo: listaPietanze?[index]['costo']
+                                      );
+                                    },
                                     icon: const Icon(Icons.create_outlined),
                                 ),
                                 Text(listaPietanze?[index]['name'], style: const TextStyle(fontSize: 28,
@@ -213,25 +221,47 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
     );
   }
 
-  void showOverlay() {
+  void showOverlay({int? idPietanza, String? titolo, String? descrizione, String? allergeni, double? costo}) {
     final overlay = Overlay.of(context)!;
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
 
+    if (titolo != null) {
+      controllerTitolo.text = titolo;
+    } else {
+      controllerTitolo.text = '';
+    }
+
+    if (descrizione != null) {
+      controllerDescrizione.text = descrizione;
+    } else {
+      controllerDescrizione.text = '';
+    }
+
+    if (allergeni != null) {
+      controllerAllergeni.text = allergeni;
+    } else {
+      controllerAllergeni.text = '';
+    }
+
+    if (costo != null) {
+      controllerCosto.text = costo.toString();
+    } else {
+      controllerCosto.text = '';
+    }
+
     entry = OverlayEntry(builder: (context) => Positioned(
         width: size.width,
         height: size.height,
-        child: buildOverlay()
+        child: buildOverlay(idPietanza: idPietanza)
     ),
     );
 
     overlay.insert(entry!);
   }
 
-  Widget buildOverlay() {
+  Widget buildOverlay({int? idPietanza}) {
 
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     return FractionallySizedBox(
       widthFactor: 0.7,
       heightFactor: 0.7,
@@ -314,27 +344,57 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                   Padding(
                     padding: const EdgeInsets.only(right: 16),
                     child: ElevatedButton(onPressed: () async { //INSERIMENTO DI UN ELEMENTO NEL DB
-                      if (controllerTitolo.text.isNotEmpty && controllerCosto.text
-                          .isNotEmpty) {
+                      if(idPietanza == null) {
+                        if (controllerTitolo.text.isNotEmpty && controllerCosto
+                            .text
+                            .isNotEmpty) {
+                          DatabaseControl db = DatabaseControl();
+                          String creazioneAvvenutaConSuccesso = await db
+                              .sendPietanzaToDb(
+                              controllerTitolo.text, controllerDescrizione.text,
+                              controllerAllergeni.text, controllerCosto
+                              .text); //Il client attende la risposta del server prima di proseguire, in modo che
+                          if (creazioneAvvenutaConSuccesso ==
+                              "SUCCESSO") { //il valore di ritorno di tipo Future ottenga uno stato
+                            showAlertSuccesso(
+                                "Eccellente, il piatto è stato inserito con successo!");
+                            setState(() {});
+                            hideOverlay();
+                          } else
+                          if (creazioneAvvenutaConSuccesso == "FALLIMENTO") {
+                            showAlertErrore("Ops, riprova...");
+                            hideOverlay();
+                          } else {
+                            showAlertErrore(
+                                "Si è verificato un errore inaspettato, per favore riprovare...");
+                            hideOverlay();
+                          }
+                        }
+                        else {
+                          showAlertErrore(
+                              "Attenzione, i campi non sono stati compilati correttamente!");
+                          Navigator.pop(context);
+
+                        }
+                      } else {
                         DatabaseControl db = DatabaseControl();
-                        String creazioneAvvenutaConSuccesso = await db.sendPietanzaToDb(
-                            controllerTitolo.text, controllerDescrizione.text, controllerAllergeni.text, controllerCosto.text);  //Il client attende la risposta del server prima di proseguire, in modo che
-                        if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
-                          showAlertSuccesso("Eccellente, il piatto è stato inserito con successo!");
-                          setState((){});
+                        String modificaAvvenutaConSuccesso = await db.modificaPietanzainDB(idPietanza, controllerTitolo.text, controllerDescrizione.text,
+                            controllerAllergeni.text, controllerCosto.text);
+                        if (modificaAvvenutaConSuccesso ==
+                            "SUCCESSO") { //il valore di ritorno di tipo Future ottenga uno stato
+                          showAlertSuccesso(
+                              "Eccellente, il piatto è modificato inserito con successo!");
+                          setState(() {});
                           hideOverlay();
-                        } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
+                        } else
+                        if (modificaAvvenutaConSuccesso == "FALLIMENTO") {
                           showAlertErrore("Ops, riprova...");
                           hideOverlay();
                         } else {
-                          showAlertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
+                          showAlertErrore(
+                              "Si è verificato un errore inaspettato, per favore riprovare...");
                           hideOverlay();
                         }
-                      }
-                      else {
-                        showAlertErrore(
-                            "Attenzione, i campi non sono stati compilati correttamente!");
-                            Navigator.pop(context);
                       }
                     },
                       style: ElevatedButton.styleFrom(
