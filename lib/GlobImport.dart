@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:isolate';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'entity/Utente.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:ingsw_frontend/SchermataMessaggi.dart';
+Map<String, dynamic> globalUnreadMessages= HashMap();
 
 ListTile funzioniAdmin=ListTile(
   title:  const Text("Funzioni Admin"),
@@ -16,7 +18,7 @@ ListTile funzioniAdmin=ListTile(
 
 ListTile notifiche=ListTile(
   title: const Text("Notifiche"),
-  onTap: () {Navigator.push(localcontext, MaterialPageRoute(builder: (context) =>const SchermataMessaggi()));},
+  onTap: () {Navigator.push(localcontext, MaterialPageRoute(builder: (context) =>SchermataMessaggi()));},
   trailing: const Icon(Icons.mail_outlined),
 );
 ListTile logout= ListTile(

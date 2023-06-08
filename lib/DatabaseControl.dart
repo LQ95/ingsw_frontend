@@ -261,7 +261,6 @@ Future<void> NotificationCheck(Utente user) async { //TODO capire come killare s
   var response;
   var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId.toString(),
   'username':Utente().getNome});
-  Map<String, dynamic> messages= HashMap();
   Iterator messageIterator;
   // print("utente:"+user.toString());
   while(user.getNome != ""){
@@ -270,10 +269,10 @@ Future<void> NotificationCheck(Utente user) async { //TODO capire come killare s
   response= await http.get(apiUrl);
   // print('Response status: ${response.statusCode}');
   // print('Response body: ${response.body}');
-  if(response.statusCode.toInt() == 200 && messages.isEmpty) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
-      messages= jsonDecode(response.body);
-      print(messages);
-      messageIterator= messages.entries.iterator;
+  if(response.statusCode.toInt() == 200 && globalUnreadMessages.isEmpty) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
+      globalUnreadMessages= jsonDecode(response.body);
+      print(globalUnreadMessages);
+      messageIterator= globalUnreadMessages.entries.iterator;
       while(messageIterator.moveNext() == true)
         {
           //TODO inserisci i messaggi nel sistema
