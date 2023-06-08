@@ -265,7 +265,7 @@ Future<String> setMessageAsRead(Long id) async {
       body: jsonEncode(<String, Long>{
         'messageId':id,
       }));
-  Utente().setPrimoAccesso = "false";
+  
   print('Response status: ${response.statusCode}');
   if(response.statusCode.toInt() == 200) {
     return "SUCCESSO";
