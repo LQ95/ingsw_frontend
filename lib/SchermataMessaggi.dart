@@ -1,3 +1,6 @@
+import 'dart:collection';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/SchermataScriviMessaggio.dart';
 import 'GlobImport.dart';
@@ -26,6 +29,8 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
       DatabaseControl db = DatabaseControl();
       List<dynamic>? listaMessaggi = await  db.getAllMessaggiFromDB();
       listaMessaggi = listaMessaggi?.reversed.toList();
+      List<bool> wasReadList=wasRead(listaMessaggi);
+      print("genero widget messaggi");
       if (listaMessaggi != null) {
         return Wrap(
           direction: Axis.vertical,
@@ -57,7 +62,8 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,),),
                               Text(listaMessaggi?[index]['corpo'], overflow: TextOverflow
-                                  .ellipsis, maxLines: 12,)
+                                  .ellipsis, maxLines: 12,),
+                              statefulReadButton(listaMessaggi?[index]['id'], wasReadList[index])
                             ]
                         ),
                       ),
@@ -70,7 +76,7 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
         return const Text("");
       }
     }
-
+    print("buildo");
     return Scaffold(
       appBar: GlobalAppBar,
       drawer: globalDrawer,
@@ -147,4 +153,73 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
 
 
 
+
+  List<bool> wasRead(List? listaMessaggi) {
+    List<bool> result= List<bool>.empty(growable:true);
+    int i;
+    for(i=0;i<listaMessaggi!.length;i++){
+      print("aggiorno lista booleani");
+    result.add(globalUnreadMessages.containsValue(listaMessaggi[i]['id'])); //l'id di questo messaggio sta nei messaggi non letti?
+    }
+    return result;
+  }
+}
+
+class statefulReadButton extends StatefulWidget {
+
+  int messageId;
+  bool unread=false;
+  statefulReadButton(this.messageId,this.unread);
+
+  @override
+  State<StatefulWidget> createState() => readButtonState(unread,messageId);
+
+}
+
+
+class readButtonState extends State<statefulReadButton>{
+  static const Color unreadBackground= Color(0xFF66420F);
+  static const Color readBackground= Color(0xFFBBBBBB);
+  Color background=readBackground;
+
+  bool unread = false;
+
+  static const Text unreadText= Text("Segnala visualizzazione", style: TextStyle(
+      color: Colors.white70),);
+  static const Text readText= Text("Visualizzato", style: TextStyle(
+      color: Colors.white70),);
+  Text buttonText=readText;
+
+  int messageId=0;
+
+
+  readButtonState( bool unread, int messageId){
+    this.unread=unread;
+    this.messageId=messageId;
+    if(this.unread = true){
+      this.background=unreadBackground;
+      this.buttonText=unreadText;
+    }
+  }
+
+  void toggleRead(){
+    setState(() {
+      //DatabaseControl db new DatabaseControl();
+      if(unread){
+        background=readBackground;
+        buttonText=readText;
+        //db.setMessageAsRead(messageId)
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(onPressed:toggleRead,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: background,
+      ),
+      child: buttonText
+    );
+  }
 }

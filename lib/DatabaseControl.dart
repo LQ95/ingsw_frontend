@@ -8,7 +8,7 @@ import 'GlobImport.dart';
 import 'entity/Utente.dart';
 
 class DatabaseControl {
-  static final String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
+  static final String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
   Future<String> sendUserData(String name, String pass, String ruolo) async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente'); //URL del punto di contatto della API
@@ -262,10 +262,11 @@ Future<String> setMessageAsRead(Long id) async {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, Long>{
+      body: jsonEncode(<String, dynamic>{
         'messageId':id,
+        'userId':Utente().getId
       }));
-  
+
   print('Response status: ${response.statusCode}');
   if(response.statusCode.toInt() == 200) {
     return "SUCCESSO";
@@ -280,6 +281,7 @@ Future<String> setMessageAsRead(Long id) async {
 }
 @pragma('vm:entry-point')
 Future<void> NotificationCheck(Utente user) async { //TODO capire come killare sto thread al logout
+  bool popupWasFlashed=false;
   var response;
   var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId.toString(),
   'username':Utente().getNome});
@@ -293,16 +295,14 @@ Future<void> NotificationCheck(Utente user) async { //TODO capire come killare s
   // print('Response body: ${response.body}');
   if(response.statusCode.toInt() == 200 && globalUnreadMessages.isEmpty) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
       globalUnreadMessages= jsonDecode(response.body);
+      print("messaggi non letti trovati:");
       print(globalUnreadMessages);
-      messageIterator= globalUnreadMessages.entries.iterator;
-      while(messageIterator.moveNext() == true)
-        {
-          //TODO inserisci i messaggi nel sistema
-          // print(messageIterator.current);
-          // print("corpo della response:"+response.toString());
-        }
-
   }
+  if(!popupWasFlashed)
+    {
+      //TODO la funzione per fare la notifica
+      popupWasFlashed=true;
+    }
   }
   print("thread notifiche finito.è stato effettuato il logout?");
 
