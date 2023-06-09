@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'GlobImport.dart';
 import 'DatabaseControl.dart';
+import 'entity/Utente.dart';
 
-class PaginaOrdinazioni extends StatefulWidget{
+class PaginaOrdinazioniTavoli extends StatefulWidget{
   final String title="PaginaOrdinazioni";
 
-  const PaginaOrdinazioni({super.key});
+  const PaginaOrdinazioniTavoli({super.key});
   @override
-  PaginaOrdinazioniState createState() => PaginaOrdinazioniState();
+  PaginaOrdinazioniTavoliState createState() => PaginaOrdinazioniTavoliState();
 
 }
 
-class PaginaOrdinazioniState extends State<PaginaOrdinazioni> {
+class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
 
 
   @override
@@ -22,42 +23,49 @@ class PaginaOrdinazioniState extends State<PaginaOrdinazioni> {
     generaWidgetTavoli() async {
       DatabaseControl db = DatabaseControl();
       List<dynamic>? listaTavoli = await db.getAllTavoliFromDB();
-      listaTavoli = listaTavoli?.reversed.toList();
       if (listaTavoli != null) {
-        return Wrap(
-          direction: Axis.vertical,
-          runAlignment: WrapAlignment.center,
-          runSpacing: 24,
-          children: List.generate(listaTavoli.length, (index) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 16, bottom: 16),
-              child: SizedBox(
-                height: height * 0.15,
-                width: width * 0.25,
-                child: DecoratedBox(
-                  decoration: const BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 7,
-                        spreadRadius: 5,
-                        color: Color(0xAA110505),
-                        offset: Offset(-8, 8),
-                      )
-                    ],
-                    color: Color(0xFF728514),
-                    //border: Border.all(width: 0),
-                    borderRadius: BorderRadius.all(Radius.circular(25)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      "Tavolo${listaTavoli![index]['id']}",
+        return Align(
+          alignment: Alignment.center,
+          child: Wrap(
+            direction: Axis.horizontal,
+            runAlignment: WrapAlignment.center,
+            runSpacing: 24,
+            spacing: 24,
+            children: List.generate(listaTavoli.length, (index) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 16),
+                child: SizedBox(
+                  height: height * 0.15,
+                  width: width * 0.25,
+                  child: DecoratedBox(
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 7,
+                          spreadRadius: 5,
+                          color: Color(0xAA110505),
+                          offset: Offset(-8, 8),
+                        )
+                      ],
+                      color: Color(0xFFC89117),
+                      //border: Border.all(width: 0),
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Tavolo${listaTavoli![index]['id']}",
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 24,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         );
       } else {
         return const Text("");
@@ -79,7 +87,14 @@ class PaginaOrdinazioniState extends State<PaginaOrdinazioni> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ElevatedButton(onPressed: () {
+                      ElevatedButton(onPressed: () async{
+                        Utente utente = Utente();
+                        if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
+                          DatabaseControl db = DatabaseControl();
+                          await db.deleteTavoloFromDB();
+                          setState(() {});
+                        }
+
                       },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFD9D9D9),
@@ -91,10 +106,16 @@ class PaginaOrdinazioniState extends State<PaginaOrdinazioni> {
                         'Ordinazioni',
                         style: TextStyle(
                           fontStyle: FontStyle.italic,
-                          fontSize: 28,
+                          fontSize: 32,
                         ),
                       ),
-                      ElevatedButton(onPressed: () {
+                      ElevatedButton(onPressed: () async {
+                        Utente utente = Utente();
+                        if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
+                          DatabaseControl db = DatabaseControl();
+                          await db.addTavoloToDB();
+                          setState(() {});
+                        }
                       },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFD9D9D9),
@@ -115,7 +136,7 @@ class PaginaOrdinazioniState extends State<PaginaOrdinazioni> {
                         child: Column(
                           children: [
                             SizedBox(
-                              height: height*0.8,
+                              height: height,
                               width: double.infinity,
                               child: FutureBuilder(
                                 future: generaWidgetTavoli(),

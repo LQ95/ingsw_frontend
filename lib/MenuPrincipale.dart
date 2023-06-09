@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/PaginaMenu.dart';
-import 'package:ingsw_frontend/PaginaOrdinazioni.dart';
+import 'package:ingsw_frontend/PaginaOrdinazioniTavoli.dart';
 import 'GlobImport.dart';
 
 class MenuPrincipale extends StatefulWidget{
@@ -31,7 +31,7 @@ class MenuPrincipaleState extends State<MenuPrincipale>{
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   InkWell(
-                    onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => PaginaOrdinazioni()));},
+                    onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => PaginaOrdinazioniTavoli()));},
                     child: Ink.image(
                       image: const AssetImage('contents/images/Bottone Ordinazioni.png'),
                       width: width*0.4,
