@@ -3,6 +3,8 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/SchermataScriviMessaggio.dart';
+import 'DatabaseControl.dart';
+import 'DatabaseControl.dart';
 import 'GlobImport.dart';
 import 'entity/Utente.dart';
 import 'DatabaseControl.dart';
@@ -31,6 +33,8 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
       listaMessaggi = listaMessaggi?.reversed.toList();
       List<bool> wasReadList=wasRead(listaMessaggi);
       print("genero widget messaggi");
+      DatabaseControl.findUnreadMessages();
+      print(globalUnreadMessages);
       if (listaMessaggi != null) {
         return Wrap(
           direction: Axis.vertical,
@@ -159,7 +163,7 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
     int i;
     for(i=0;i<listaMessaggi!.length;i++){
       print("aggiorno lista booleani");
-    result.add(globalUnreadMessages.containsValue(listaMessaggi[i]['id'])); //l'id di questo messaggio sta nei messaggi non letti?
+    result.add(!globalUnreadMessages.containsValue(listaMessaggi[i]['id'])); //l'id di questo messaggio sta nei messaggi non letti?
     }
     return result;
   }
@@ -178,6 +182,7 @@ class statefulReadButton extends StatefulWidget {
 
 
 class readButtonState extends State<statefulReadButton>{
+  static DatabaseControl db = new DatabaseControl();
   static const Color unreadBackground= Color(0xFF66420F);
   static const Color readBackground= Color(0xFFBBBBBB);
   Color background=readBackground;
@@ -204,11 +209,14 @@ class readButtonState extends State<statefulReadButton>{
 
   void toggleRead(){
     setState(() {
-      //DatabaseControl db new DatabaseControl();
+
       if(unread){
+        print(globalUnreadMessages);
         background=readBackground;
         buttonText=readText;
-        //db.setMessageAsRead(messageId)
+        db.setMessageAsRead(messageId);
+        eliminateMessageFromUnreadList(messageId);
+        print(globalUnreadMessages);
       }
     });
   }
@@ -221,5 +229,21 @@ class readButtonState extends State<statefulReadButton>{
       ),
       child: buttonText
     );
+  }
+
+  void eliminateMessageFromUnreadList(int messageId) {
+    String keyNumber;
+    String key;
+    print("ho letto il messaggio di  id");
+    print(messageId);
+    if(globalUnreadMessages.containsValue(messageId)){
+      key=globalUnreadMessages.keys.firstWhere((k) => globalUnreadMessages[k]== messageId);
+      keyNumber=key.replaceAll("id", "");
+      print("cancello l'elemento della mappa numero:");
+      print(keyNumber);
+      globalUnreadMessages.remove(key);
+      globalUnreadMessages.remove("mittente"+keyNumber);
+      globalUnreadMessages.remove("corpo"+keyNumber);
+    }
   }
 }

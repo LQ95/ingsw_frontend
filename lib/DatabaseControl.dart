@@ -8,7 +8,7 @@ import 'GlobImport.dart';
 import 'entity/Utente.dart';
 
 class DatabaseControl {
-  static final String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
+  static final String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
   Future<String> sendUserData(String name, String pass, String ruolo) async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente'); //URL del punto di contatto della API
@@ -288,7 +288,7 @@ class DatabaseControl {
       return "ERRORE INASPETTATO";
     }
   }
-Future<String> setMessageAsRead(Long id) async {
+Future<String> setMessageAsRead(int id) async {
   var apiUrl = Uri.http(baseUrl,
       '/api/v1/messaggio/readupdate'); //URL del punto di contatto della API
   var response = await http.put(apiUrl,
@@ -312,32 +312,63 @@ Future<String> setMessageAsRead(Long id) async {
   }
   }
 
+  static Future<void> findUnreadMessages() async {
+    var response;
+    var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId.toString(),
+      'username':Utente().getNome});
+    response= await http.get(apiUrl);
+    // print('Response status: ${response.statusCode}');
+    // print('Response body: ${response.body}');
+    if(response.statusCode.toInt() == 200) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
+      globalUnreadMessages= jsonDecode(response.body);
+      print("lista globale messaggi non letti trovati:");
+      print(globalUnreadMessages);
+    }
+
+
+}
 }
 @pragma('vm:entry-point')
 Future<void> NotificationCheck(Utente user) async { //TODO capire come killare sto thread al logout
+  Map<String, dynamic> localList;
   bool popupWasFlashed=false;
-  var response;
-  var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId.toString(),
-  'username':Utente().getNome});
-  Iterator messageIterator;
   // print("utente:"+user.toString());
   while(user.getNome != ""){
     await Future.delayed(const Duration(seconds: 1));
     // print("entra nel loop");
-  response= await http.get(apiUrl);
-  // print('Response status: ${response.statusCode}');
-  // print('Response body: ${response.body}');
-  if(response.statusCode.toInt() == 200 && globalUnreadMessages.isEmpty) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
-      globalUnreadMessages= jsonDecode(response.body);
-      print("messaggi non letti trovati:");
-      print(globalUnreadMessages);
-  }
+    localList=globalUnreadMessages;
+    DatabaseControl.findUnreadMessages();
+    print("lista locale:");
+    print(localList);
   if(!popupWasFlashed)
     {
       //TODO la funzione per fare la notifica
+      print("apro il popup");
       popupWasFlashed=true;
+    }
+    else{
+      popupWasFlashed = !areThereNewMessages(localList,globalUnreadMessages);
+
     }
   }
   print("thread notifiche finito.è stato effettuato il logout?");
 
+}
+
+bool areThereNewMessages(Map<String, dynamic> localList, Map<String, dynamic> globalList) {
+  bool newMessages=false;
+  int i;
+  String key;
+  if(globalList.length<=localList.length) {
+    for (i = 0; i < globalList.length /
+        3; i++) { //divido per 3 perchè ogni messaggio ha 3 campi ma ce ne serve solo 1
+      key = "id$i"; //interpolazione, produce una stringa tipo "id0","id1" ecc
+      if (localList[key] != globalList[key]) {
+        newMessages = true;
+        break;
+      }
+    }
+  } else newMessages=true; //se la lista nuova ha messaggi in più ovviamente è stata aggiornata.
+
+  return newMessages; //se la lsista è stat aggiornata il popup dev essere riflashato, quindi il flag deve essere false, e viceversa.
 }
