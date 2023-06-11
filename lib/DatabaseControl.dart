@@ -312,7 +312,10 @@ Future<String> setMessageAsRead(int id) async {
   }
   }
 
-  static Future<void> findUnreadMessages() async {
+  static Future<bool> findUnreadMessages() async {
+    Map<String, dynamic> localList=Map<String, dynamic>();
+    localList.addAll(globalUnreadMessages);
+    bool newMessages=false;
     var response;
     var apiUrl=Uri.http(DatabaseControl.baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId.toString(),
       'username':Utente().getNome});
@@ -321,25 +324,29 @@ Future<String> setMessageAsRead(int id) async {
     // print('Response body: ${response.body}');
     if(response.statusCode.toInt() == 200) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
       globalUnreadMessages= jsonDecode(response.body);
-      print("lista globale messaggi non letti trovati:");
-      print(globalUnreadMessages);
     }
 
+    //print("lista locale:");
+    //print(localList);
+    //print("lista globale messaggi non letti trovati:");
+    //print(globalUnreadMessages);
+
+    newMessages = !areThereNewMessages(localList,globalUnreadMessages);
+return newMessages;
 
 }
 }
 @pragma('vm:entry-point')
 Future<void> NotificationCheck(Utente user) async { //TODO capire come killare sto thread al logout
-  Map<String, dynamic> localList;
+
   bool popupWasFlashed=false;
   // print("utente:"+user.toString());
   while(user.getNome != ""){
     await Future.delayed(const Duration(seconds: 1));
     // print("entra nel loop");
-    localList=globalUnreadMessages;
-    DatabaseControl.findUnreadMessages();
-    print("lista locale:");
-    print(localList);
+
+    popupWasFlashed= await DatabaseControl.findUnreadMessages();
+
   if(!popupWasFlashed)
     {
       //TODO la funzione per fare la notifica
@@ -347,7 +354,7 @@ Future<void> NotificationCheck(Utente user) async { //TODO capire come killare s
       popupWasFlashed=true;
     }
     else{
-      popupWasFlashed = !areThereNewMessages(localList,globalUnreadMessages);
+
 
     }
   }
@@ -359,16 +366,21 @@ bool areThereNewMessages(Map<String, dynamic> localList, Map<String, dynamic> gl
   bool newMessages=false;
   int i;
   String key;
+  print("verifico se ci sono messaggi nuovi");
   if(globalList.length<=localList.length) {
     for (i = 0; i < globalList.length /
         3; i++) { //divido per 3 perchè ogni messaggio ha 3 campi ma ce ne serve solo 1
       key = "id$i"; //interpolazione, produce una stringa tipo "id0","id1" ecc
       if (localList[key] != globalList[key]) {
+        print("ci sono messaggi nuovi");
         newMessages = true;
         break;
       }
     }
-  } else newMessages=true; //se la lista nuova ha messaggi in più ovviamente è stata aggiornata.
+  } else {
+    print("ci sono messaggi nuovi, causa lunghezza lista");
+    newMessages=true; //se la lista nuova ha messaggi in più ovviamente è stata aggiornata.
+  }
 
   return newMessages; //se la lsista è stat aggiornata il popup dev essere riflashato, quindi il flag deve essere false, e viceversa.
 }
