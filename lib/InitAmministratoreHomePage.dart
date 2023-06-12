@@ -146,15 +146,15 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                                             DatabaseControl db = DatabaseControl();
                                             String creazioneAvvenutaConSuccesso = await db.sendUserData(controller1.text, controller2.text, "AMMINISTRATORE");  //Il client attende la risposta del server prima di proseguire, in modo che
                                             if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
-                                              showAllertSuccesso();
+                                              showAlertSuccesso();
                                             } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
-                                              showAllertErrore("Il nome che hai selezionato è già stato scelto...");
+                                              showAlertErrore("Il nome che hai selezionato è già stato scelto...");
                                             } else {
-                                              showAllertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
+                                              showAlertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
                                             }
                                           }
                                           else {
-                                            showAllertErrore(
+                                            showAlertErrore(
                                                 "Attenzione, i campi non sono stati compilati correttamente!");
                                           }
                                         },
@@ -198,7 +198,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
   }
 
 
-  void showAllertErrore(String errore) {
+  void showAlertErrore(String errore) {
     QuickAlert.show(context: context,
         type: QuickAlertType.error,
         text: errore,
@@ -207,7 +207,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
   }
 
 
-  void showAllertSuccesso() {
+  void showAlertSuccesso() {
     QuickAlert.show(context: context,
         type: QuickAlertType.success,
         text: "Eccellente, l'account è stato creato con successo!",

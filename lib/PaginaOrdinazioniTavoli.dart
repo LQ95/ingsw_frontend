@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ingsw_frontend/SchermataVisualizzaConto.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'GlobImport.dart';
 import 'DatabaseControl.dart';
+import 'SchermataStoricoOrdinazioni.dart';
 import 'entity/Utente.dart';
 
 class PaginaOrdinazioniTavoli extends StatefulWidget{
@@ -50,7 +54,12 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      // Azioni da eseguire quando il pulsante viene premuto
+                      Utente utente = Utente();
+                      if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE"){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataVisualizzaConto(idTavolo: listaTavoli![index]['id'].toString(),)));
+                      } else {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'].toString(),)));
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 7,
@@ -110,6 +119,8 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                           DatabaseControl db = DatabaseControl();
                           await db.deleteTavoloFromDB();
                           setState(() {});
+                        } else {
+                          showAlertErrore("Non hai i permessi necessari per eseguire quest'operazione");
                         }
 
                       },
@@ -132,6 +143,8 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                           DatabaseControl db = DatabaseControl();
                           await db.addTavoloToDB();
                           setState(() {});
+                        } else {
+                          showAlertErrore("Non hai i permessi necessari per eseguire quest'operazione");
                         }
                       },
                         style: ElevatedButton.styleFrom(
@@ -196,4 +209,11 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
     );
   }
 
+  void showAlertErrore(String errore) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.error,
+        text: errore,
+        title: "Attenzione!"
+    );
+  }
 }

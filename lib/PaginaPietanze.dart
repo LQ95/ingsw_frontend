@@ -82,11 +82,21 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                                     },
                                     icon: const Icon(Icons.create_outlined),
                                 ),
-                                Text(listaPietanze?[index]['name'], style: const TextStyle(fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,),
+                                SizedBox(
+                                  width: width * 0.45,
+                                  child: Text(
+                                    listaPietanze?[index]['name'],
+                                    style: const TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                    textAlign: TextAlign.center, // Aggiungi questa linea per centrare il testo orizzontalmente
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+
                                 IconButton(
                                   onPressed: () {
                                     showAlertConferma(listaPietanze?[index]['id']);
