@@ -34,30 +34,47 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
             children: List.generate(listaTavoli.length, (index) {
               return Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 16),
-                child: SizedBox(
-                  height: height * 0.15,
-                  width: width * 0.25,
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 7,
-                          spreadRadius: 5,
-                          color: Color(0xAA110505),
-                          offset: Offset(-8, 8),
-                        )
-                      ],
-                      color: Color(0xFFC89117),
-                      //border: Border.all(width: 0),
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                child: Container(
+                  decoration:const BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 7,
+                        spreadRadius: 5,
+                        color: Color(0xAA110505),
+                        offset: Offset(-4, 4),
+                      )
+                    ],
+                    color: Color(0xFFC89117),
+                    //border: Border.all(width: 0),
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Azioni da eseguire quando il pulsante viene premuto
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 7,
+                      backgroundColor: const Color(0xFFC89117),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        side: BorderSide(
+                          color: Colors.black.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      padding: EdgeInsets.zero,
                     ),
-                    child: Center(
-                      child: Text(
-                        "Tavolo${listaTavoli![index]['id']}",
-                        style: const TextStyle(
-                          color: Colors.white70,
-                          fontStyle: FontStyle.italic,
-                          fontSize: 24,
+                    child: SizedBox(
+                      height: height * 0.15,
+                      width: width * 0.25,
+                      child: Center(
+                        child: Text(
+                          "Tavolo${listaTavoli![index]['id']}",
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontStyle: FontStyle.italic,
+                            fontSize: 24,
+                          ),
                         ),
                       ),
                     ),
@@ -73,7 +90,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
     }
 
 
-    return Scaffold(
+  return Scaffold(
       appBar: GlobalAppBar,
       drawer: globalDrawer,
       body: Center(
@@ -130,27 +147,24 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                   flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 32),
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
+                      height: height*0.7,
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            SizedBox(
-                              height: height,
-                              width: double.infinity,
-                              child: FutureBuilder(
-                                future: generaWidgetTavoli(),
-                                builder: (context, snapshot){
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return const CircularProgressIndicator();
-                                  }
-                                  if (snapshot.hasError){
-                                    return Text(snapshot.error.toString());
-                                  } else {
-                                    return snapshot.data!;
-                                  }
-                                },
-                              ),
+                            FutureBuilder(
+                              future: generaWidgetTavoli(),
+                              builder: (context, snapshot){
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                }
+                                if (snapshot.hasError){
+                                  return Text(snapshot.error.toString());
+                                } else {
+                                  return snapshot.data!;
+                                }
+                              },
                             ),
                           ],
                         ),
