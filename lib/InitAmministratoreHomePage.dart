@@ -1,12 +1,11 @@
 import 'dart:io';
 
-import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'package:quickalert/quickalert.dart';
 
-import 'DatabaseControl.dart';
 import 'package:flutter/material.dart';
 
 import 'MenuPrincipale.dart';
+import 'control/UtenteControl.dart';
 
 
 class InitAmministratoreHomePage extends StatefulWidget {
@@ -143,7 +142,7 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                                         ElevatedButton(onPressed: () async {
                                           if (controller1.text.isNotEmpty && controller2.text
                                               .isNotEmpty) {
-                                            DatabaseControl db = DatabaseControl();
+                                            UtenteControl db = UtenteControl();
                                             String creazioneAvvenutaConSuccesso = await db.sendUserData(controller1.text, controller2.text, "AMMINISTRATORE");  //Il client attende la risposta del server prima di proseguire, in modo che
                                             if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
                                               showAlertSuccesso();

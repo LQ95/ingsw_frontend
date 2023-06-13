@@ -3,6 +3,8 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/SchermataScriviMessaggio.dart';
+import 'package:ingsw_frontend/control/MessaggiControl.dart';
+import 'package:ingsw_frontend/control/ThreadControl.dart';
 import 'DatabaseControl.dart';
 import 'DatabaseControl.dart';
 import 'GlobImport.dart';
@@ -28,12 +30,12 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
 
     generaWidgetMessaggi() async{
 
-      DatabaseControl db = DatabaseControl();
+      MessaggiControl db = MessaggiControl();
       List<dynamic>? listaMessaggi = await  db.getAllMessaggiFromDB();
       listaMessaggi = listaMessaggi?.reversed.toList();
       List<bool> wasReadList=wasRead(listaMessaggi);
       print("genero widget messaggi");
-      DatabaseControl.findUnreadMessages();
+      ThreadControl.findUnreadMessages();
       print(globalUnreadMessages);
       if (listaMessaggi != null) {
         return Wrap(
@@ -182,7 +184,7 @@ class statefulReadButton extends StatefulWidget {
 
 
 class readButtonState extends State<statefulReadButton>{
-  static DatabaseControl db = new DatabaseControl();
+  static MessaggiControl db = new MessaggiControl();
   static const Color unreadBackground= Color(0xFF66420F);
   static const Color readBackground= Color(0xFFBBBBBB);
   Color background=readBackground;

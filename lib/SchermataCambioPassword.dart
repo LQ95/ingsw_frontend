@@ -1,9 +1,8 @@
 import 'dart:io';
 
-import 'package:ingsw_frontend/SchermataLogin.dart';
+import 'package:ingsw_frontend/control/UtenteControl.dart';
 import 'package:quickalert/quickalert.dart';
 
-import 'DatabaseControl.dart';
 import 'package:flutter/material.dart';
 
 import 'MenuPrincipale.dart';
@@ -150,7 +149,7 @@ class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
                                                   "Attenzione, le password inserite sono diverse fra di loro!");
                                             }
                                             else {
-                                              DatabaseControl db = DatabaseControl();
+                                              UtenteControl db = UtenteControl();
                                               Utente utente = Utente();
                                               db.updateUtenteData(utente.getNome, controller1.text, utente.getRuolo, utente.getId.toString());
                                               showAllertSuccesso();

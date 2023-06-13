@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/SchermataVisualizzaConto.dart';
+import 'package:ingsw_frontend/control/TavoloControl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'GlobImport.dart';
-import 'DatabaseControl.dart';
 import 'SchermataStoricoOrdinazioni.dart';
 import 'entity/Utente.dart';
 
@@ -25,7 +25,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
     double width = MediaQuery.of(context).size.width;
 
     generaWidgetTavoli() async {
-      DatabaseControl db = DatabaseControl();
+      TavoloControl db = TavoloControl();
       List<dynamic>? listaTavoli = await db.getAllTavoliFromDB();
       if (listaTavoli != null) {
         return Align(
@@ -116,7 +116,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                       ElevatedButton(onPressed: () async{
                         Utente utente = Utente();
                         if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
-                          DatabaseControl db = DatabaseControl();
+                          TavoloControl db = TavoloControl();
                           await db.deleteTavoloFromDB();
                           setState(() {});
                         } else {
@@ -140,7 +140,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                       ElevatedButton(onPressed: () async {
                         Utente utente = Utente();
                         if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
-                          DatabaseControl db = DatabaseControl();
+                          TavoloControl db = TavoloControl();
                           await db.addTavoloToDB();
                           setState(() {});
                         } else {

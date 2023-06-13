@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/DatabaseControl.dart';
+import 'package:ingsw_frontend/control/MessaggiControl.dart';
 import 'GlobImport.dart';
 import 'entity/Utente.dart';
 import 'package:quickalert/quickalert.dart';
@@ -74,7 +75,7 @@ class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
       confirmBtnText: "Si",
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
-        DatabaseControl db = DatabaseControl();
+        MessaggiControl db = MessaggiControl();
         Utente utente = Utente();
         String result = await db.sendMessaggioToDb(utente.getNome, controller1.text);
         Navigator.of(context).pop();

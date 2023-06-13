@@ -8,6 +8,9 @@ import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'entity/Utente.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:ingsw_frontend/SchermataMessaggi.dart';
+
+const String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
+
 Map<String, dynamic> globalUnreadMessages= HashMap();
 
 ListTile funzioniAdmin=ListTile(

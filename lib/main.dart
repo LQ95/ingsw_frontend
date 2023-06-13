@@ -1,14 +1,9 @@
-import 'dart:isolate';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ingsw_frontend/DatabaseControl.dart';
 import 'package:ingsw_frontend/SchermataLogin.dart';
+import 'package:ingsw_frontend/control/UtenteControl.dart';
 import 'package:window_size/window_size.dart';
 import 'dart:io' show Platform;
-import 'GlobImport.dart';
-import 'SchermataMessaggi.dart';
-
 import 'InitAmministratoreHomePage.dart';
 
 Future<void> main() async {
@@ -18,7 +13,7 @@ Future<void> main() async {
     setWindowTitle('Ratatouille23');
     setWindowMinSize(const Size(1280, 720));
   }
-  DatabaseControl db= DatabaseControl();
+  UtenteControl db= UtenteControl();
   Widget schermataHome;
   int initialized = await db.isSistemInitialized() ;
   if (initialized == 1) {

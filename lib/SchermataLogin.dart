@@ -3,11 +3,9 @@ import 'dart:io';
 import 'package:quickalert/quickalert.dart';
 import 'package:flutter/material.dart';
 
-import 'DatabaseControl.dart';
-import 'GlobImport.dart';
 import 'MenuPrincipale.dart';
 import 'SchermataCambioPassword.dart';
-import 'entity/Utente.dart';
+import 'control/UtenteControl.dart';
 
 class  SchermataLogin extends StatelessWidget{
   final controller1 = TextEditingController();
@@ -140,7 +138,7 @@ class  SchermataLogin extends StatelessWidget{
                                   ElevatedButton(onPressed: () async {                     //il valore di ritorno di tipo Future ottenga uno stato
                                     if (controller1.text.isNotEmpty && controller2.text
                                         .isNotEmpty) {
-                                      DatabaseControl db = DatabaseControl();
+                                      UtenteControl db = UtenteControl();
                                       String esitoLogin = await db.sendLoginData(controller1.text, controller2.text);  //Il client attende la risposta del server prima di proseguire, in modo che
                                       if (esitoLogin == "FALLIMENTO"){
                                         showAlertErrore("Le credenziali non sono corrette.");

@@ -1,12 +1,9 @@
-// import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'GlobImport.dart';
+import 'control/PietanzeControl.dart';
 import 'entity/Utente.dart';
-import 'DatabaseControl.dart';
-
 class PaginaPietanze extends StatefulWidget{
   final String title="PaginaPietanze";
 
@@ -36,7 +33,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
 
     generaWidgetPietanze() async{
 
-      DatabaseControl db = DatabaseControl();
+      PietanzeControl db = PietanzeControl();
       List<dynamic>? listaPietanze = await  db.getAllPietanzeFromDB();
 
       listaPietanze = listaPietanze?.reversed.toList();
@@ -358,7 +355,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                         if (controllerTitolo.text.isNotEmpty && controllerCosto
                             .text
                             .isNotEmpty) {
-                          DatabaseControl db = DatabaseControl();
+                          PietanzeControl db = PietanzeControl();
                           String creazioneAvvenutaConSuccesso = await db
                               .sendPietanzaToDb(
                               controllerTitolo.text, controllerDescrizione.text,
@@ -387,7 +384,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
 
                         }
                       } else {
-                        DatabaseControl db = DatabaseControl();
+                        PietanzeControl db = PietanzeControl();
                         String modificaAvvenutaConSuccesso = await db.modificaPietanzainDB(idPietanza, controllerTitolo.text, controllerDescrizione.text,
                             controllerAllergeni.text, controllerCosto.text);
                         if (modificaAvvenutaConSuccesso ==
@@ -460,7 +457,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
       confirmBtnText: "Si",
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
-        DatabaseControl db = DatabaseControl();
+        PietanzeControl db = PietanzeControl();
         Navigator.pop(localcontext);
         if(await db.deletePietanzaFromDB(idPietanza) == "SUCCESSO") {
           setState((){});
