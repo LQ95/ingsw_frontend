@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ingsw_frontend/DatabaseControl.dart';
 import 'package:ingsw_frontend/control/MessaggiControl.dart';
 import 'GlobImport.dart';
 import 'entity/Utente.dart';

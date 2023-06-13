@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'GlobImport.dart';
-import 'DatabaseControl.dart';
-import 'entity/Utente.dart';
 
 class SchermataStoricoOrdinazioni extends StatefulWidget{
   final String title="SchermataStoricoOrdinazioni";

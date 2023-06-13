@@ -1,8 +1,6 @@
-import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'package:ingsw_frontend/control/UtenteControl.dart';
 import 'package:quickalert/quickalert.dart';
 
-import 'DatabaseControl.dart';
 import 'package:flutter/material.dart';
 
 import 'GlobImport.dart';
