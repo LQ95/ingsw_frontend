@@ -273,6 +273,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
       widthFactor: 0.7,
       heightFactor: 0.7,
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         body: DecoratedBox(
           decoration: const BoxDecoration( boxShadow: [
             BoxShadow(
