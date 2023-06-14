@@ -21,13 +21,12 @@ class SchermataCreazioneAccount extends StatefulWidget {
 }
 
 class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
-  //Ma
+  final controller1 = TextEditingController();
+  final controller2 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     //ritrovano il testo immesso nei textfield
-    final controller1 = TextEditingController();
-    final controller2 = TextEditingController();
 
 
     localcontext=context;
