@@ -58,12 +58,26 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Center(child: Text(listaMessaggi?[index]['mittente'],
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,),),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Mittente: "+ listaMessaggi?[index]['mittente'],
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,),
+                                  Row(
+                                    children: [
+                                      const Text("Letto", style: TextStyle(
+                                        color: Colors.black45,
+                                        fontSize: 12,
+                                        ),
+                                      ),
+                                      statefulReadButton(listaMessaggi?[index]['id'], wasReadList[index]),
+                                    ],
+                                  )
+                                ],
+                              ),
                               Text(listaMessaggi?[index]['corpo'], overflow: TextOverflow
-                                  .ellipsis, maxLines: 12,),
-                              statefulReadButton(listaMessaggi?[index]['id'], wasReadList[index])
+                                  .ellipsis, maxLines: 11,),
                             ]
                         ),
                       ),
@@ -166,6 +180,79 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
 }
 
 class statefulReadButton extends StatefulWidget {
+  int messageId;
+  bool unread = false;
+
+  statefulReadButton(this.messageId, this.unread);
+
+  @override
+  State<StatefulWidget> createState() => readButtonState(unread, messageId);
+}
+
+class readButtonState extends State<statefulReadButton> {
+  static MessaggiControl db = new MessaggiControl();
+  static const Color unreadBackground = Color(0xFF66420F);
+  static const Color readBackground = Color(0xFFBBBBBB);
+  Color background = readBackground;
+
+  bool unread = false;
+
+  int messageId = 0;
+
+  readButtonState(bool unread, int messageId) {
+    this.unread = unread;
+    this.messageId = messageId;
+    if (this.unread) {
+      this.background = unreadBackground;
+    }
+  }
+
+  void toggleRead(bool? value) {
+    setState(() {
+      unread = value!;
+
+      if (unread) {
+        background = unreadBackground;
+        db.setMessageAsRead(messageId);
+        eliminateMessageFromUnreadList(messageId);
+      } else {
+        background = readBackground;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+      value: unread,
+      onChanged: toggleRead,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      activeColor: unreadBackground,
+      fillColor: MaterialStateProperty.all<Color>(background),
+      visualDensity: VisualDensity.compact,
+    );
+  }
+
+  void eliminateMessageFromUnreadList(int messageId) {
+    String keyNumber;
+    String key;
+    if (globalUnreadMessages.containsValue(messageId)) {
+      key = globalUnreadMessages.keys.firstWhere(
+            (k) => globalUnreadMessages[k] == messageId,
+      );
+      keyNumber = key.replaceAll("id", "");
+      globalUnreadMessages.remove(key);
+      globalUnreadMessages.remove("mittente$keyNumber");
+      globalUnreadMessages.remove("corpo$keyNumber");
+    }
+  }
+}
+
+/* VECCHIO CODICE
+
+class statefulReadButton extends StatefulWidget {
 
   int messageId;
   bool unread=false;
@@ -243,3 +330,6 @@ class readButtonState extends State<statefulReadButton>{
     }
   }
 }
+
+
+ */
