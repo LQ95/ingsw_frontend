@@ -58,13 +58,13 @@ class MessaggiControl{
 
   Future<String> setMessageAsRead(int id) async {
     var apiUrl = Uri.http(baseUrl,
-        '/api/v1/messaggio/readupdate'); //URL del punto di contatto della API
+        '/api/v1/Messaggio/readupdate'); //URL del punto di contatto della API
     var response = await http.put(apiUrl,
         //questa è la response,in cui è definita anche la request, direttamente
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, dynamic>{
+        body: jsonEncode(<String, int>{
           'messageId':id,
           'userId':Utente().getId
         }));
