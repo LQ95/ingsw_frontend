@@ -15,7 +15,7 @@ class ThreadControl{
       await Future.delayed(const Duration(seconds: 1));
       // print("entra nel loop");
 
-      popupWasFlashed= await findUnreadMessages();
+      popupWasFlashed= await findUnreadMessages(user);
 
       if(!popupWasFlashed)
       {
@@ -56,13 +56,14 @@ class ThreadControl{
   }
 
 
-  static Future<bool> findUnreadMessages() async {
+  static Future<bool> findUnreadMessages(Utente user) async {
     Map<String, dynamic> localList=Map<String, dynamic>();
     localList.addAll(globalUnreadMessages);
     bool newMessages=false;
     var response;
-    var apiUrl=Uri.http(baseUrl,'api/v1/Messaggio/unread',{'userId':Utente().getId.toString(),
-      'username':Utente().getNome});
+    print("invio userId "+user.getId.toString());
+    var apiUrl=Uri.http(baseUrl,'api/v1/Messaggio/unread',{'userId':user.getId.toString(),
+      'username':user.getNome});
     response= await http.get(apiUrl);
     // print('Response status: ${response.statusCode}');
     // print('Response body: ${response.body}');
@@ -72,8 +73,8 @@ class ThreadControl{
 
     //print("lista locale:");
     //print(localList);
-    //print("lista globale messaggi non letti trovati:");
-    //print(globalUnreadMessages);
+    print("lista globale messaggi non letti trovati:");
+    print(globalUnreadMessages);
 
     newMessages = !areThereNewMessages(localList,globalUnreadMessages);
     return newMessages;

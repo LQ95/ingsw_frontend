@@ -80,5 +80,25 @@ class MessaggiControl{
     }
   }
 
+  static Future<Map<String, dynamic>> getUnreadMessagesList(Utente user) async {
+    Map<String, dynamic> localList=Map<String, dynamic>();
+    var response;
+    print("invio userId "+user.getId.toString());
+    var apiUrl=Uri.http(baseUrl,'api/v1/Messaggio/unread',{'userId':user.getId.toString(),
+      'username':user.getNome});
+    response= await http.get(apiUrl);
+    // print('Response status: ${response.statusCode}');
+    // print('Response body: ${response.body}');
+    if(response.statusCode.toInt() == 200) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
+      globalUnreadMessages= jsonDecode(response.body);
+    }
+
+    print("lista globale messaggi non letti trovati (chiamata dall aschermata dei messaggi):");
+    print(globalUnreadMessages);
+    localList.addAll(globalUnreadMessages);
+
+    return localList;
+
+  }
 
 }

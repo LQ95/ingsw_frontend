@@ -27,10 +27,8 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
       MessaggiControl db = MessaggiControl();
       List<dynamic>? listaMessaggi = await  db.getAllMessaggiFromDB();
       listaMessaggi = listaMessaggi?.reversed.toList();
-      List<bool> wasReadList=wasRead(listaMessaggi);
-      print("genero widget messaggi");
-      ThreadControl.findUnreadMessages();
-      print(globalUnreadMessages);
+      print("genero widget messaggi, e controllo messaggi non letti dal punto di vista della schermata dei messaggi");
+      List<bool> wasUnreadList=await wasUnread(listaMessaggi);
       if (listaMessaggi != null) {
         return Wrap(
           direction: Axis.vertical,
@@ -66,12 +64,12 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
                                     maxLines: 1,),
                                   Row(
                                     children: [
-                                      const Text("Letto", style: TextStyle(
+                                      /*const Text("Letto", style: TextStyle(
                                         color: Colors.black45,
                                         fontSize: 12,
                                         ),
-                                      ),
-                                      statefulReadButton(listaMessaggi?[index]['id'], wasReadList[index]),
+                                      ),*/
+                                      statefulReadButton(listaMessaggi?[index]['id'], wasUnreadList[index]),
                                     ],
                                   )
                                 ],
@@ -168,17 +166,20 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
 
 
 
-  List<bool> wasRead(List? listaMessaggi) {
+  Future<List<bool>> wasUnread(List? listaMessaggi) async {
     List<bool> result= List<bool>.empty(growable:true);
+    Map<String, dynamic> UnreadMessages=await MessaggiControl.getUnreadMessagesList(Utente());
     int i;
+    print("avendo:");
+    print(UnreadMessages);
     for(i=0;i<listaMessaggi!.length;i++){
       print("aggiorno lista booleani");
-    result.add(!globalUnreadMessages.containsValue(listaMessaggi[i]['id'])); //l'id di questo messaggio sta nei messaggi non letti?
+    result.add(UnreadMessages.containsValue(listaMessaggi[i]['id'])); //l'id di questo messaggio sta nei messaggi non letti?
     }
     return result;
   }
 }
-
+/*
 class statefulReadButton extends StatefulWidget {
   int messageId;
   bool unread = false;
@@ -250,7 +251,7 @@ class readButtonState extends State<statefulReadButton> {
   }
 }
 
-/* VECCHIO CODICE
+ */
 
 class statefulReadButton extends StatefulWidget {
 
@@ -284,7 +285,7 @@ class readButtonState extends State<statefulReadButton>{
   readButtonState( bool unread, int messageId){
     this.unread=unread;
     this.messageId=messageId;
-    if(this.unread = true){
+    if(this.unread == true){
       this.background=unreadBackground;
       this.buttonText=unreadText;
     }
@@ -294,12 +295,9 @@ class readButtonState extends State<statefulReadButton>{
     setState(() {
 
       if(unread){
-        print(globalUnreadMessages);
         background=readBackground;
         buttonText=readText;
         db.setMessageAsRead(messageId);
-        eliminateMessageFromUnreadList(messageId);
-        print(globalUnreadMessages);
       }
     });
   }
@@ -314,22 +312,6 @@ class readButtonState extends State<statefulReadButton>{
     );
   }
 
-  void eliminateMessageFromUnreadList(int messageId) {
-    String keyNumber;
-    String key;
-    print("ho letto il messaggio di  id");
-    print(messageId);
-    if(globalUnreadMessages.containsValue(messageId)){
-      key=globalUnreadMessages.keys.firstWhere((k) => globalUnreadMessages[k]== messageId);
-      keyNumber=key.replaceAll("id", "");
-      print("cancello l'elemento della mappa numero:");
-      print(keyNumber);
-      globalUnreadMessages.remove(key);
-      globalUnreadMessages.remove("mittente"+keyNumber);
-      globalUnreadMessages.remove("corpo"+keyNumber);
-    }
-  }
 }
 
 
- */

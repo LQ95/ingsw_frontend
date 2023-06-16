@@ -58,7 +58,7 @@ class UtenteControl{
       },
     );
     //print('Response status: ${response.statusCode}');
-    //print('Response body: ${response.body}');
+    print('login Response headers: ${response.headers}');
     String? ruolo = response.headers['ruolo'];
     String? primoAccesso = response.headers['primo_accesso'];
     String? id = response.headers['id'];
