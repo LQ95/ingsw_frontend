@@ -8,25 +8,24 @@ class ThreadControl{
 
   @pragma('vm:entry-point')
   Future<void> NotificationCheck(Utente user) async { //TODO capire come killare sto thread al logout
-
+    Map<String, dynamic> localList=Map<String, dynamic>();
+    Map<String, dynamic> newList=Map<String, dynamic>();
     bool popupWasFlashed=false;
     // print("utente:"+user.toString());
     while(user.getNome != ""){
       await Future.delayed(const Duration(seconds: 1));
       // print("entra nel loop");
 
-      popupWasFlashed= await findUnreadMessages(user);
-
+      newList= await findUnreadMessages(user);
+      popupWasFlashed=!areThereNewMessages(localList,newList);
       if(!popupWasFlashed)
       {
         //TODO la funzione per fare la notifica
         print("apro il popup");
         popupWasFlashed=true;
       }
-      else{
-
-
-      }
+      localList.clear();
+      localList.addAll(newList);
     }
     print("thread notifiche finito.è stato effettuato il logout?");
 
@@ -56,10 +55,8 @@ class ThreadControl{
   }
 
 
-  static Future<bool> findUnreadMessages(Utente user) async {
+  static Future<Map<String, dynamic>> findUnreadMessages(Utente user) async {
     Map<String, dynamic> localList=Map<String, dynamic>();
-    localList.addAll(globalUnreadMessages);
-    bool newMessages=false;
     var response;
     print("invio userId "+user.getId.toString());
     var apiUrl=Uri.http(baseUrl,'api/v1/Messaggio/unread',{'userId':user.getId.toString(),
@@ -68,16 +65,14 @@ class ThreadControl{
     // print('Response status: ${response.statusCode}');
     // print('Response body: ${response.body}');
     if(response.statusCode.toInt() == 200) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
-      globalUnreadMessages= jsonDecode(response.body);
+      localList= jsonDecode(response.body);
     }
 
-    //print("lista locale:");
-    //print(localList);
-    print("lista globale messaggi non letti trovati:");
-    print(globalUnreadMessages);
+    print("lista mess non letti su thread:");
+    print(localList);
 
-    newMessages = !areThereNewMessages(localList,globalUnreadMessages);
-    return newMessages;
+
+    return localList;
 
   }
 

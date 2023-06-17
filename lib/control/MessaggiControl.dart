@@ -90,12 +90,12 @@ class MessaggiControl{
     // print('Response status: ${response.statusCode}');
     // print('Response body: ${response.body}');
     if(response.statusCode.toInt() == 200) { //se riceve 200 i messaggi ci sono, riceve 404 se non ci sono
-      globalUnreadMessages= jsonDecode(response.body);
+      localList= jsonDecode(response.body);
     }
 
-    print("lista globale messaggi non letti trovati (chiamata dall aschermata dei messaggi):");
-    print(globalUnreadMessages);
-    localList.addAll(globalUnreadMessages);
+    print("lista messaggi non letti trovati dalla schermata dei messaggi:");
+    print(localList);
+
 
     return localList;
 
