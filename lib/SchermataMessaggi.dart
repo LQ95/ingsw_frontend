@@ -74,8 +74,12 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
                                   )
                                 ],
                               ),
-                              Text(listaMessaggi?[index]['corpo'], overflow: TextOverflow
-                                  .ellipsis, maxLines: 11,),
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  child: Text(listaMessaggi?[index]['corpo'], overflow: TextOverflow
+                                      .ellipsis, maxLines: 25,),
+                                ),
+                              ),
                             ]
                         ),
                       ),
