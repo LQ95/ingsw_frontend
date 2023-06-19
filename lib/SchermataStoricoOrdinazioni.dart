@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'GlobImport.dart';
+import 'SchermataModificaOrdinazione.dart';
 
 class SchermataStoricoOrdinazioni extends StatefulWidget{
   final String title="SchermataStoricoOrdinazioni";
@@ -7,11 +8,15 @@ class SchermataStoricoOrdinazioni extends StatefulWidget{
 
   const SchermataStoricoOrdinazioni({required this.idTavolo, super.key});
   @override
-  SchermataStoricoOrdinazioniState createState() => SchermataStoricoOrdinazioniState();
+  SchermataStoricoOrdinazioniState createState() => SchermataStoricoOrdinazioniState(this.idTavolo);
 
 }
 
 class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni> {
+  final String idTavolo;
+
+  SchermataStoricoOrdinazioniState(this.idTavolo);
+
 
 
   @override
@@ -113,7 +118,12 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
                         shape: const CircleBorder(),
                         onPressed: () {
                           // Azione da eseguire quando viene premuto il FAB
-                        },
+                          Navigator.push(
+                          localcontext,
+                                  MaterialPageRoute(builder: (context) => SchermataModificaOrdinazione(idTavolo: idTavolo)
+                                  )
+                                          );
+                            },
                         backgroundColor: const Color(0xFF728514),
                         child: Icon(Icons.add), // Icona del FAB
                       ),
