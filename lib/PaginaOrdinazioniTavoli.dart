@@ -101,7 +101,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
 
   return Scaffold(
       appBar: GlobalAppBar,
-      drawer: globalDrawer,
+      drawer: buildDrawer(context),
       body: Center(
           child:
           Column(

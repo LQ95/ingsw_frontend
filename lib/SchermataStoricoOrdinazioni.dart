@@ -21,13 +21,12 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
 
   @override
   Widget build(BuildContext context) {
-
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: GlobalAppBar,
-      drawer: globalDrawer,
+      drawer: buildDrawer(context),
       body: Center(
           child:
           Column(
@@ -119,7 +118,7 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
                         onPressed: () {
                           // Azione da eseguire quando viene premuto il FAB
                           Navigator.push(
-                          localcontext,
+                          context,
                                   MaterialPageRoute(builder: (context) => SchermataModificaOrdinazione(idTavolo: idTavolo)
                                   )
                                           );

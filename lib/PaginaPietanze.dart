@@ -25,9 +25,6 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -149,7 +146,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
       onTap: () => hideOverlay(),
       child: Scaffold(
         appBar: GlobalAppBar,
-        drawer: globalDrawer,
+        drawer: buildDrawer(context),
         body: Center(
             child:
             Column(
@@ -451,7 +448,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
   }
 
   void showAlertConferma(int idPietanza) {
-    QuickAlert.show(context: localcontext,
+    QuickAlert.show(context: context,
       type: QuickAlertType.confirm,
       text: "",
       title: "Sei sicuro di voler eliminare questo elemento?",
@@ -459,7 +456,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
         PietanzeControl db = PietanzeControl();
-        Navigator.pop(localcontext);
+        Navigator.pop(context);
         if(await db.deletePietanzaFromDB(idPietanza) == "SUCCESSO") {
           setState((){});
           showAlertSuccesso("Il piatto è stato eliminato correttamente");
@@ -468,7 +465,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
           showAlertErrore("Non siamo riusciti ad eliminare la pietanza, per favore riprova più tardi...");
         }
       },
-      onCancelBtnTap: () => Navigator.pop(localcontext),
+      onCancelBtnTap: () => Navigator.pop(context),
     );
   }
 

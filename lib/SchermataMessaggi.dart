@@ -95,7 +95,7 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
     print("buildo");
     return Scaffold(
       appBar: GlobalAppBar,
-      drawer: globalDrawer,
+      drawer: buildDrawer(context),
       body: Center(
           child:
           Column(
@@ -120,7 +120,7 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
                         Utente utente = Utente();
                         if (utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
                           Navigator.push(
-                              localcontext, MaterialPageRoute(builder: (
+                              context, MaterialPageRoute(builder: (
                               context) => const SchermataScriviMessaggi())).then((value) => setState(() {}));
                         }
                       },

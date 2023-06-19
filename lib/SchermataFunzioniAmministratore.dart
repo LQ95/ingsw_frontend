@@ -6,13 +6,12 @@ import 'GlobImport.dart';
 class SchermataFunzioniAmministratore extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
 
     return Scaffold(
       appBar:GlobalAppBar,
-      drawer: globalDrawer,
+      drawer: buildDrawer(context),
       body:  Center(
           child:
           Column(

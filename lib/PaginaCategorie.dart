@@ -92,7 +92,7 @@ class PaginaCategorieState extends State<PaginaCategorie> {
 
     return Scaffold(
       appBar: GlobalAppBar,
-      drawer: globalDrawer,
+      drawer: buildDrawer(context),
       body: Center(
           child:
           Column(

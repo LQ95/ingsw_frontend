@@ -27,12 +27,9 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
   @override
   Widget build(BuildContext context) {
     //ritrovano il testo immesso nei textfield
-
-
-    localcontext=context;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      drawer: globalDrawer,
+      drawer: buildDrawer(context),
       appBar: GlobalAppBar,
       body: Center(
         child: FractionallySizedBox(

@@ -67,7 +67,7 @@ class UtenteControl{
       User.setId=int.parse(id!);
       User.setPrimoAccesso = primoAccesso!;
       User.setNome=name;
-      selectDrawer();
+      //selectDrawer();
       ThreadControl TD = ThreadControl();
       Isolate.spawn(TD.NotificationCheck,User);  //Non sono sicuro vada bene qui
       if(primoAccesso == 'true')

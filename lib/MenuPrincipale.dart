@@ -19,12 +19,11 @@ class MenuPrincipaleState extends State<MenuPrincipale>{
 
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
-    localcontext=context;
     return WillPopScope(onWillPop: () async => false,
       child:
       Scaffold(
         appBar:GlobalAppBar,
-        drawer: globalDrawer,
+        drawer: buildDrawer(context),
         body:  Center(
             child:
             Row(

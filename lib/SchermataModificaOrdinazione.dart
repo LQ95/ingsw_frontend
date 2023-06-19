@@ -15,7 +15,7 @@ class SchermataModificaOrdinazione extends StatelessWidget{
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: GlobalAppBar,
-        drawer: globalDrawer,
+        drawer: buildDrawer(context),
         body: Center(child:
         Column(
             crossAxisAlignment: CrossAxisAlignment.start,

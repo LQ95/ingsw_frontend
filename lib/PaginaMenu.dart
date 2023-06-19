@@ -18,10 +18,9 @@ class PaginaMenuState extends State<PaginaMenu> {
 
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
-    localcontext=context;
     return Scaffold(
       appBar:GlobalAppBar,
-      drawer: globalDrawer,
+      drawer: buildDrawer(context),
       body:  Center(
           child:
           Column(

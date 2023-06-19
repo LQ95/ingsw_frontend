@@ -17,9 +17,10 @@ class SchermataScriviMessaggi extends StatefulWidget{
 class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
   final controller1 = TextEditingController();
   Widget build(BuildContext context) {
+    context;
     return Scaffold(
       appBar:GlobalAppBar,
-      drawer: globalDrawer,
+      drawer: buildDrawer(context),
       body:  Center(
           child:
           Column(
@@ -67,7 +68,7 @@ class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
 
 
   void showAlertConferma() {
-    QuickAlert.show(context: localcontext,
+    QuickAlert.show(context: context,
       type: QuickAlertType.confirm,
       text: "Sei sicuro di voler inviare questo messaggio?",
       title: "Conferma",
@@ -80,7 +81,7 @@ class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
       },
-      onCancelBtnTap: () => Navigator.pop(localcontext),
+      onCancelBtnTap: () => Navigator.pop(context),
     );
   }
 }
