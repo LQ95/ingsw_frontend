@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../GlobImport.dart';
 import '../entity/Utente.dart';
@@ -74,6 +77,14 @@ class ThreadControl{
 
     return localList;
 
+  }
+
+  void showAlertNuoviMess(BuildContext context) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.info,
+        text: "Nuovi messaggi",
+        title: "Attenzione"
+    );
   }
 
 }
