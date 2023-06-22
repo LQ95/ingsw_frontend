@@ -64,18 +64,32 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                IconButton(
+                                Container(
+                                  width: 30,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    color: Colors.redAccent,
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  child: IconButton(
                                     onPressed: () {
                                       showOverlay(
                                         idPietanza: listaPietanze?[index]['id'],
                                         titolo: listaPietanze?[index]['name'],
                                         descrizione: listaPietanze?[index]['descrizione'],
                                         allergeni: listaPietanze?[index]['allergeni'],
-                                        costo: listaPietanze?[index]['costo']
+                                        costo: listaPietanze?[index]['costo'],
                                       );
                                     },
                                     icon: const Icon(Icons.create_outlined),
+                                    padding: EdgeInsets.zero,
+                                  ),
                                 ),
+
                                 SizedBox(
                                   width: width * 0.45,
                                   child: Text(
@@ -91,13 +105,26 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                                   ),
                                 ),
 
-                                IconButton(
-                                  onPressed: () {
-                                    showAlertConferma(listaPietanze?[index]['id']);
-                                  },
-                                  icon: const Icon(Icons.delete_outlined),
-                                  color: Colors.redAccent,
+                                Container(
+                                  width: 30,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    color: Colors.redAccent,
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      showAlertConferma(listaPietanze?[index]['id']);
+                                    },
+                                    icon: const Icon(Icons.delete_outline),
+                                    padding: EdgeInsets.zero,
+                                  ),
                                 ),
+
                               ],
                             ),
                             Row(

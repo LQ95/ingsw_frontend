@@ -21,4 +21,19 @@ class CategoriaControl {
     }
 
   }
+
+  Future<String> deleteCategoriaFromDB(int id) async {   //Work in Progres
+    var apiUrl = Uri.http(baseUrl,
+        '/api/v1/categoria/delete/$id');
+    var response = await http.delete(apiUrl);
+    if (response.statusCode == 200) {
+      return "SUCCESSO";
+    }
+    else {
+      return "FALLIMENTO";
+    }
+
+  }
+
+
 }

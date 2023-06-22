@@ -57,7 +57,7 @@ ListTile Logout(BuildContext context) {
   return ListTile(
     title: const Text("Logout"),
     onTap: () {
-      showAlertConferma(context);
+      showAlertConfermaLogout(context);
     },
     trailing: const Icon(Icons.logout),
   );
@@ -117,7 +117,7 @@ Drawer buildDrawer(BuildContext context) {
   }
 }
 
-void showAlertConferma(BuildContext context) {
+void showAlertConfermaLogout(BuildContext context) {
   QuickAlert.show(context: context,
     type: QuickAlertType.confirm,
     text: "",
