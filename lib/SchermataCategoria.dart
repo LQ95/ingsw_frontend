@@ -28,19 +28,22 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
     double height = MediaQuery.of(context).size.height;
     generaWidgetPietanze() async{
 
-      PietanzeControl db = PietanzeControl();
-      List<dynamic>? listaPietanze = await  db.getAllPietanzeFromDB();
+      CategoriaControl db = CategoriaControl();
+      List<dynamic>? listaPietanze = await  db.getPietanzeFromCategoria(widget.idCategoria);
 
       listaPietanze = listaPietanze?.reversed.toList();
       if (listaPietanze != null) {
         return Wrap(
           direction: Axis.vertical,
-          children: List.generate(listaPietanze.length, (index) =>
-              Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 16),
-                child: SizedBox(height: 300,
-                    width: width * 0.7,
-                    child: DecoratedBox(
+          children: List.generate(listaPietanze.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 16, bottom: 16),
+              child: SizedBox(
+                height: 300,
+                width: width * 0.7,
+                child: Stack(
+                  children: [
+                    DecoratedBox(
                       decoration: const BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -48,10 +51,9 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
                             spreadRadius: 5,
                             color: Color(0xAA110505),
                             offset: Offset(-8, 8),
-                          )
+                          ),
                         ],
                         color: Color(0xFF728514),
-                        //border: Border.all(width: 0),
                         borderRadius: BorderRadius.all(Radius.circular(25)),
                       ),
                       child: Padding(
@@ -69,7 +71,7 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black87,
                                   ),
-                                  textAlign: TextAlign.center, // Aggiungi questa linea per centrare il testo orizzontalmente
+                                  textAlign: TextAlign.center,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -78,37 +80,70 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text("Descrizione: " + listaPietanze?[index]['descrizione'], style: const TextStyle(
-                                    color: Colors.black87),
+                                Text(
+                                  "Descrizione: " + listaPietanze?[index]['descrizione'],
+                                  style: const TextStyle(color: Colors.black87),
                                   maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text("Allergeni: " + listaPietanze?[index]['allergeni'], style: const TextStyle(
-                                    color: Colors.black87),
+                                Text(
+                                  "Allergeni: " + listaPietanze?[index]['allergeni'],
+                                  style: const TextStyle(color: Colors.black87),
                                   maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text(listaPietanze![index]['costo'].toString() + "€", style: const TextStyle(
-                                    color: Colors.black87),
+                                Text(
+                                  listaPietanze![index]['costo'].toString() + "€",
+                                  style: const TextStyle(color: Colors.black87),
                                   maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                           ],
                         ),
                       ),
-                    )
+                    ),
+                    Positioned(
+                      top: 14,
+                      right: 12,
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.redAccent,
+                          borderRadius: BorderRadius.circular(5.0),
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 2.0,
+                          ),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            showAlertConferma(listaPietanze?[index]['id']);
+                          },
+                          icon: const Icon(Icons.delete_outline),
+                          padding: EdgeInsets.zero,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),),
+              ),
+            );
+          }),
         );
+
       }
       else {
         return const Text("");
@@ -190,4 +225,45 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
       ),
     );
   }
+
+  void showAlertConferma(int idPietanza) {
+    QuickAlert.show(context: context,
+      type: QuickAlertType.confirm,
+      text: "",
+      title: "Sei sicuro di voler rimuovere questo elemento dalla categoria?",
+      confirmBtnText: "Si",
+      cancelBtnText: "No",
+      onConfirmBtnTap: () async {
+        CategoriaControl db = CategoriaControl();
+        Navigator.pop(context);
+        if(await db.deletePietanzaFromDB(widget.idCategoria, idPietanza) == "SUCCESSO") {
+          setState((){});
+          showAlertSuccesso("La pietanza è stata rimossa correttamente");
+        }
+        else {
+          showAlertErrore("Non siamo riusciti ad rimuovere la pietanza, per favore riprova più tardi...");
+        }
+      },
+      onCancelBtnTap: () => Navigator.pop(context),
+    );
+  }
+
+  void showAlertErrore(String errore) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.error,
+        text: errore,
+        title: "Attenzione!"
+    );
+  }
+
+  void showAlertSuccesso(String testo) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.success,
+        text: testo,
+        title: "Successo!",
+        onConfirmBtnTap: () {Navigator.pop(context);}
+    );
+  }
+
+
 }
