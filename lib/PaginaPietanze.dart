@@ -323,7 +323,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                       controller: controllerTitolo,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Titolo piatto:',
+                        labelText: 'Nome Categoria:',
                       ),
                     ),),)
                   ]
