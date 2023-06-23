@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:quickalert/models/quickalert_type.dart';
@@ -11,6 +12,7 @@ class ThreadControl{
 
   @pragma('vm:entry-point')
   Future<void> NotificationCheck(Utente user) async { //TODO capire come killare sto thread al logout
+    final communicationPort=ReceivePort();
     Map<String, dynamic> localList=Map<String, dynamic>();
     Map<String, dynamic> newList=Map<String, dynamic>();
     bool popupWasFlashed=false;

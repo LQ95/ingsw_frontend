@@ -1,14 +1,17 @@
 import 'dart:collection';
+import 'package:async/async.dart';
+import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/SchermataFunzioniAmministratore.dart';
 import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'entity/Utente.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:ingsw_frontend/SchermataMessaggi.dart';
+final port= ReceivePort();
+final outputFromIsolate= StreamQueue<dynamic>(port);
+var sendPort; //inizializzato propriamente nel punto in cui è spawnato l'isolate.
+const String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
 
-const String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
-
-Map<String, dynamic> globalUnreadMessages= HashMap();
 
 // ListTile funzioniAdmin=ListTile(
 //   title:  const Text("Funzioni Admin"),
