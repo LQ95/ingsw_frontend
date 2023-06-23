@@ -106,7 +106,12 @@ class PaginaCategorieState extends State<PaginaCategorie> {
                       ),
                       child: IconButton(
                         onPressed: () {
-                          showAlertConferma(listaCategorie?[index]['id']);
+                          Utente utente = Utente();
+                          if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
+                              showAlertConferma(listaCategorie?[index]['id']);
+                          } else {
+                            showAlertErrore("Non hai i permessi necessari per eseguire quest'operazione");
+                          }
                         },
                         icon: const Icon(
                           Icons.delete_outline,
@@ -145,6 +150,10 @@ class PaginaCategorieState extends State<PaginaCategorie> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
+                            if(overlayAperto){
+                              overlayAperto = false;
+                              hideOverlay();
+                            }
                             Navigator.of(context).pop();
                           },
                           style: ElevatedButton.styleFrom(
@@ -166,8 +175,8 @@ class PaginaCategorieState extends State<PaginaCategorie> {
                           Utente utente = Utente();
                           if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
                             if(overlayAperto == false){
-                              overlayAperto == true;
-                              showOverlay();
+                              overlayAperto = true;
+                              WidgetsBinding.instance!.addPostFrameCallback((timeStamp) => showOverlay());
                             }
                           } else {
                             showAlertErrore("Non hai i permessi necessari per eseguire quest'operazione");
@@ -265,96 +274,101 @@ class PaginaCategorieState extends State<PaginaCategorie> {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
 
-    entry = OverlayEntry(builder: (context) => Positioned(
+    entry = OverlayEntry(
+      builder: (context) => Positioned(
         width: size.width,
         height: size.height,
-        child: buildOverlay()
-    ),
+        child: buildOverlay(),
+      ),
     );
 
     overlay.insert(entry!);
   }
 
-  Widget buildOverlay({int? idPietanza}) {
-
+  Widget buildOverlay() {
     return FractionallySizedBox(
-      widthFactor: 0.5,
-      heightFactor: 0.5,
+      widthFactor: 0.7,
+      heightFactor: 0.7,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: DecoratedBox(
-          decoration: const BoxDecoration( boxShadow: [
-            BoxShadow(
-              blurRadius: 7,
-              spreadRadius: 5,
-              color: Color(0xAA110505),
-              offset: Offset(-8, 8),
-            )
-          ],
+          decoration: const BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 7,
+                spreadRadius: 5,
+                color: Color(0xAA110505),
+                offset: Offset(-8, 8),
+              ),
+            ],
             color: Color(0xFFD9D9D9),
-            //border: Border.all(width: 0),
             borderRadius: BorderRadius.all(Radius.circular(25)),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Expanded(child:
-                  Padding(
-                    padding: const EdgeInsets.only(left: 64, right: 64),
-                    child: TextField(
-                      controller: controllerTitolo,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Titolo piatto:',
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 64, right: 64),
+                      child: TextField(
+                        controller: controllerTitolo,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Titolo piatto:',
+                        ),
                       ),
-                    ),),)
-                  ]
+                    ),
+                  ),
+                ],
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 16),
-                    child: ElevatedButton(onPressed: () async {
-                      if(controllerTitolo.text != "") {
-                        CategoriaControl db = CategoriaControl();
-                        String creazioneAvvenutaConSuccesso = await db.sendCategoriaToDb(
-                            controllerTitolo.text);
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (controllerTitolo.text.isNotEmpty) {
+                          CategoriaControl db = CategoriaControl();
+                          String creazioneAvvenutaConSuccesso =
+                          await db.sendCategoriaToDb(controllerTitolo.text);
 
-                        if(creazioneAvvenutaConSuccesso == "SUCCESSO"){
-                          showAlertSuccesso(
-                              "Eccellente, il piatto è stato inserito con successo!");
-                          setState(() {});
-                          hideOverlay();
-                        }else
-                        if (creazioneAvvenutaConSuccesso == "FALLIMENTO") {
-                          showAlertErrore("Ops, riprova...");
-                          hideOverlay();
+                          if (creazioneAvvenutaConSuccesso == "SUCCESSO") {
+                            showAlertSuccesso(
+                              "Eccellente, il piatto è stato inserito con successo!",
+                            );
+                            setState(() {});
+                            hideOverlay();
+                          } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO") {
+                            showAlertErrore("Ops, riprova...");
+                            hideOverlay();
+                          } else {
+                            showAlertErrore(
+                              "Si è verificato un errore inaspettato, per favore riprovare...",
+                            );
+                            hideOverlay();
+                          }
                         } else {
-                          showAlertErrore(
-                              "Si è verificato un errore inaspettato, per favore riprovare...");
                           hideOverlay();
+                          showAlertErrore(
+                            "Attenzione, i campi non sono stati compilati correttamente!",
+                          );
                         }
-                      }
-                      else {
-                        hideOverlay();
-                        showAlertErrore(
-                            "Attenzione, i campi non sono stati compilati correttamente!");
-                      }
-                    },
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF66420F),
                       ),
-                      child: const Text("Conferma", style: TextStyle(
-                          color: Colors.white70),),
+                      child: const Text(
+                        "Conferma",
+                        style: TextStyle(color: Colors.white70),
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
-
             ],
           ),
         ),
@@ -368,5 +382,6 @@ class PaginaCategorieState extends State<PaginaCategorie> {
     entry = null;
     overlayAperto = false;
   }
+
 
 }

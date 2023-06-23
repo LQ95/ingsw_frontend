@@ -195,7 +195,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF66420F),
                           ),
-                          child: const Text("Torna Indietro", style: TextStyle(
+                          child: const Text("Indietro", style: TextStyle(
                               color: Colors.white70),),
                         ),
                         ElevatedButton(onPressed: () {

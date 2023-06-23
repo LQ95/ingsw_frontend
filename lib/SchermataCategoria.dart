@@ -130,7 +130,12 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
                         ),
                         child: IconButton(
                           onPressed: () {
-                            showAlertConferma(listaPietanze?[index]['id']);
+                            Utente utente = Utente();
+                            if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
+                              showAlertConferma(listaPietanze?[index]['id']);
+                            } else {
+                              showAlertErrore("Non hai i permessi necessari per eseguire quest'operazione");
+                            }
                           },
                           icon: const Icon(Icons.delete_outline),
                           padding: EdgeInsets.zero,
