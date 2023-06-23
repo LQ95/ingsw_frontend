@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ingsw_frontend/SchermataCategoria.dart';
 import 'package:ingsw_frontend/SchermataVisualizzaConto.dart';
 import 'package:ingsw_frontend/control/CategoriaControl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -52,7 +53,10 @@ class PaginaCategorieState extends State<PaginaCategorie> {
                         borderRadius: BorderRadius.all(Radius.circular(25)),
                       ),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataCategoria(
+                              nomeCategoria: listaCategorie![index]['nome'], idCategoria: listaCategorie![index]['id'])));
+                        },
                         style: ElevatedButton.styleFrom(
                           elevation: 7,
                           backgroundColor: const Color(0xFFC89117),
