@@ -18,6 +18,11 @@ class PaginaCategorie extends StatefulWidget{
 }
 
 class PaginaCategorieState extends State<PaginaCategorie> {
+  OverlayEntry? entry;
+  bool overlayAperto = false;
+  final controllerTitolo = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -122,87 +127,93 @@ class PaginaCategorieState extends State<PaginaCategorie> {
 
 
 
-    return Scaffold(
-      appBar: GlobalAppBar,
-      drawer: buildDrawer(context),
-      body: Center(
-          child:
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 18, top: 9, right: 18),
-                  child:
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF66420F),
+    return GestureDetector(
+      onTap: hideOverlay,
+      child: Scaffold(
+        appBar: GlobalAppBar,
+        drawer: buildDrawer(context),
+        body: Center(
+            child:
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18, top: 9, right: 18),
+                    child:
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF66420F),
+                          ),
+                          child: const Text("Indietro", style: TextStyle(
+                              color: Colors.white70),),
                         ),
-                        child: const Text("Indietro", style: TextStyle(
-                            color: Colors.white70),),
-                      ),
-                      const Center(
-                        child: Text(
-                          'Categorie',
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 32,
+                        const Center(
+                          child: Text(
+                            'Categorie',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontSize: 32,
+                            ),
                           ),
                         ),
-                      ),
-                      ElevatedButton(onPressed: () async {
-                        Utente utente = Utente();
-                        if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
-
-                        } else {
-                          showAlertErrore("Non hai i permessi necessari per eseguire quest'operazione");
-                        }
-                      },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFD9D9D9),
+                        ElevatedButton(onPressed: () async {
+                          Utente utente = Utente();
+                          if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
+                            if(overlayAperto == false){
+                              overlayAperto == true;
+                              showOverlay();
+                            }
+                          } else {
+                            showAlertErrore("Non hai i permessi necessari per eseguire quest'operazione");
+                          }
+                        },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFD9D9D9),
+                          ),
+                          child: const Text("Aggiungi", style: TextStyle(
+                              color: Colors.black87),),
                         ),
-                        child: const Text("Aggiungi", style: TextStyle(
-                            color: Colors.black87),),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 32),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: height*0.7,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            FutureBuilder(
-                              future: generaWidgetCategorie(),
-                              builder: (context, snapshot){
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return const CircularProgressIndicator();
-                                }
-                                if (snapshot.hasError){
-                                  return Text(snapshot.error.toString());
-                                } else {
-                                  return snapshot.data!;
-                                }
-                              },
-                            ),
-                          ],
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 32),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: height*0.7,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              FutureBuilder(
+                                future: generaWidgetCategorie(),
+                                builder: (context, snapshot){
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return const CircularProgressIndicator();
+                                  }
+                                  if (snapshot.hasError){
+                                    return Text(snapshot.error.toString());
+                                  } else {
+                                    return snapshot.data!;
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ]
-          )
+                ]
+            )
+        ),
       ),
     );
   }
@@ -244,6 +255,118 @@ class PaginaCategorieState extends State<PaginaCategorie> {
         title: "Successo!",
         onConfirmBtnTap: () {Navigator.pop(context);}
     );
+  }
+
+
+  //Funzioni overlay
+
+  void showOverlay() {
+    final overlay = Overlay.of(context)!;
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    final size = renderBox.size;
+
+    entry = OverlayEntry(builder: (context) => Positioned(
+        width: size.width,
+        height: size.height,
+        child: buildOverlay()
+    ),
+    );
+
+    overlay.insert(entry!);
+  }
+
+  Widget buildOverlay({int? idPietanza}) {
+
+    return FractionallySizedBox(
+      widthFactor: 0.5,
+      heightFactor: 0.5,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: DecoratedBox(
+          decoration: const BoxDecoration( boxShadow: [
+            BoxShadow(
+              blurRadius: 7,
+              spreadRadius: 5,
+              color: Color(0xAA110505),
+              offset: Offset(-8, 8),
+            )
+          ],
+            color: Color(0xFFD9D9D9),
+            //border: Border.all(width: 0),
+            borderRadius: BorderRadius.all(Radius.circular(25)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Expanded(child:
+                  Padding(
+                    padding: const EdgeInsets.only(left: 64, right: 64),
+                    child: TextField(
+                      controller: controllerTitolo,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Titolo piatto:',
+                      ),
+                    ),),)
+                  ]
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: ElevatedButton(onPressed: () async {
+                      if(controllerTitolo.text != "") {
+                        CategoriaControl db = CategoriaControl();
+                        String creazioneAvvenutaConSuccesso = await db.sendCategoriaToDb(
+                            controllerTitolo.text);
+
+                        if(creazioneAvvenutaConSuccesso == "SUCCESSO"){
+                          showAlertSuccesso(
+                              "Eccellente, il piatto è stato inserito con successo!");
+                          setState(() {});
+                          hideOverlay();
+                        }else
+                        if (creazioneAvvenutaConSuccesso == "FALLIMENTO") {
+                          showAlertErrore("Ops, riprova...");
+                          hideOverlay();
+                        } else {
+                          showAlertErrore(
+                              "Si è verificato un errore inaspettato, per favore riprovare...");
+                          hideOverlay();
+                        }
+                      }
+                      else {
+                        hideOverlay();
+                        showAlertErrore(
+                            "Attenzione, i campi non sono stati compilati correttamente!");
+                      }
+                    },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF66420F),
+                      ),
+                      child: const Text("Conferma", style: TextStyle(
+                          color: Colors.white70),),
+                    ),
+                  )
+                ],
+              ),
+
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void hideOverlay() {
+    controllerTitolo.text = "";
+    entry?.remove();
+    entry = null;
+    overlayAperto = false;
   }
 
 }

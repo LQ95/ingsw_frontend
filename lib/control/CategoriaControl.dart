@@ -84,6 +84,28 @@ class CategoriaControl {
     }
   }
 
+  Future<String> sendCategoriaToDb(String nome) async {
+    var apiUrl = Uri.http('localhost:8080', '/api/v1/categoria');
+
+    var response = await http.post(
+      apiUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'nome': nome,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return "SUCCESSO";
+    } else if (response.statusCode == 500) {
+      return "FALLIMENTO";
+    } else {
+      return "ERRORE INASPETTATO";
+    }
+  }
+
 
 
 }

@@ -99,7 +99,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black87,
                                     ),
-                                    textAlign: TextAlign.center, // Aggiungi questa linea per centrare il testo orizzontalmente
+                                    textAlign: TextAlign.center,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -403,9 +403,9 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                           }
                         }
                         else {
+                          hideOverlay();
                           showAlertErrore(
                               "Attenzione, i campi non sono stati compilati correttamente!");
-                          Navigator.pop(context);
 
                         }
                       } else {
@@ -460,7 +460,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
     QuickAlert.show(context: context,
         type: QuickAlertType.error,
         text: errore,
-        title: "Qualcosa è andato storto"
+        title: "Attenzione"
     );
   }
 
