@@ -10,7 +10,7 @@ import 'package:ingsw_frontend/SchermataMessaggi.dart';
 final port= ReceivePort();
 final outputFromIsolate= StreamQueue<dynamic>(port);
 var sendPort; //inizializzato propriamente nel punto in cui è spawnato l'isolate.
-const String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
+const String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
 
 
 // ListTile funzioniAdmin=ListTile(
