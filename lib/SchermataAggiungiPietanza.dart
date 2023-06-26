@@ -30,9 +30,13 @@ class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
     generaWidgetPietanze() async{
 
       PietanzeControl db = PietanzeControl();
+      CategoriaControl dbCat = CategoriaControl();
       List<dynamic>? listaPietanze = await  db.getAllPietanzeFromDB();
-
+      List<dynamic>? listaGiaPresenti = await  dbCat.getPietanzeFromCategoria(widget.catId);
+      print(listaGiaPresenti);
       listaPietanze = listaPietanze?.reversed.toList();
+      listaPietanze?.removeWhere((pietanzeElement) => isPietanzaPresent(pietanzeElement,listaGiaPresenti)
+      );
       if (listaPietanze != null) {
         return Wrap(
           direction: Axis.vertical,
@@ -233,6 +237,18 @@ class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
         title: "Successo!",
         onConfirmBtnTap: () {Navigator.pop(context);}
     );
+  }
+
+  static bool isPietanzaPresent(pietanzeElement, List? listaGiaPresenti) {
+    int id=pietanzeElement['id'];
+    int index;
+    for(index = 0; index<listaGiaPresenti!.length;index++)
+      {
+       if(listaGiaPresenti[index]['id'] == id ) {
+         return true;
+       }
+      }
+      return false;
   }
 
 
