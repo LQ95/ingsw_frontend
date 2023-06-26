@@ -235,7 +235,7 @@ class PaginaCategorieState extends State<PaginaCategorie> {
     );
   }
 
-  void showAlertConferma(int idPietanza) {
+  void showAlertConferma(int idCategoria) {
     QuickAlert.show(context: context,
       type: QuickAlertType.confirm,
       text: "",
@@ -245,7 +245,7 @@ class PaginaCategorieState extends State<PaginaCategorie> {
       onConfirmBtnTap: () async {
         CategoriaControl db = CategoriaControl();
         Navigator.pop(context);
-        if(await db.deleteCategoriaFromDB(idPietanza) == "SUCCESSO") {
+        if(await db.deleteCategoriaFromDB(idCategoria) == "SUCCESSO") {
           setState((){});
           showAlertSuccesso("La categoria è stata eliminata correttamente");
         }
@@ -312,12 +312,12 @@ class PaginaCategorieState extends State<PaginaCategorie> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 64, right: 64),
+                      padding: const EdgeInsets.all(64),
                       child: TextField(
                         controller: controllerTitolo,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Titolo piatto:',
+                          labelText: 'Nome Categoria:',
                         ),
                       ),
                     ),
@@ -333,8 +333,7 @@ class PaginaCategorieState extends State<PaginaCategorie> {
                       onPressed: () async {
                         if (controllerTitolo.text.isNotEmpty) {
                           CategoriaControl db = CategoriaControl();
-                          String creazioneAvvenutaConSuccesso =
-                          await db.sendCategoriaToDb(controllerTitolo.text);
+                          String creazioneAvvenutaConSuccesso = await db.sendCategoriaToDb(controllerTitolo.text);
 
                           if (creazioneAvvenutaConSuccesso == "SUCCESSO") {
                             showAlertSuccesso(
