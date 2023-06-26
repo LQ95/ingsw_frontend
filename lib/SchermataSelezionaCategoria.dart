@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'GlobImport.dart';
 
-class SchermataModificaOrdinazione extends StatelessWidget{
+class SchermataSelezionaCategoria extends StatelessWidget{
   final String idTavolo;
 
-  const SchermataModificaOrdinazione({super.key, required this.idTavolo});
+  const SchermataSelezionaCategoria({super.key, required this.idTavolo});
 
 
   @override
@@ -20,8 +19,8 @@ class SchermataModificaOrdinazione extends StatelessWidget{
         Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-        Padding(
-        padding: const EdgeInsets.only(left: 18, top: 9, right: 18),
+        const Padding(
+        padding: EdgeInsets.only(left: 18, top: 9, right: 18),
           child:
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -30,8 +29,8 @@ class SchermataModificaOrdinazione extends StatelessWidget{
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Seleziona pietanze che desideri aggiungere al tavolo n° ${idTavolo}",
-                    style: const TextStyle(
+                    "Seleziona categoria",
+                    style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 32,
                     ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'GlobImport.dart';
-import 'SchermataModificaOrdinazione.dart';
+import 'SchermataSelezionaCategoria.dart';
 
 class SchermataStoricoOrdinazioni extends StatefulWidget{
   final String title="SchermataStoricoOrdinazioni";
@@ -119,7 +119,7 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
                           // Azione da eseguire quando viene premuto il FAB
                           Navigator.push(
                           context,
-                                  MaterialPageRoute(builder: (context) => SchermataModificaOrdinazione(idTavolo: idTavolo)
+                                  MaterialPageRoute(builder: (context) => SchermataSelezionaCategoria(idTavolo: idTavolo)
                                   )
                                           );
                             },
