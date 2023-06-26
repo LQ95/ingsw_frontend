@@ -83,7 +83,14 @@ class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                
+                                ElevatedButton(
+                                    onPressed: () => showAlertConferma(listaPietanze?[index]['id'],catId),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFF66420F),
+                                  ),
+                                  child: const Text("Aggiungi", style: TextStyle(
+                                      color: Colors.white70),),
+                                )
 
                               ],
                             ),

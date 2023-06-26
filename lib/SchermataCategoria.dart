@@ -195,10 +195,10 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) =>  SchermataAggiungiPietanza(catId:idCategoria)));
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFD9D9D9),
+                          backgroundColor: const Color(0xFF66420F),
                         ),
                         child: const Text("Aggiungi", style: TextStyle(
-                            color: Colors.black87),),
+                            color: Colors.white70),),
                       ),
                     ],
                   ),
