@@ -4,6 +4,7 @@ import 'package:ingsw_frontend/control/CategoriaControl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'GlobImport.dart';
+import 'SchermataAggiungiPietanza.dart';
 import 'SchermataStoricoOrdinazioni.dart';
 import 'control/PietanzeControl.dart';
 import 'entity/Utente.dart';
@@ -186,7 +187,10 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
                           ),
                         ),
                       ),
-                      ElevatedButton(onPressed: () async {},
+                      ElevatedButton(onPressed: () async
+                      {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataAggiungiPietanza()));
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFD9D9D9),
                         ),
