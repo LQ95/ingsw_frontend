@@ -37,16 +37,15 @@ class CategoriaControl {
 
   Future<bool> addPietanzaToDB(int catId,int pietanzaId) async{
     var apiUrl = Uri.http(baseUrl,
-        '/api/v1/categoria/addpietanza'); //URL del punto di contatto della API
+        '/api/v1/categoria/addpietanza',{
+          'catId':catId.toString(),
+          'pietanzaId':pietanzaId.toString(),
+        }); //URL del punto di contatto della API
     var response = await http.put(apiUrl,
         //questa è la response,in cui è definita anche la request, direttamente
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'catId':catId,
-          'pietanzaId':pietanzaId,
-        }));
+        },);
     print('Response status: ${response.statusCode}');
     if (response.statusCode == 200) {
       return true;

@@ -217,7 +217,7 @@ class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
         Navigator.pop(context);
         if(await db.addPietanzaToDB(idCategoria, idPietanza) == true) {
           setState((){});
-          showAlertSuccesso("La pietanza è stata rimossa correttamente");
+          showAlertSuccesso("La pietanza è stata aggiunta correttamente");
         }
         else {
           showAlertErrore("Non siamo riusciti ad aggiungere la pietanza, per favore riprova più tardi...");
