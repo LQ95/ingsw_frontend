@@ -1,21 +1,26 @@
 //Schermata per aggiungere pietanze alle categorie
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'GlobImport.dart';
+import 'control/CategoriaControl.dart';
 import 'control/PietanzeControl.dart';
 import 'entity/Utente.dart';
 class SchermataAggiungiPietanza extends StatefulWidget{
   final String title="SchermataAggiungiPietanza";
-
-  const SchermataAggiungiPietanza({super.key});
+  final int catId;
+  const SchermataAggiungiPietanza({super.key, required this.catId});
   @override
-  SchermataAggiungiPietanzaState createState() => SchermataAggiungiPietanzaState();
+  SchermataAggiungiPietanzaState createState() => SchermataAggiungiPietanzaState(catId);
 
 }
 
 class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
+  final int catId;
 
+  SchermataAggiungiPietanzaState(this.catId);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,8 @@ class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
           children: List.generate(listaPietanze.length, (index) =>
               Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 16),
-                child: SizedBox(height: 300,
+                child: SizedBox(
+                    height: 300,
                     width: width * 0.7,
                     child: DecoratedBox(
                       decoration: const BoxDecoration(
@@ -188,7 +194,27 @@ class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
       );
   }
 
-
+  void showAlertConferma(int idPietanza,int idCategoria) {
+    QuickAlert.show(context: context,
+      type: QuickAlertType.confirm,
+      text: "",
+      title: "Sei sicuro di voler aggiungere questo elemento alla categoria?",
+      confirmBtnText: "Si",
+      cancelBtnText: "No",
+      onConfirmBtnTap: () async {
+        CategoriaControl db = CategoriaControl();
+        Navigator.pop(context);
+        if(await db.addPietanzaToDB(idCategoria, idPietanza) == true) {
+          setState((){});
+          showAlertSuccesso("La pietanza è stata rimossa correttamente");
+        }
+        else {
+          showAlertErrore("Non siamo riusciti ad aggiungere la pietanza, per favore riprova più tardi...");
+        }
+      },
+      onCancelBtnTap: () => Navigator.pop(context),
+    );
+  }
 
 
   void showAlertErrore(String errore) {

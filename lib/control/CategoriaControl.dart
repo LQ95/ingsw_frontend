@@ -35,7 +35,7 @@ class CategoriaControl {
 
   }
 
-  void addPietanzaToDB(int catId,int pietanzaId) async{
+  Future<bool> addPietanzaToDB(int catId,int pietanzaId) async{
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/categoria/addpietanza'); //URL del punto di contatto della API
     var response = await http.put(apiUrl,
@@ -48,6 +48,11 @@ class CategoriaControl {
           'pietanzaId':pietanzaId,
         }));
     print('Response status: ${response.statusCode}');
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<String> deletePietanzaFromDB(int catId, int pietanzaId) async {

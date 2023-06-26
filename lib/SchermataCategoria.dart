@@ -16,11 +16,14 @@ class SchermataCategoria extends StatefulWidget{
 
   const SchermataCategoria({required this.nomeCategoria, required this.idCategoria, super.key});
   @override
-  SchermataCategoriaState createState() => SchermataCategoriaState();
+  SchermataCategoriaState createState() => SchermataCategoriaState(idCategoria);
 
 }
 
 class SchermataCategoriaState extends State<SchermataCategoria> {
+  final int idCategoria;
+
+  SchermataCategoriaState(this.idCategoria);
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +192,7 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
                       ),
                       ElevatedButton(onPressed: () async
                       {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataAggiungiPietanza()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  SchermataAggiungiPietanza(catId:idCategoria)));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFD9D9D9),
