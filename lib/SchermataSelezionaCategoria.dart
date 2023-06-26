@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'GlobImport.dart';
+import 'SchermataSelezionaPietanza.dart';
+import 'control/CategoriaControl.dart';
 
 class SchermataSelezionaCategoria extends StatelessWidget{
   final String idTavolo;
@@ -12,6 +14,80 @@ class SchermataSelezionaCategoria extends StatelessWidget{
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
+    generaWidgetCategorie() async {
+      CategoriaControl db = CategoriaControl();
+      List<dynamic>? listaCategorie = await db.getAllCategorieFromDB();
+      if (listaCategorie != null) {
+        return Align(
+          alignment: Alignment.center,
+          child: Wrap(
+            direction: Axis.horizontal,
+            runAlignment: WrapAlignment.center,
+            runSpacing: 24,
+            spacing: 24,
+            children: List.generate(listaCategorie.length, (index) {
+              return Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 16),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 7,
+                            spreadRadius: 5,
+                            color: Color(0xAA110505),
+                            offset: Offset(-4, 4),
+                          )
+                        ],
+                        color: Color(0xFFC89117),
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataSelezionaPietanza(
+                              nomeCategoria: listaCategorie![index]['nome'], idCategoria: listaCategorie![index]['id'])));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          elevation: 7,
+                          backgroundColor: const Color(0xFFC89117),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                            side: BorderSide(
+                              color: Colors.black.withOpacity(0.2),
+                              width: 1,
+                            ),
+                          ),
+                          padding: EdgeInsets.zero,
+                        ),
+                        child: SizedBox(
+                          height: height * 0.15,
+                          width: width * 0.25,
+                          child: Center(
+                            child: Text(
+                              "${listaCategorie![index]['nome']}",
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                ],
+              );
+            }),
+          ),
+        );
+      } else {
+        return const Text("");
+      }
+    }
+
     return Scaffold(
         appBar: GlobalAppBar,
         drawer: buildDrawer(context),
@@ -49,22 +125,22 @@ class SchermataSelezionaCategoria extends StatelessWidget{
                     child: SizedBox(
                       width: width * 0.9,
                       height: height * 0.7,
-                      child: const SingleChildScrollView(
+                      child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            // FutureBuilder(
-                            //   future: generaWidgetTavoli(),
-                            //   builder: (context, snapshot){
-                            //     if (snapshot.connectionState == ConnectionState.waiting) {
-                            //       return const CircularProgressIndicator();
-                            //     }
-                            //     if (snapshot.hasError){
-                            //       return Text(snapshot.error.toString());
-                            //     } else {
-                            //       return snapshot.data!;
-                            //     }
-                            //   },
-                            // ),
+                            FutureBuilder(
+                              future: generaWidgetCategorie(),
+                              builder: (context, snapshot){
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                }
+                                if (snapshot.hasError){
+                                  return Text(snapshot.error.toString());
+                                } else {
+                                  return snapshot.data!;
+                                }
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -100,3 +176,4 @@ class SchermataSelezionaCategoria extends StatelessWidget{
   }
 
 }
+
