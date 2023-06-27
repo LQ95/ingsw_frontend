@@ -6,7 +6,7 @@ import 'SchermataSelezionaCategoria.dart';
 
 class SchermataStoricoOrdinazioni extends StatefulWidget{
   final String title="SchermataStoricoOrdinazioni";
-  final Long idTavolo;
+  final int idTavolo;
 
   const SchermataStoricoOrdinazioni({required this.idTavolo, super.key});
   @override
@@ -15,7 +15,7 @@ class SchermataStoricoOrdinazioni extends StatefulWidget{
 }
 
 class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni> {
-  final Long idTavolo;
+  final int idTavolo;
 
   SchermataStoricoOrdinazioniState(this.idTavolo);
 

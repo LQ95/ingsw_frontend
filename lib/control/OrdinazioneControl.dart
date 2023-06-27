@@ -1,6 +1,6 @@
 class OrdinazioneControl{
-  List<dynamic> getCurrentOrdinazione(Long tavolo){
-
-  }
+  // List<dynamic> getCurrentOrdinazione(Long tavolo){
+  //
+  // }
 
 }

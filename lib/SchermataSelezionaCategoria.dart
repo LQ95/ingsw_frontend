@@ -7,7 +7,7 @@ import 'SchermataSelezionaPietanza.dart';
 import 'control/CategoriaControl.dart';
 
 class SchermataSelezionaCategoria extends StatelessWidget{
-  final Long idTavolo;
+  final int idTavolo;
 
   const SchermataSelezionaCategoria({super.key, required this.idTavolo});
 

@@ -12,7 +12,7 @@ import 'control/CategoriaControl.dart';
 class SchermataSelezionaPietanza extends StatefulWidget{
   final String nomeCategoria;
   final int idCategoria;
-  final Long idTavolo;
+  final int idTavolo;
   const SchermataSelezionaPietanza({Key? key, required this.nomeCategoria, required this.idCategoria, required this.idTavolo,})
       : super(key: key);
 
@@ -22,6 +22,8 @@ class SchermataSelezionaPietanza extends StatefulWidget{
 }
 
 class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> {
+
+  Map<String, int> pietanzeSelezionate = {};
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +43,20 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
           listaPietanze.length,
               (index) {
             contatori.add(0);
+            String nomePietanza = listaPietanze?[index]['name'];
+            pietanzeSelezionate[nomePietanza] = contatori[index];
             return ContatorePietanza(
               pietanza: listaPietanze?[index],
               contatore: contatori[index],
               onDecrement: () {
                 if (contatori[index] > 0) {
                   contatori[index]--;
+                  pietanzeSelezionate[nomePietanza] = contatori[index];
                 }
               },
               onIncrement: () {
                 contatori[index]++;
+                pietanzeSelezionate[nomePietanza] = contatori[index];
               },
             );
           },
@@ -152,6 +158,7 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
       confirmBtnText: "Si",
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
+        print(pietanzeSelezionate);
         Navigator.pop(context);
       },
       onCancelBtnTap: () => Navigator.pop(context),
