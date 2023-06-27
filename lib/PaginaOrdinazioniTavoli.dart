@@ -58,7 +58,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                       if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE"){
                         Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataVisualizzaConto(idTavolo: listaTavoli![index]['id'].toString(),)));
                       } else {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'].toString(),)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'],)));
                       }
                     },
                     style: ElevatedButton.styleFrom(

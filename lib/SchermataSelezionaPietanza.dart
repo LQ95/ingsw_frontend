@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,9 +10,8 @@ import 'control/CategoriaControl.dart';
 class SchermataSelezionaPietanza extends StatelessWidget {
   final String nomeCategoria;
   final int idCategoria;
-
-  const SchermataSelezionaPietanza(
-      {Key? key, required this.nomeCategoria, required this.idCategoria})
+  final Long idTavolo;
+  const SchermataSelezionaPietanza({Key? key, required this.nomeCategoria, required this.idCategoria, required this.idTavolo,})
       : super(key: key);
 
   @override

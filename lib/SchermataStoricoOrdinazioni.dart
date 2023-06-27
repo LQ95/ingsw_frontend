@@ -1,10 +1,12 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'GlobImport.dart';
 import 'SchermataSelezionaCategoria.dart';
 
 class SchermataStoricoOrdinazioni extends StatefulWidget{
   final String title="SchermataStoricoOrdinazioni";
-  final String idTavolo;
+  final Long idTavolo;
 
   const SchermataStoricoOrdinazioni({required this.idTavolo, super.key});
   @override
@@ -13,7 +15,7 @@ class SchermataStoricoOrdinazioni extends StatefulWidget{
 }
 
 class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni> {
-  final String idTavolo;
+  final Long idTavolo;
 
   SchermataStoricoOrdinazioniState(this.idTavolo);
 

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import 'GlobImport.dart';
@@ -5,7 +7,7 @@ import 'SchermataSelezionaPietanza.dart';
 import 'control/CategoriaControl.dart';
 
 class SchermataSelezionaCategoria extends StatelessWidget{
-  final String idTavolo;
+  final Long idTavolo;
 
   const SchermataSelezionaCategoria({super.key, required this.idTavolo});
 
@@ -47,7 +49,7 @@ class SchermataSelezionaCategoria extends StatelessWidget{
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataSelezionaPietanza(
-                              nomeCategoria: listaCategorie![index]['nome'], idCategoria: listaCategorie![index]['id'])));
+                              nomeCategoria: listaCategorie![index]['nome'], idCategoria: listaCategorie![index]['id'],idTavolo: idTavolo,)));
                         },
                         style: ElevatedButton.styleFrom(
                           elevation: 7,
