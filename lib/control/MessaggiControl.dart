@@ -69,7 +69,7 @@ class MessaggiControl{
           'userId':Utente().getId
         }));
 
-    print('Response status: ${response.statusCode}');
+    // print('Response status: ${response.statusCode}');
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
     } else if(response.statusCode.toInt() == 500){
@@ -83,7 +83,7 @@ class MessaggiControl{
   static Future<Map<String, dynamic>> getUnreadMessagesList(Utente user) async {
     Map<String, dynamic> localList=Map<String, dynamic>();
     var response;
-    print("invio userId "+user.getId.toString());
+    // print("invio userId "+user.getId.toString());
     var apiUrl=Uri.http(baseUrl,'api/v1/Messaggio/unread',{'userId':user.getId.toString(),
       'username':user.getNome});
     response= await http.get(apiUrl);
@@ -93,8 +93,8 @@ class MessaggiControl{
       localList= jsonDecode(response.body);
     }
 
-    print("lista messaggi non letti trovati dalla schermata dei messaggi:");
-    print(localList);
+    // print("lista messaggi non letti trovati dalla schermata dei messaggi:");
+    // print(localList);
 
 
     return localList;

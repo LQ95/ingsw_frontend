@@ -92,7 +92,6 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
         return const Text("");
       }
     }
-    print("buildo");
     return Scaffold(
       appBar: GlobalAppBar,
       drawer: buildDrawer(context),

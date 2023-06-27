@@ -102,9 +102,9 @@ class UtenteControl{
           'id':id,
         }));
     Utente().setPrimoAccesso = "false";
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-    print('Response headers: ${response.headers}');
+    // print('Response status: ${response.statusCode}');
+    // print('Response body: ${response.body}');
+    // print('Response headers: ${response.headers}');
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
     } else if(response.statusCode.toInt() == 500){
@@ -121,8 +121,8 @@ class UtenteControl{
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente/init'); //URL del punto di contatto della API,più udsername e pass come parametri
     var response = await http.get(apiUrl);
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    // print('Response status: ${response.statusCode}');
+    // print('Response body: ${response.body}');
     if(response.statusCode.toInt() == 200) {
       return 0; //true
     } else if(response.statusCode.toInt() == 404){

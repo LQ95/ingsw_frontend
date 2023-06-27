@@ -3,16 +3,25 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import 'GlobImport.dart';
 import 'control/CategoriaControl.dart';
 
-class SchermataSelezionaPietanza extends StatelessWidget {
+class SchermataSelezionaPietanza extends StatefulWidget{
   final String nomeCategoria;
   final int idCategoria;
   final Long idTavolo;
   const SchermataSelezionaPietanza({Key? key, required this.nomeCategoria, required this.idCategoria, required this.idTavolo,})
       : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => SchermataSelezionaPietanzaState();
+
+}
+
+class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> {
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +31,7 @@ class SchermataSelezionaPietanza extends StatelessWidget {
     Future<List<Widget>> generaWidgetPietanze() async {
       CategoriaControl dbCat = CategoriaControl();
       List<dynamic>? listaPietanze =
-      await dbCat.getPietanzeFromCategoria(idCategoria);
+      await dbCat.getPietanzeFromCategoria(widget.idCategoria);
       print(listaPietanze);
       listaPietanze = listaPietanze?.reversed.toList();
       if (listaPietanze != null) {
@@ -61,6 +70,7 @@ class SchermataSelezionaPietanza extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 18, top: 9, right: 18),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
                     onPressed: () {
@@ -74,15 +84,23 @@ class SchermataSelezionaPietanza extends StatelessWidget {
                       style: TextStyle(color: Colors.white70),
                     ),
                   ),
-                  const Expanded(
-                    child: Center(
-                      child: Text(
-                        'Scegli quale pietanza aggiungere',
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 32,
-                        ),
-                      ),
+                  const Text(
+                    'Scegli quale pietanza aggiungere',
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                      fontSize: 32,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      showAlertConferma();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF66420F),
+                    ),
+                    child: const Text(
+                      "Conferma",
+                      style: TextStyle(color: Colors.white70),
                     ),
                   ),
                 ],
@@ -124,7 +142,26 @@ class SchermataSelezionaPietanza extends StatelessWidget {
       ),
     );
   }
+
+  void showAlertConferma() async {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.confirm,
+      text: "Sei sicuro di voler confermare l'ordinzaione?",
+      title: "Conferma",
+      confirmBtnText: "Si",
+      cancelBtnText: "No",
+      onConfirmBtnTap: () async {
+        Navigator.pop(context);
+      },
+      onCancelBtnTap: () => Navigator.pop(context),
+    );
+  }
+
 }
+
+
+//CLASSE CONTATORE
 
 class ContatorePietanza extends StatefulWidget {
   final dynamic pietanza;

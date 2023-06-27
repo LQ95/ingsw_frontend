@@ -26,13 +26,13 @@ class ThreadControl{
       if(!popupWasFlashed)
       {
         //TODO la funzione per fare la notifica
-        print("apro il popup");
+        // print("apro il popup");
         popupWasFlashed=true;
       }
       localList.clear();
       localList.addAll(newList);
     }
-    print("thread notifiche finito.è stato effettuato il logout?");
+    // print("thread notifiche finito.è stato effettuato il logout?");
 
   }
 
@@ -40,19 +40,19 @@ class ThreadControl{
     bool newMessages=false;
     int i;
     String key;
-    print("verifico se ci sono messaggi nuovi");
+    // print("verifico se ci sono messaggi nuovi");
     if(globalList.length<=localList.length) {
       for (i = 0; i < globalList.length /
           3; i++) { //divido per 3 perchè ogni messaggio ha 3 campi ma ce ne serve solo 1
         key = "id$i"; //interpolazione, produce una stringa tipo "id0","id1" ecc
         if (localList[key] != globalList[key]) {
-          print("ci sono messaggi nuovi");
+          // print("ci sono messaggi nuovi");
           newMessages = true;
           break;
         }
       }
     } else {
-      print("ci sono messaggi nuovi, causa lunghezza lista");
+      // print("ci sono messaggi nuovi, causa lunghezza lista");
       newMessages=true; //se la lista nuova ha messaggi in più ovviamente è stata aggiornata.
     }
 
@@ -63,7 +63,7 @@ class ThreadControl{
   static Future<Map<String, dynamic>> findUnreadMessages(Utente user) async {
     Map<String, dynamic> localList=Map<String, dynamic>();
     var response;
-    print("invio userId "+user.getId.toString());
+    // print("invio userId "+user.getId.toString());
     var apiUrl=Uri.http(baseUrl,'api/v1/Messaggio/unread',{'userId':user.getId.toString(),
       'username':user.getNome});
     response= await http.get(apiUrl);
@@ -73,8 +73,8 @@ class ThreadControl{
       localList= jsonDecode(response.body);
     }
 
-    print("lista mess non letti su thread:");
-    print(localList);
+    // print("lista mess non letti su thread:");
+    // print(localList);
 
 
     return localList;

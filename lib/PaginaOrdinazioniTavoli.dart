@@ -125,10 +125,10 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
 
                       },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFD9D9D9),
+                          backgroundColor: const Color(0xFF66420F),
                         ),
                         child: const Text("Rimuovi Tavolo", style: TextStyle(
-                            color: Colors.black87),),
+                            color: Colors.white70),),
                       ),
                       const Text(
                         'Ordinazioni',
@@ -148,10 +148,10 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                         }
                       },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFD9D9D9),
+                          backgroundColor: const Color(0xFF66420F),
                         ),
                         child: const Text("Aggiungi Tavolo", style: TextStyle(
-                            color: Colors.black87),),
+                            color: Colors.white70),),
                       ),
                     ],
                   ),
