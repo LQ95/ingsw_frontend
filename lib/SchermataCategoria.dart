@@ -192,7 +192,7 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
                       ),
                       ElevatedButton(onPressed: () async
                       {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  SchermataAggiungiPietanza(catId:idCategoria)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  SchermataAggiungiPietanza(catId:idCategoria))).then((value) => setState(() {}));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF66420F),

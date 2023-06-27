@@ -25,94 +25,166 @@ class SchermataSelezionaPietanza extends StatelessWidget{
       if (listaPietanze != null) {
         return Wrap(
           direction: Axis.vertical,
-          children: List.generate(listaPietanze.length, (index) =>
-              Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 16),
-                child: SizedBox(
-                    height: 300,
-                    width: width * 0.7,
-                    child: DecoratedBox(
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 7,
-                            spreadRadius: 5,
-                            color: Color(0xAA110505),
-                            offset: Offset(-8, 8),
-                          )
-                        ],
-                        color: Color(0xFF728514),
-                        //border: Border.all(width: 0),
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
+          children: List.generate(
+            listaPietanze.length,
+                (index) => Padding(
+              padding: const EdgeInsets.only(top: 16, bottom: 16),
+              child: SizedBox(
+                height: 300,
+                width: width * 0.7,
+                child: DecoratedBox(
+                  decoration: const BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 7,
+                        spreadRadius: 5,
+                        color: Color(0xAA110505),
+                        offset: Offset(-8, 8),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
+                    ],
+                    color: Color(0xFF728514),
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            SizedBox(
+                              width: width * 0.45,
+                              child: Text(
+                                listaPietanze?[index]['name'],
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-
-                                SizedBox(
-                                  width: width * 0.45,
-                                  child: Text(
-                                    listaPietanze?[index]['name'],
-                                    style: const TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
+                                Material(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    side: const BorderSide(color: Colors.black),
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      // Azione pulsante meno
+                                    },
+                                    child: Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFA4A1A1),
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.remove,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
                                     ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                ElevatedButton(
-                                  onPressed: () => {},
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF66420F),
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white70,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(color: Colors.black),
                                   ),
-                                  child: const Text("Placeholder per il contatore", style: TextStyle(
-                                      color: Colors.white70),),
-                                )
-
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("Descrizione: " + listaPietanze?[index]['descrizione'], style: const TextStyle(
-                                    color: Colors.black87),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("Allergeni: " + listaPietanze?[index]['allergeni'], style: const TextStyle(
-                                    color: Colors.black87),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(listaPietanze![index]['costo'].toString() + "€", style: const TextStyle(
-                                    color: Colors.black87),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
+                                  child: const Center(
+                                    child: Text(
+                                      '0', // Valore totale attuale
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Material(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    side: BorderSide(color: Colors.black),
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      // Azione pulsante più
+                                    },
+                                    child: Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFA4A1A1),
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.add,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ],
                         ),
-                      ),
-                    )
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Descrizione: " + listaPietanze?[index]['descrizione'],
+                              style: const TextStyle(color: Colors.black87),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Allergeni: " + listaPietanze?[index]['allergeni'],
+                              style: const TextStyle(color: Colors.black87),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "${listaPietanze![index]['costo']}€",
+                              style: const TextStyle(color: Colors.black87),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),),
+              ),
+            ),
+          ),
         );
+
+
       }
       else {
         return const Text("");
