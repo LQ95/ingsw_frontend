@@ -1,263 +1,289 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'GlobImport.dart';
 import 'control/CategoriaControl.dart';
 
-class SchermataSelezionaPietanza extends StatelessWidget{
+class SchermataSelezionaPietanza extends StatelessWidget {
   final String nomeCategoria;
   final int idCategoria;
 
-  const SchermataSelezionaPietanza({super.key, required this.nomeCategoria, required this.idCategoria});
+  const SchermataSelezionaPietanza(
+      {Key? key, required this.nomeCategoria, required this.idCategoria})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    generaWidgetPietanze() async{
-
-
+    Future<List<Widget>> generaWidgetPietanze() async {
       CategoriaControl dbCat = CategoriaControl();
-      List<dynamic>? listaPietanze = await  dbCat.getPietanzeFromCategoria(idCategoria);
+      List<dynamic>? listaPietanze =
+      await dbCat.getPietanzeFromCategoria(idCategoria);
       print(listaPietanze);
       listaPietanze = listaPietanze?.reversed.toList();
       if (listaPietanze != null) {
-        return Wrap(
-          direction: Axis.vertical,
-          children: List.generate(
-            listaPietanze.length,
-                (index) => Padding(
-              padding: const EdgeInsets.only(top: 16, bottom: 16),
-              child: SizedBox(
-                height: 300,
-                width: width * 0.7,
-                child: DecoratedBox(
-                  decoration: const BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 7,
-                        spreadRadius: 5,
-                        color: Color(0xAA110505),
-                        offset: Offset(-8, 8),
-                      ),
-                    ],
-                    color: Color(0xFF728514),
-                    borderRadius: BorderRadius.all(Radius.circular(25)),
+        List<int> contatori = [];
+
+        return List.generate(
+          listaPietanze.length,
+              (index) {
+            contatori.add(0);
+            return ContatorePietanza(
+              pietanza: listaPietanze?[index],
+              contatore: contatori[index],
+              onDecrement: () {
+                if (contatori[index] > 0) {
+                  contatori[index]--;
+                }
+              },
+              onIncrement: () {
+                contatori[index]++;
+              },
+            );
+          },
+        );
+      } else {
+        return [];
+      }
+    }
+
+    return Scaffold(
+      appBar: GlobalAppBar,
+      drawer: buildDrawer(context),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 18, top: 9, right: 18),
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF66420F),
+                    ),
+                    child: const Text(
+                      "Indietro",
+                      style: TextStyle(color: Colors.white70),
+                    ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
+                  const Expanded(
+                    child: Center(
+                      child: Text(
+                        'Scegli quale pietanza aggiungere',
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 32,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 32),
+                child: Container(
+                  width: double.infinity,
+                  child: SingleChildScrollView(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: width * 0.45,
-                              child: Text(
-                                listaPietanze?[index]['name'],
-                                style: const TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ),
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Material(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    side: const BorderSide(color: Colors.black),
-                                  ),
-                                  child: InkWell(
-                                    onTap: () {
-                                      // Azione pulsante meno
-                                    },
-                                    child: Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFA4A1A1),
-                                        borderRadius: BorderRadius.circular(7),
-                                      ),
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons.remove,
-                                          color: Colors.black87,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white70,
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(color: Colors.black),
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      '0', // Valore totale attuale
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Material(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    side: BorderSide(color: Colors.black),
-                                  ),
-                                  child: InkWell(
-                                    onTap: () {
-                                      // Azione pulsante più
-                                    },
-                                    child: Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFA4A1A1),
-                                        borderRadius: BorderRadius.circular(7),
-                                      ),
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons.add,
-                                          color: Colors.black87,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Descrizione: " + listaPietanze?[index]['descrizione'],
-                              style: const TextStyle(color: Colors.black87),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Allergeni: " + listaPietanze?[index]['allergeni'],
-                              style: const TextStyle(color: Colors.black87),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              "${listaPietanze![index]['costo']}€",
-                              style: const TextStyle(color: Colors.black87),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                        FutureBuilder<List<Widget>>(
+                          future: generaWidgetPietanze(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            }
+                            if (snapshot.hasError) {
+                              return Text(snapshot.error.toString());
+                            }
+                            return Wrap(
+                              direction: Axis.vertical,
+                              children: snapshot.data!,
+                            );
+                          },
                         ),
                       ],
                     ),
                   ),
                 ),
               ),
-            ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ContatorePietanza extends StatefulWidget {
+  final dynamic pietanza;
+  final int contatore;
+  final VoidCallback onDecrement;
+  final VoidCallback onIncrement;
+
+  const ContatorePietanza({
+    Key? key,
+    required this.pietanza,
+    required this.contatore,
+    required this.onDecrement,
+    required this.onIncrement,
+  }) : super(key: key);
+
+  @override
+  _ContatorePietanzaState createState() => _ContatorePietanzaState();
+}
+
+class _ContatorePietanzaState extends State<ContatorePietanza> {
+  int contatore = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    contatore = widget.contatore;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16, bottom: 16),
+      child: SizedBox(
+        height: 300,
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 7,
+                spreadRadius: 5,
+                color: Color(0xAA110505),
+                offset: Offset(-8, 8),
+              ),
+            ],
+            color: Color(0xFF728514),
+            borderRadius: BorderRadius.all(Radius.circular(25)),
           ),
-        );
-
-
-      }
-      else {
-        return const Text("");
-      }
-    }
-
-
-
-    return  Scaffold(
-      appBar: GlobalAppBar,
-      drawer: buildDrawer(context),
-      body: Center(
-          child:
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 18, top: 9, right: 18),
-                  child:
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF66420F),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: Text(
+                        widget.pietanza['name'],
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
                         ),
-                        child: const Text("Indietro", style: TextStyle(
-                            color: Colors.white70),),
-                      ),
-                      const Center(
-                        child: Text(
-                          'Scegli quale pietanza aggiungere',
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 32,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 32),
-                    child: Container(
-                      width: double.infinity,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            FutureBuilder(
-                              future: generaWidgetPietanze(),
-                              builder: (context, snapshot){
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return const CircularProgressIndicator();
-                                }
-                                if (snapshot.hasError){
-                                  return Text(snapshot.error.toString());
-                                } else {
-                                  return snapshot.data!;
-                                }
-                              },
-                            )
-                          ],
-                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
-                )
-              ]
-          )
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            if (contatore > 0) {
+                              setState(() {
+                                contatore--;
+                              });
+                              widget.onDecrement();
+                            }
+                          },
+                          icon: Icon(Icons.remove),
+                          iconSize: 24,
+                          color: Colors.black87,
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints.tightFor(width: 40, height: 40),
+                        ),
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.black),
+                          ),
+                          child: Center(
+                            child: Text(
+                              contatore.toString(),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              contatore++;
+                            });
+                            widget.onIncrement();
+                          },
+                          icon: Icon(Icons.add),
+                          iconSize: 24,
+                          color: Colors.black87,
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints.tightFor(width: 40, height: 40),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Descrizione: " + widget.pietanza['descrizione'],
+                      style: const TextStyle(color: Colors.black87),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Allergeni: " + widget.pietanza['allergeni'],
+                      style: const TextStyle(color: Colors.black87),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      "${widget.pietanza['costo']}€",
+                      style: const TextStyle(color: Colors.black87),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
