@@ -34,7 +34,6 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
       CategoriaControl dbCat = CategoriaControl();
       List<dynamic>? listaPietanze =
       await dbCat.getPietanzeFromCategoria(widget.idCategoria);
-      print(listaPietanze);
       listaPietanze = listaPietanze?.reversed.toList();
       if (listaPietanze != null) {
         List<int> contatori = [];
