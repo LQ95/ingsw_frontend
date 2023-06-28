@@ -35,4 +35,23 @@ class OrdinazioneControl {
       return false;
     }
   }
+
+  Future<String> openNewOrdinazione(Map<String,String> pietanze)
+  async {
+    var apiUrl = Uri.http(baseUrl, "api/v1/ordinazione/opennew");
+    var response = await http.post(apiUrl,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(pietanze)
+    );
+    if (response.statusCode == 200) {
+      return "Successo";
+    }
+    else if (response.statusCode == 400){
+      return "Già presente";
+    }
+    else return "Errore interno";
+
+  }
 }
