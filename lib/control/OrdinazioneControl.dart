@@ -5,13 +5,13 @@ import 'package:http/http.dart' as http;
 
 class OrdinazioneControl {
 
-  Future<List<dynamic>?> getCurrentOrdinazione(int tavolo) async {
+  Future<Map<String, dynamic>?> getCurrentOrdinazione(int tavolo) async {
     var apiUrl = Uri.http(baseUrl, "api/v1/ordinazione/getcurrent", {"tavoloId": tavolo.toString()});
     var response = await http.get(apiUrl);
 
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
-        List<dynamic> ordinazione = jsonDecode(utf8.decode(response.bodyBytes));
+        Map<String, dynamic> ordinazione = jsonDecode(utf8.decode(response.bodyBytes));
         return ordinazione;
       } else {
         return null; // Gestione del caso in cui il corpo della risposta sia vuoto
