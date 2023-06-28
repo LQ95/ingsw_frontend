@@ -36,27 +36,30 @@ class OrdinazioneControl {
     }
   }
 
-  Future<String> openNewOrdinazione(int tavolo)
-  async {
-    var apiUrl = Uri.http(baseUrl, "api/v1/ordinazione/opennew");
+  Future<String> sendOrdinazioneToDb(int tavolo) async{
+
+    var apiUrl = Uri.http(baseUrl,
+        '/api/v1/ordinazione'); //URL del punto di contatto della API
     var response = await http.post(apiUrl,
+        //questa è la response,in cui è definita anche la request, direttamente
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'tavoloId': tavolo.toString()})
-
+          'tavolo': tavolo.toString(),})
     );
 
-    print("RESPONSE CODE: ${response.statusCode}");
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
-    if (response.statusCode == 200) {
-      return "Successo";
+    if(response.statusCode.toInt() == 200) {
+      return "SUCCESSO";
+    } else if(response.statusCode.toInt() == 500){
+      return "FALLIMENTO";
     }
-    else if (response.statusCode == 400){
-      return "Già presente";
+    else {
+      return "ERRORE INASPETTATO";
     }
-    else return "Errore interno";
-
   }
+
 }

@@ -234,12 +234,12 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
       cancelBtnText: "No",
       onConfirmBtnTap: ()  async {
         OrdinazioneControl db = OrdinazioneControl();
-        String successo = await db.openNewOrdinazione(idTavolo);
+        String successo = await db.sendOrdinazioneToDb(idTavolo);
 
-        if(successo == "Successo"){
-          showAlertSuccesso("Ordinazione aperta correttamente");
+        if(successo == "SUCCESSO"){
           Navigator.pop(context);
           Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: idTavolo)));
+          showAlertSuccesso("Ordinazione aperta correttamente");
         }
         else {
           Navigator.pop(context);
@@ -257,7 +257,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
     QuickAlert.show(context: context,
         type: QuickAlertType.success,
         text: errore,
-        title: "Attenzione!"
+        title: "Successo!"
     );
   }
 
