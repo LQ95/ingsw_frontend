@@ -36,14 +36,16 @@ class OrdinazioneControl {
     }
   }
 
-  Future<String> openNewOrdinazione(Map<String,String> pietanze)
+  Future<String> openNewOrdinazione(int tavolo)
   async {
     var apiUrl = Uri.http(baseUrl, "api/v1/ordinazione/opennew");
     var response = await http.post(apiUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(pietanze)
+        body: jsonEncode(<String, String>{
+          'tavoloId': tavolo.toString()})
+
     );
     if (response.statusCode == 200) {
       return "Successo";
