@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/SchermataVisualizzaConto.dart';
+import 'package:ingsw_frontend/control/OrdinazioneControl.dart';
 import 'package:ingsw_frontend/control/TavoloControl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -53,12 +54,19 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                     borderRadius: BorderRadius.all(Radius.circular(25)),
                   ),
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Utente utente = Utente();
                       if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE"){
                         Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataVisualizzaConto(idTavolo: listaTavoli![index]['id'].toString(),)));
                       } else {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'],)));
+                        OrdinazioneControl db = OrdinazioneControl();
+                        List? listaPiatti = await db.getCurrentOrdinazione(listaTavoli![index]['id']);
+                        if(listaPiatti == null){
+                          showAlertConferma(listaTavoli![index]['id']);
+                        }
+                        else {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'], listaPiatti: listaPiatti)));
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -216,4 +224,20 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
         title: "Attenzione!"
     );
   }
+
+  void showAlertConferma(int idTavolo) {
+    QuickAlert.show(context: context,
+      type: QuickAlertType.confirm,
+      text: "Vuoi aprire una nuova ordinazione per questo tavolo?",
+      title: "Nessun'ordinazione presente",
+      confirmBtnText: "Si",
+      cancelBtnText: "No",
+      onConfirmBtnTap: () async {
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: idTavolo)));
+      },
+      onCancelBtnTap: () => Navigator.pop(context),
+    );
+  }
+
 }

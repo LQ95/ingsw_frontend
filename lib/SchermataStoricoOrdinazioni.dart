@@ -4,22 +4,19 @@ import 'package:flutter/material.dart';
 import 'GlobImport.dart';
 import 'SchermataSelezionaCategoria.dart';
 
-class SchermataStoricoOrdinazioni extends StatefulWidget{
-  final String title="SchermataStoricoOrdinazioni";
+class SchermataStoricoOrdinazioni extends StatefulWidget {
+  final String title = "SchermataStoricoOrdinazioni";
   final int idTavolo;
+  final List? listaPiatti;
 
-  const SchermataStoricoOrdinazioni({required this.idTavolo, super.key});
+  SchermataStoricoOrdinazioni({required this.idTavolo, this.listaPiatti});
+
   @override
-  SchermataStoricoOrdinazioniState createState() => SchermataStoricoOrdinazioniState(this.idTavolo);
-
+  SchermataStoricoOrdinazioniState createState() => SchermataStoricoOrdinazioniState();
 }
 
+
 class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni> {
-  final int idTavolo;
-
-  SchermataStoricoOrdinazioniState(this.idTavolo);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +118,7 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
                           // Azione da eseguire quando viene premuto il FAB
                           Navigator.push(
                           context,
-                                  MaterialPageRoute(builder: (context) => SchermataSelezionaCategoria(idTavolo: idTavolo)
+                                  MaterialPageRoute(builder: (context) => SchermataSelezionaCategoria(idTavolo: widget.idTavolo)
                                   )
                                           );
                             },
