@@ -47,6 +47,9 @@ class OrdinazioneControl {
           'tavoloId': tavolo.toString()})
 
     );
+
+    print("RESPONSE CODE: ${response.statusCode}");
+
     if (response.statusCode == 200) {
       return "Successo";
     }

@@ -232,13 +232,32 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
       title: "Nessun'ordinazione presente",
       confirmBtnText: "Si",
       cancelBtnText: "No",
-      onConfirmBtnTap: () async {
+      onConfirmBtnTap: ()  async {
         OrdinazioneControl db = OrdinazioneControl();
-        db.openNewOrdinazione(idTavolo);
-        Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: idTavolo)));
+        String successo = await db.openNewOrdinazione(idTavolo);
+
+        if(successo == "Successo"){
+          showAlertSuccesso("Ordinazione aperta correttamente");
+          Navigator.pop(context);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: idTavolo)));
+        }
+        else {
+          Navigator.pop(context);
+          showAlertErrore("C'è stato un problema nell'aprire l'ordinazione, forse è già stata creata una nuova ordinazione per questo tavolo");
+        }
+
+
+
       },
       onCancelBtnTap: () => Navigator.pop(context),
+    );
+  }
+
+  void showAlertSuccesso(String errore) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.success,
+        text: errore,
+        title: "Attenzione!"
     );
   }
 
