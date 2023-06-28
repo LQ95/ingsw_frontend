@@ -25,7 +25,7 @@ class OrdinazioneControl {
   Future<bool> closeCurrentOrdinazione(int tavolo) async {
     var apiUrl = Uri.http(
         baseUrl, "api/v1/ordinazione/closecurrent", {"tavoloId": tavolo.toString()});
-    var response = await http.get(apiUrl);
+    var response = await http.put(apiUrl);
     List<dynamic> ordinazione;
 
     if (response.statusCode == 200) {
