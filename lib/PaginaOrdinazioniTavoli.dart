@@ -60,12 +60,12 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataVisualizzaConto(idTavolo: listaTavoli![index]['id'].toString(),)));
                       } else {
                         OrdinazioneControl db = OrdinazioneControl();
-                        List? listaPiatti = await db.getCurrentOrdinazione(listaTavoli![index]['id']);
-                        if(listaPiatti == null){
+                        Map<String, dynamic>? ordinazione = await db.getCurrentOrdinazione(listaTavoli![index]['id']);
+                        if(ordinazione == null){
                           showAlertConferma(listaTavoli![index]['id']);
                         }
                         else {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'], listaPiatti: listaPiatti)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'])));
                         }
                       }
                     },
@@ -233,6 +233,8 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
       confirmBtnText: "Si",
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
+        OrdinazioneControl db = OrdinazioneControl();
+        db.openNewOrdinazione(idTavolo);
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: idTavolo)));
       },

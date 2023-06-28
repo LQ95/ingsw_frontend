@@ -1,13 +1,12 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'GlobImport.dart';
 import 'SchermataSelezionaCategoria.dart';
+import 'package:flutter/material.dart';
 
 class SchermataStoricoOrdinazioni extends StatefulWidget {
   final String title = "SchermataStoricoOrdinazioni";
   final int idTavolo;
-  final List? listaPiatti;
+  final List<dynamic>? listaPiatti;
 
   SchermataStoricoOrdinazioni({required this.idTavolo, this.listaPiatti});
 
