@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:ingsw_frontend/control/OrdinazioneControl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -24,8 +25,8 @@ class SchermataSelezionaPietanza extends StatefulWidget{
 
 class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> {
 
-  Map<String, int> pietanzeSelezionate = {};
-  Map<String,double> costi = {};
+  Map<int, int> pietanzeSelezionate = {}; //il primo int è l'id dela pietanza, il secondo è la quantità
+  Map<int,double> costi = {};
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
           listaPietanze.length,
               (index) {
             contatori.add(0);
-            String nomePietanza = listaPietanze?[index]['name'];
+            int nomePietanza = listaPietanze?[index]['id'];
             pietanzeSelezionate[nomePietanza] = contatori[index];
             costi[nomePietanza]=listaPietanze?[index]['costo'];
             return ContatorePietanza(
@@ -163,12 +164,28 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
         print(pietanzeSelezionate);
         print(costi);
         print(widget.idOrdinazione);
+        //sendPietanzaListToDatabase(pietanzeSelezionate,costi,widget.idOrdinazione);
         Navigator.pop(context);
       },
       onCancelBtnTap: () => Navigator.pop(context),
     );
   }
 
+  void sendPietanzaListToDatabase(Map<int, int> pietanzeSelezionate, Map<int, double> costi, int idOrdinazione) {
+  OrdinazioneControl db=OrdinazioneControl();
+    int i=0;
+    int idPietanzaCorrente=0;
+    for (final entry in pietanzeSelezionate.entries){
+      if(entry.value > 0){//se ci sono pi di 0 copie di questo piatto
+        for(i=0;i<entry.value;i++)
+          {
+            idPietanzaCorrente=entry.key;
+            db.addPietanzaToOrdinazione(idOrdinazione,idPietanzaCorrente,costi[entry.key]!);
+          }
+      }
+
+    }
+  }
 }
 
 

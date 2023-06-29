@@ -65,7 +65,7 @@ class OrdinazioneControl {
     }
   }
 
-  Future<String> addPietanzaToOrdinazione(int ordinazioneId, int pietanzaId, Float costo) async {
+  Future<String> addPietanzaToOrdinazione(int ordinazioneId, int pietanzaId, double costo) async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/ordinazione/addpietanza'); //URL del punto di contatto della API
     var response = await http.post(apiUrl,
@@ -76,7 +76,7 @@ class OrdinazioneControl {
         body: jsonEncode(<String, String>{
           'OrdinazId': ordinazioneId.toString(),
           'pietanzaId': pietanzaId.toString(),
-          'costo': costo.toString(),})
+          'costo': costo.toString(),})//bisogna vedere se questo da problemi sul server
     );
 
     print('Response status: ${response.statusCode}');
