@@ -13,7 +13,8 @@ class SchermataSelezionaPietanza extends StatefulWidget{
   final String nomeCategoria;
   final int idCategoria;
   final int idTavolo;
-  const SchermataSelezionaPietanza({Key? key, required this.nomeCategoria, required this.idCategoria, required this.idTavolo,})
+  final int idOrdinazione;
+  const SchermataSelezionaPietanza({Key? key, required this.nomeCategoria, required this.idCategoria, required this.idTavolo, required this.idOrdinazione,})
       : super(key: key);
 
   @override
@@ -24,6 +25,7 @@ class SchermataSelezionaPietanza extends StatefulWidget{
 class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> {
 
   Map<String, int> pietanzeSelezionate = {};
+  Map<String,double> costi = {};
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
             contatori.add(0);
             String nomePietanza = listaPietanze?[index]['name'];
             pietanzeSelezionate[nomePietanza] = contatori[index];
+            costi[nomePietanza]=listaPietanze?[index]['costo'];
             return ContatorePietanza(
               pietanza: listaPietanze?[index],
               contatore: contatori[index],
@@ -152,12 +155,14 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
     QuickAlert.show(
       context: context,
       type: QuickAlertType.confirm,
-      text: "Sei sicuro di voler confermare l'ordinzaione?",
+      text: "Sei sicuro di voler confermare l'ordinazione?",
       title: "Conferma",
       confirmBtnText: "Si",
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
         print(pietanzeSelezionate);
+        print(costi);
+        print(widget.idOrdinazione);
         Navigator.pop(context);
       },
       onCancelBtnTap: () => Navigator.pop(context),

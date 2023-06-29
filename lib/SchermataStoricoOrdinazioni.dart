@@ -7,8 +7,9 @@ class SchermataStoricoOrdinazioni extends StatefulWidget {
   final String title = "SchermataStoricoOrdinazioni";
   final int idTavolo;
   final List<dynamic>? listaPiatti;
+  final int idOrdinazione;
 
-  SchermataStoricoOrdinazioni({required this.idTavolo, this.listaPiatti});
+  SchermataStoricoOrdinazioni({required this.idTavolo, this.listaPiatti, required this.idOrdinazione});
 
   @override
   SchermataStoricoOrdinazioniState createState() => SchermataStoricoOrdinazioniState();
@@ -117,7 +118,7 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
                           // Azione da eseguire quando viene premuto il FAB
                           Navigator.push(
                           context,
-                                  MaterialPageRoute(builder: (context) => SchermataSelezionaCategoria(idTavolo: widget.idTavolo)
+                                  MaterialPageRoute(builder: (context) => SchermataSelezionaCategoria(idTavolo: widget.idTavolo,idOrdinazione: widget.idOrdinazione,)
                                   )
                                           );
                             },

@@ -65,7 +65,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                           showAlertConferma(listaTavoli![index]['id']);
                         }
                         else {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'])));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'], idOrdinazione: ordinazione['id'])));
                         }
                       }
                     },
@@ -235,10 +235,11 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
       onConfirmBtnTap: ()  async {
         OrdinazioneControl db = OrdinazioneControl();
         String successo = await db.sendOrdinazioneToDb(idTavolo);
+        Map<String, dynamic>? ordinazione = await db.getCurrentOrdinazione(idTavolo);
 
         if(successo == "SUCCESSO"){
           Navigator.pop(context);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: idTavolo)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: idTavolo,idOrdinazione: ordinazione!['id'])));
           showAlertSuccesso("Ordinazione aperta correttamente");
         }
         else {
