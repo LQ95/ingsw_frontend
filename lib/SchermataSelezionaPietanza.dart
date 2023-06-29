@@ -161,31 +161,35 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
       confirmBtnText: "Si",
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
-        print(pietanzeSelezionate);
-        print(costi);
-        print(widget.idOrdinazione);
-        //sendPietanzaListToDatabase(pietanzeSelezionate,costi,widget.idOrdinazione);
+        sendPietanzaListToDatabase(pietanzeSelezionate, widget.idOrdinazione);
         Navigator.pop(context);
+        showAlertSuccesso("L'ordinazione è stata correttamente aggiornata!");
       },
       onCancelBtnTap: () => Navigator.pop(context),
     );
   }
 
-  void sendPietanzaListToDatabase(Map<int, int> pietanzeSelezionate, Map<int, double> costi, int idOrdinazione) {
-  OrdinazioneControl db=OrdinazioneControl();
-    int i=0;
-    int idPietanzaCorrente=0;
-    for (final entry in pietanzeSelezionate.entries){
-      if(entry.value > 0){//se ci sono pi di 0 copie di questo piatto
-        for(i=0;i<entry.value;i++)
-          {
-            idPietanzaCorrente=entry.key;
-            db.addPietanzaToOrdinazione(idOrdinazione,idPietanzaCorrente,costi[entry.key]!);
-          }
+  void sendPietanzaListToDatabase(Map<int, int> pietanzeSelezionate, int idOrdinazione) async {
+    OrdinazioneControl db = OrdinazioneControl();
+    for (final entry in pietanzeSelezionate.entries) {
+      if (entry.value > 0) {
+        for (int i = 0; i < entry.value; i++) {
+          int idPietanzaCorrente = entry.key;
+          await db.addPietanzaToOrdinazione(idOrdinazione, idPietanzaCorrente);
+        }
       }
-
     }
   }
+
+  void showAlertSuccesso(String testo) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.success,
+        text: testo,
+        title: "Successo!",
+        onConfirmBtnTap: () {Navigator.pop(context); Navigator.pop(context); Navigator.pop(context);}
+    );
+  }
+
 }
 
 
