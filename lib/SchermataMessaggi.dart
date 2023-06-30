@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/SchermataScriviMessaggio.dart';
 import 'package:ingsw_frontend/control/MessaggiControl.dart';
 import 'package:ingsw_frontend/control/ThreadControl.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'GlobImport.dart';
 import 'entity/Utente.dart';
 
@@ -122,6 +124,9 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
                               context, MaterialPageRoute(builder: (
                               context) => const SchermataScriviMessaggi())).then((value) => setState(() {}));
                         }
+                        else {
+                          showAlertErrore("Non hai i permessi necessari per eseguire quest'operazione");
+                        }
                       },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF66420F),
@@ -181,80 +186,18 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
     }
     return result;
   }
-}
-/*
-class statefulReadButton extends StatefulWidget {
-  int messageId;
-  bool unread = false;
 
-  statefulReadButton(this.messageId, this.unread);
-
-  @override
-  State<StatefulWidget> createState() => readButtonState(unread, messageId);
-}
-
-class readButtonState extends State<statefulReadButton> {
-  static MessaggiControl db = new MessaggiControl();
-  static const Color unreadBackground = Color(0xFF66420F);
-  static const Color readBackground = Color(0xFFBBBBBB);
-  Color background = readBackground;
-
-  bool unread = false;
-
-  int messageId = 0;
-
-  readButtonState(bool unread, int messageId) {
-    this.unread = unread;
-    this.messageId = messageId;
-    if (this.unread) {
-      this.background = unreadBackground;
-    }
-  }
-
-  void toggleRead(bool? value) {
-    setState(() {
-      unread = value!;
-
-      if (unread) {
-        background = unreadBackground;
-        db.setMessageAsRead(messageId);
-        eliminateMessageFromUnreadList(messageId);
-      } else {
-        background = readBackground;
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Checkbox(
-      value: unread,
-      onChanged: toggleRead,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-      activeColor: unreadBackground,
-      fillColor: MaterialStateProperty.all<Color>(background),
-      visualDensity: VisualDensity.compact,
+  void showAlertErrore(String errore) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.error,
+        text: errore,
+        title: "Attenzione!"
     );
   }
 
-  void eliminateMessageFromUnreadList(int messageId) {
-    String keyNumber;
-    String key;
-    if (globalUnreadMessages.containsValue(messageId)) {
-      key = globalUnreadMessages.keys.firstWhere(
-            (k) => globalUnreadMessages[k] == messageId,
-      );
-      keyNumber = key.replaceAll("id", "");
-      globalUnreadMessages.remove(key);
-      globalUnreadMessages.remove("mittente$keyNumber");
-      globalUnreadMessages.remove("corpo$keyNumber");
-    }
-  }
-}
 
- */
+
+}
 
 class statefulReadButton extends StatefulWidget {
 

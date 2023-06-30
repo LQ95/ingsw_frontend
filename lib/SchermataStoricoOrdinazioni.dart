@@ -72,7 +72,7 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: Text(
                               nomePietanza,
                               style: const TextStyle(
@@ -86,21 +86,27 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
                           ),
                           Expanded(
                             flex: 1,
-                            child: Text(
-                              quantita.toString(),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.black87,
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                quantita.toString(),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black87,
+                                ),
                               ),
                             ),
                           ),
                           Expanded(
                             flex: 1,
-                            child: Text(
-                              costoTotale.toStringAsFixed(1) + "€",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.black87,
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                costoTotale.toStringAsFixed(1) + "€",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black87,
+                                ),
                               ),
                             ),
                           ),
@@ -113,6 +119,7 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
             },
           ),
         );
+
       } else {
         return const Text("");
       }
@@ -152,13 +159,14 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
                      Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: Container(
-                        width: width*0.7,
+                        width: width * 0.7,
                         child: const Padding(
-                          padding:  EdgeInsets.all(16.0),
+                          padding: EdgeInsets.all(16.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
+                                flex: 1,
                                 child: Text(
                                   "Piatto",
                                   style: TextStyle(
@@ -167,18 +175,26 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
                                 ),
                               ),
                               Expanded(
-                                child: Text(
-                                  "Quantità",
-                                  style: TextStyle(
-                                    fontSize: 16,
+                                flex: 1,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Quantità",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
                               ),
                               Expanded(
-                                child: Text(
-                                  "Prezzo Totale",
-                                  style: TextStyle(
-                                    fontSize: 16,
+                                flex: 1,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Prezzo Totale",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -186,7 +202,8 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
                           ),
                         ),
                       ),
-                    ),
+
+                     ),
                   ],
                 ),
               ],
@@ -252,7 +269,7 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
                       MaterialPageRoute(
                         builder: (context) => SchermataSelezionaCategoria(idTavolo: widget.idTavolo, idOrdinazione: widget.idOrdinazione),
                       ),
-                    );
+                    ).then((value) => setState(() {}));
                   },
                   backgroundColor: const Color(0xFF728514),
                   child: Icon(Icons.add), // Icona del FAB

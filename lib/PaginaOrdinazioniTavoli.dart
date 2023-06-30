@@ -56,11 +56,16 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                   child: ElevatedButton(
                     onPressed: () async {
                       Utente utente = Utente();
+                      OrdinazioneControl db = OrdinazioneControl();
+                      Map<String, dynamic>? ordinazione = await db.getCurrentOrdinazione(listaTavoli![index]['id']);
                       if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE"){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataVisualizzaConto(idTavolo: listaTavoli![index]['id'].toString(),)));
+                        if (ordinazione == null) {
+                          showAlert("Non è presente nessun'ordinazione per questo tavolo, per favore riprova dopo che né è stata aperta una!");
+                        }
+                        else {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataVisualizzaConto(idTavolo: listaTavoli![index]['id'].toString(), idOrdinazione: ordinazione['id'])));
+                        }
                       } else {
-                        OrdinazioneControl db = OrdinazioneControl();
-                        Map<String, dynamic>? ordinazione = await db.getCurrentOrdinazione(listaTavoli![index]['id']);
                         if(ordinazione == null){
                           showAlertConferma(listaTavoli![index]['id']);
                         }
@@ -194,7 +199,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -259,6 +264,14 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
         type: QuickAlertType.success,
         text: errore,
         title: "Successo!"
+    );
+  }
+
+  void showAlert(String errore) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.info,
+        text: errore,
+        title: "Aspetta!"
     );
   }
 
