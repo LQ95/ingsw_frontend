@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/SchermataCreazioneAccount.dart';
 import 'GlobImport.dart';
+import 'SchermataStatistiche.dart';
 
 class SchermataFunzioniAmministratore extends StatelessWidget{
   @override
@@ -32,9 +33,9 @@ class SchermataFunzioniAmministratore extends StatelessWidget{
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStatistiche()));},
                         child: Ink.image(
-                          image: const AssetImage('contents/images/Bottone Statistiche.png'),
+                          image: const AssetImage('contents/images/Bottone statistiche.png'),
                           width: width*0.4,
                           height: height*0.4,
                         ),
