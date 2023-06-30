@@ -37,7 +37,7 @@ class OrdinazioneControl {
   }
 
 
-  Future<bool> closeCurrentOrdinazione(int tavolo) async {
+  Future<bool> closeCurrentOrdinazione(String tavolo) async {
     var apiUrl = Uri.http(
         baseUrl, "api/v1/ordinazione/closecurrent",
         {"tavoloId": tavolo.toString()});

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'GlobImport.dart';
 import 'control/OrdinazioneControl.dart';
 
@@ -27,98 +29,165 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
       listaPietanze = listaPietanze?.reversed.toList();
       if (listaPietanze != null) {
         Map<String, int> pietanzeQuantita = {};
+        double costoTotale = 0;
 
         for (var pietanza in listaPietanze) {
           String nomePietanza = pietanza['name'];
-          pietanzeQuantita[nomePietanza] = (pietanzeQuantita[nomePietanza] ?? 0) + 1;
+          int quantita = (pietanzeQuantita[nomePietanza] ?? 0) + 1;
+          pietanzeQuantita[nomePietanza] = quantita;
+          double costoPietanza = pietanza['costo'];
+          double costoTotalePietanza = costoPietanza * quantita;
+          costoTotale += costoTotalePietanza;
         }
 
-        return Wrap(
-          direction: Axis.vertical,
-          children: List.generate(
-            pietanzeQuantita.length,
-                (index) {
-              String nomePietanza = pietanzeQuantita.keys.elementAt(index);
-              int quantita = pietanzeQuantita.values.elementAt(index);
-              double costoPietanza = listaPietanze?.firstWhere((pietanza) => pietanza['name'] == nomePietanza)['costo'];
-              double costoTotale = costoPietanza * quantita;
+        List<Widget> generatedWidgets = List.generate(pietanzeQuantita.length, (index) {
+          String nomePietanza = pietanzeQuantita.keys.elementAt(index);
+          int quantita = pietanzeQuantita.values.elementAt(index);
+          double costoPietanza = listaPietanze?.firstWhere((pietanza) => pietanza['name'] == nomePietanza)['costo'];
+          double costoTotalePietanza = costoPietanza * quantita;
 
-              return Padding(
-                padding: const EdgeInsets.only(top: 8, bottom: 8),
-                child: SizedBox(
-                  height: 100,
-                  width: width * 0.7,
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 7,
-                          spreadRadius: 5,
-                          color: Colors.transparent,
-                          offset: Offset(-8, 8),
-                        )
-                      ],
+          return Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: SizedBox(
+              height: 100,
+              width: width * 0.7,
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 7,
+                      spreadRadius: 5,
                       color: Colors.transparent,
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              nomePietanza,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                      offset: Offset(-8, 8),
+                    )
+                  ],
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          nomePietanza,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                quantita.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                "${costoTotale.toStringAsFixed(1)}€",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        flex: 1,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            quantita.toString(),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "${costoTotalePietanza.toStringAsFixed(1)}€",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              );
-            },
+              ),
+            ),
+          );
+        });
+
+        double costoTotaleOrdinazione = costoTotale;
+        generatedWidgets.add(
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: SizedBox(
+              height: 100,
+              width: width * 0.7,
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 7,
+                      spreadRadius: 5,
+                      color: Colors.transparent,
+                      offset: Offset(-8, 8),
+                    )
+                  ],
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Expanded(
+                        flex: 1,
+                        child: Text(
+                          "Totale",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const Expanded(
+                        flex: 1,
+                        child: SizedBox(),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "${costoTotaleOrdinazione.toStringAsFixed(1)}€",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
         );
 
+        return Wrap(
+          direction: Axis.vertical,
+          children: generatedWidgets,
+        );
       } else {
         return const Text("");
       }
     }
+
 
     return Scaffold(
       appBar: GlobalAppBar,
@@ -255,7 +324,7 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        showAlertConfermaVuoiSalvare(widget.idTavolo);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF66420F),
@@ -283,4 +352,66 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
       ),
     );
   }
+
+  void showAlertConferma(String idTavolo) {
+    QuickAlert.show(context: context,
+      type: QuickAlertType.confirm,
+      text: "Sei sicuro di voler chiudere quest'ordinazione?\nUna volta chiusa non potrà più essere riaperta",
+      title: "Vuoi davvero chiudere quest'ordinazione?",
+      confirmBtnText: "Si",
+      cancelBtnText: "No",
+      onConfirmBtnTap: ()  async {
+        OrdinazioneControl db = OrdinazioneControl();
+        if(await db.closeCurrentOrdinazione(idTavolo) == true) {
+          Navigator.pop(context);
+          showAlertSuccesso("L'ordinazione è stata chiusa correttamente");
+        }
+        else {
+          showAlertErrore("Qualcosa è andato storto, riprova più tadi...");
+        }
+
+      },
+      onCancelBtnTap: () => Navigator.pop(context),
+    );
+  }
+
+  void showAlertConfermaVuoiSalvare(String idTavolo) {
+    QuickAlert.show(context: context,
+      type: QuickAlertType.confirm,
+      text: "Desideri salvare il conto come pdf prima di chiudere l'ordinazione?",
+      title: "Salvataggio in corso",
+      confirmBtnText: "Si",
+      cancelBtnText: "No",
+      onConfirmBtnTap: ()  async {
+        //SALVATAGGIO PDF
+
+        Navigator.pop(context);
+        showAlertConferma(idTavolo);
+
+      },
+      onCancelBtnTap: () {
+        Navigator.pop(context);
+        showAlertConferma(idTavolo);
+      }
+    );
+  }
+
+  void showAlertSuccesso(String testo) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.success,
+        text: testo,
+        title: "Successo!",
+        onConfirmBtnTap: () {Navigator.pop(context); Navigator.pop(context);}
+    );
+  }
+
+  void showAlertErrore(String errore) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.error,
+        text: errore,
+        title: "Attenzione!"
+    );
+  }
+
+
 }
