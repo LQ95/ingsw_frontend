@@ -12,7 +12,11 @@ class PdfControl{
     pageFormat: PdfPageFormat.a4,
     build: (pdfWidgets.Context context){
       return pdfWidgets.Center(
-        child: pdfWidgets.Text('Conto Tavolo n°$tavoloId'),
+        child: pdfWidgets.Column(
+          children:[
+            pdfWidgets.Text('Conto Tavolo n°$tavoloId',style: const pdfWidgets.TextStyle(fontSize: 40)),
+          ]
+        )
       );
       //TODO effettivamente scrivere il codice della pagina
     }
