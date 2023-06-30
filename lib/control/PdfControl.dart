@@ -6,11 +6,14 @@ import 'package:pdf/widgets.dart' as pdfWidgets;
 
 class PdfControl{
 
-  static createPdfConto(Map<String,dynamic> pietanze) async {
+  static createPdfConto(Map<String,dynamic> pietanze, int tavoloId) async {
   final pdf= pdfWidgets.Document();
   pdf.addPage(pdfWidgets.Page(
     pageFormat: PdfPageFormat.a4,
     build: (pdfWidgets.Context context){
+      return pdfWidgets.Center(
+        child: pdfWidgets.Text('Conto Tavolo n°$tavoloId'),
+      );
       //TODO effettivamente scrivere il codice della pagina
     }
   ));
