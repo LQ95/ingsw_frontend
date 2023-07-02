@@ -1,12 +1,9 @@
-import 'dart:ffi';
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdfWidgets;
-import 'package:printing/printing.dart';
 
 class PdfControl{
 
@@ -51,11 +48,26 @@ class PdfControl{
 
     }
   ));
-
-  final output = await getTemporaryDirectory();
-  final file = File("${output.path}/conto.pdf");
-  print(output.path);
-  await file.writeAsBytes(await pdf.save());
+    String? output;
+    if (Platform.isWindows) { //Se è wqindows apre la finestra per selezionare il file
+      output = await FilePicker.platform.saveFile(
+          dialogTitle: 'Seleziona dove salvare il conto:',
+          fileName: 'conto.pdf',
+          type: FileType.any);
+    }
+    else {
+      output = await FilePicker.platform.getDirectoryPath() ;
+    }
+    if (output != null) {
+      if(Platform.isAndroid) {
+        output= "${output}/conto.pdf";
+      } else {
+        output="${output}";
+      }
+      final file = File(output);
+      print(output);
+      await file.writeAsBytes(await pdf.save());
+    }
   }
 
 }
