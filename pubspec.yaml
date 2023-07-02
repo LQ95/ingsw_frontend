@@ -33,6 +33,7 @@ dependencies:
   http: 1.0.0
   pdf: ^3.10.4
   intl: ^0.17.0
+  printing:
   path_provider:
   async:
   window_size:
@@ -72,6 +73,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - contents/images/
+    - contents/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

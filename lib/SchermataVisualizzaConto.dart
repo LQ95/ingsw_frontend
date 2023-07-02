@@ -3,6 +3,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'GlobImport.dart';
 import 'control/OrdinazioneControl.dart';
+import 'control/PdfControl.dart';
 
 class SchermataVisualizzaConto extends StatefulWidget{
   final String title = "SchermataVisualizzaConto";
@@ -323,8 +324,24 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
                   child: Container(
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () {
-                        showAlertConfermaVuoiSalvare(widget.idTavolo);
+                      onPressed: () async {
+                        OrdinazioneControl db = OrdinazioneControl();
+                        List<dynamic>? listaPietanze = await db.getAllPietanzeFromOrdinazione(widget.idOrdinazione);
+
+                        double costoTotale = 0;
+
+                        listaPietanze = listaPietanze?.reversed.toList();
+
+                        double costo = 0;
+
+                        for (var pietanza in listaPietanze!) {
+
+
+                          costo = costo + pietanza['costo'];
+
+                        }
+
+                        showAlertConfermaVuoiSalvare(widget.idTavolo,listaPietanze!,costo);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF66420F),
@@ -375,7 +392,7 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
     );
   }
 
-  void showAlertConfermaVuoiSalvare(String idTavolo) {
+  void showAlertConfermaVuoiSalvare(String idTavolo,List<dynamic> pietanze, double conto) {
     QuickAlert.show(context: context,
       type: QuickAlertType.confirm,
       text: "Desideri salvare il conto come pdf prima di chiudere l'ordinazione?",
@@ -384,7 +401,7 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
       cancelBtnText: "No",
       onConfirmBtnTap: ()  async {
         //SALVATAGGIO PDF
-
+        PdfControl.createPdfConto(pietanze,idTavolo,conto);
         Navigator.pop(context);
         showAlertConferma(idTavolo);
 
