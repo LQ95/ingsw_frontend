@@ -19,11 +19,14 @@ class StatisticheControl {
       var jsonResponse = jsonDecode(jsonBody);
 
       Map<DateTime, double> res = {};
-      jsonResponse.forEach((dateString, price) {
-        var dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        var date = dateFormat.parse(dateString);
-        res[date] = double.parse(price.toString());
+      jsonResponse.forEach((dateString, prices) {
+        var date = DateTime.parse(dateString);
+        var pricesList = (prices as List<dynamic>).map((price) => price.toDouble()).toList();
+        var totalPrice = pricesList.reduce((value, element) => value + element);
+        res[date] = totalPrice;
       });
+
+      print(res);
 
       return res;
     } else {
