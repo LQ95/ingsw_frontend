@@ -22,19 +22,28 @@ class PdfControl{
           children:[
             pdfWidgets.Text('Conto Tavolo n°$tavoloId',style: pdfWidgets.TextStyle(font: font,fontSize: 40)),
             pdfWidgets.ListView.builder(itemCount: pietanze.length,itemBuilder: (context,index){
-              return pdfWidgets.Row(
+              return
+                pdfWidgets.Padding(
+                  padding: pdfWidgets.EdgeInsets.symmetric(vertical: 16.0),
+                child:pdfWidgets.Row(
                 children: [
                   pdfWidgets.Expanded(
                       child:pdfWidgets.Text(pietanze[index]['name'],style: pdfWidgets.TextStyle(font: font,fontSize: 14))
                   ),
                   pdfWidgets.Text("${pietanze[index]['costo']}€",style: pdfWidgets.TextStyle(font: font,fontSize: 14))
                 ]
-              );
-            }),
-          pdfWidgets.Row(
+              )
+                );}),
+          pdfWidgets.Padding(
+              padding: pdfWidgets.EdgeInsets.symmetric(vertical: 16.0),
+            child: pdfWidgets.Row(
               children: [
+                pdfWidgets.Expanded(
+                    child:pdfWidgets.Text("Totale:",style: pdfWidgets.TextStyle(font: font,fontSize: 14))
+                ),
                 pdfWidgets.Text("$conto€",style: pdfWidgets.TextStyle(font: font,fontSize: 14)),
               ]
+          )
           )
           ]
         )
@@ -45,6 +54,7 @@ class PdfControl{
 
   final output = await getTemporaryDirectory();
   final file = File("${output.path}/conto.pdf");
+  print(output.path);
   await file.writeAsBytes(await pdf.save());
   }
 
