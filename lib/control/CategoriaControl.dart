@@ -55,7 +55,7 @@ class CategoriaControl {
   }
 
   Future<String> deletePietanzaFromDB(int catId, int pietanzaId) async {
-    var apiUrl = Uri.http('localhost:8080', '/api/v1/categoria/delpietanza', {
+    var apiUrl = Uri.http(baseUrl, '/api/v1/categoria/delpietanza', {
       'pietanzaId': pietanzaId.toString(),
       'catId': catId.toString(),
     });
@@ -89,7 +89,7 @@ class CategoriaControl {
   }
 
   Future<String> sendCategoriaToDb(String nome) async {
-    var apiUrl = Uri.http('localhost:8080', '/api/v1/categoria');
+    var apiUrl = Uri.http(baseUrl, '/api/v1/categoria');
 
     var response = await http.post(
       apiUrl,

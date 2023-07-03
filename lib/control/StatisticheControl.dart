@@ -11,7 +11,7 @@ import '../entity/Utente.dart';
 class StatisticheControl {
 
   Future<Map<DateTime, double>> getClosedOrdinazioniFromDB() async {
-    var apiUrl = Uri.http('localhost:8080', '/api/v1/ordinazione/statistiche-ordinazioni-chiuse');
+    var apiUrl = Uri.http(baseUrl, '/api/v1/ordinazione/statistiche-ordinazioni-chiuse');
     var response = await http.get(apiUrl);
 
     if (response.statusCode == 200) {

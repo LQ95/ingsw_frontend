@@ -25,7 +25,7 @@ class OrdinazioneControl {
   }
 
   Future<List?> getAllPietanzeFromOrdinazione(int idOrdinazione) async {
-    var apiUrl = Uri.http('localhost:8080', '/api/v1/ordinazione/$idOrdinazione/pietanze');
+    var apiUrl = Uri.http(baseUrl, '/api/v1/ordinazione/$idOrdinazione/pietanze');
     var response = await http.get(apiUrl);
 
     if (response.statusCode == 200) {
