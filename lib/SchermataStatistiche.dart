@@ -13,6 +13,8 @@ class SchermataStatistiche extends StatefulWidget {
 }
 
 class _SchermataStatisticheState extends State<SchermataStatistiche> {
+  List<OrdinazioneData> data = []; // Dichiarazione della variabile data
+
   Future<Widget> generaGrafico() async {
     StatisticheControl db = StatisticheControl();
     Map<DateTime, double> stats = await db.getClosedOrdinazioniFromDB();
@@ -34,8 +36,8 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
     List<DateTime> sortedDates = aggregatedStats.keys.toList()
       ..sort((a, b) => a.compareTo(b));
 
-    // Crea una lista ordinata di dati per il grafico
-    List<OrdinazioneData> data = sortedDates.map((date) {
+    // Crea una lista ordinata di dati per il grafico e assegna alla variabile data
+    data = sortedDates.map((date) {
       return OrdinazioneData(date, aggregatedStats[date]!);
     }).toList();
 
@@ -47,8 +49,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
       measureFn: (OrdinazioneData data, _) => data.price,
       data: data,
       // Configura l'etichetta del punto del grafico
-      labelAccessorFn: (OrdinazioneData data, _) =>
-      '${data.date.day}/${data.date.month}/${data.date.year}\n${data.price.toStringAsFixed(2)}',
+      labelAccessorFn: (OrdinazioneData data, _) => '${data.date.day}/${data.date.month}/${data.date.year}\n${data.price.toStringAsFixed(2)}',
     );
 
     // Crea il grafico a linee
@@ -82,20 +83,6 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
   Widget build(BuildContext context) {
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
-
-    // Funzione per mostrare l'etichetta nella UI
-    void showLabelInUI(String label) {
-      final snackBar = SnackBar(
-        content: Text(label),
-        duration: const Duration(seconds: 3),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-
-    // Funzione per nascondere l'etichetta nella UI
-    void hideLabelInUI() {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    }
 
     return Scaffold(
       appBar: GlobalAppBar,
@@ -132,16 +119,23 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
               if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               } else {
-                return GestureDetector(
-                  onTapDown: (details) {
-                    // Mostra l'etichetta quando l'utente fa clic sul grafico
-                    showLabelInUI('Etichetta del punto');
-                  },
-                  onTapUp: (details) {
-                    // Nasconde l'etichetta quando l'utente rilascia il clic sul grafico
-                    hideLabelInUI();
-                  },
-                  child: snapshot.data!,
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Expanded(child: snapshot.data!),
+                      SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (OrdinazioneData entry in data)
+                            Text(
+                              '${entry.date.day}/${entry.date.month}/${entry.date.year}: ${entry.price.toStringAsFixed(2)}',
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
                 );
               }
             },
