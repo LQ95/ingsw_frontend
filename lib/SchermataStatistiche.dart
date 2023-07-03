@@ -8,12 +8,14 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'entity/OrdinazioneData.dart';
 
 class SchermataStatistiche extends StatefulWidget {
+  final ValueNotifier<OrdinazioneData?> selectedDataNotifier = ValueNotifier<OrdinazioneData?>(null);
   @override
   _SchermataStatisticheState createState() => _SchermataStatisticheState();
 }
 
 class _SchermataStatisticheState extends State<SchermataStatistiche> {
   List<OrdinazioneData> data = []; // Dichiarazione della variabile data
+  
 
   Future<Widget> generaGrafico() async {
     StatisticheControl db = StatisticheControl();
@@ -71,6 +73,19 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
           selectionModelType: charts.SelectionModelType.info,
         )
       ],
+      selectionModels: [
+        charts.SelectionModelConfig(
+            type: charts.SelectionModelType.info,
+            changedListener: (model) {
+              if (model.hasDatumSelection) {
+                final selectedDatum = model.selectedDatum.first;
+                widget.selectedDataNotifier.value = selectedDatum.datum;
+              } else {
+                widget.selectedDataNotifier.value = null;
+              }
+            }
+        )
+      ],
     );
 
     return SizedBox(
@@ -119,27 +134,16 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
               if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               } else {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(child: snapshot.data!),
-                      SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (OrdinazioneData entry in data)
-                            Text(
-                              '${entry.date.day}/${entry.date.month}/${entry.date.year}: ${entry.price.toStringAsFixed(2)}',
-                            ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
+                return snapshot.data!;
               }
             },
-          )
+          ),
+          ValueListenableBuilder<OrdinazioneData?>(
+              valueListenable: widget.selectedDataNotifier,
+              builder: (context, selectedData, _) {
+                return Text('Punto selezionato: $selectedData');
+              }
+          ),
         ],
       ),
     );
