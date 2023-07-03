@@ -142,7 +142,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                 return const SizedBox
                     .shrink(); // Nasconde il testo quando nessun punto è stato selezionato
               }
-              return Text('Punto selezionato: $selectedData');
+              return Text('Guadagni del giorno: $selectedData');
             },
           ),
         ],
