@@ -15,7 +15,7 @@ class SchermataStatistiche extends StatefulWidget {
 
 class _SchermataStatisticheState extends State<SchermataStatistiche> {
   List<OrdinazioneData> data = []; // Dichiarazione della variabile data
-  
+
 
   Future<Widget> generaGrafico() async {
     StatisticheControl db = StatisticheControl();
@@ -51,7 +51,8 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
       measureFn: (OrdinazioneData data, _) => data.price,
       data: data,
       // Configura l'etichetta del punto del grafico
-      labelAccessorFn: (OrdinazioneData data, _) => '${data.date.day}/${data.date.month}/${data.date.year}\n${data.price.toStringAsFixed(2)}',
+      labelAccessorFn: (OrdinazioneData data, _) => '${data.date.day}/${data
+          .date.month}/${data.date.year}\n${data.price.toStringAsFixed(2)}',
     );
 
     // Crea il grafico a linee
@@ -96,8 +97,16 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
 
   @override
   Widget build(BuildContext context) {
-    int width = MediaQuery.of(context).size.width.toInt();
-    int height = MediaQuery.of(context).size.height.toInt();
+    int width = MediaQuery
+        .of(context)
+        .size
+        .width
+        .toInt();
+    int height = MediaQuery
+        .of(context)
+        .size
+        .height
+        .toInt();
 
     return Scaffold(
       appBar: GlobalAppBar,
@@ -105,26 +114,8 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 18, top: 9),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF66420F),
-                  ),
-                  child: const Text(
-                    "Torna Indietro",
-                    style: TextStyle(color: Colors.white70),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // ...
+
           FutureBuilder(
             future: generaGrafico(),
             builder: (context, snapshot) {
@@ -134,15 +125,25 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
               if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               } else {
-                return snapshot.data!;
+                return GestureDetector(
+                  onTap: () {
+                    widget.selectedDataNotifier.value = null;
+                  },
+                  child: snapshot.data!,
+                );
               }
             },
           ),
+
           ValueListenableBuilder<OrdinazioneData?>(
-              valueListenable: widget.selectedDataNotifier,
-              builder: (context, selectedData, _) {
-                return Text('Punto selezionato: $selectedData');
+            valueListenable: widget.selectedDataNotifier,
+            builder: (context, selectedData, _) {
+              if (selectedData == null) {
+                return const SizedBox
+                    .shrink(); // Nasconde il testo quando nessun punto è stato selezionato
               }
+              return Text('Punto selezionato: $selectedData');
+            },
           ),
         ],
       ),
