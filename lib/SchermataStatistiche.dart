@@ -19,29 +19,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
 
   Future<Widget> generaGrafico() async {
     StatisticheControl db = StatisticheControl();
-    Map<DateTime, double> stats = await db.getClosedOrdinazioniFromDB();
-
-    // Somma i valori dei conti di ordinazioni con la stessa data
-    Map<DateTime, double> aggregatedStats = {};
-    for (var entry in stats.entries) {
-      DateTime date = entry.key;
-      double price = entry.value;
-
-      if (aggregatedStats.containsKey(date)) {
-        aggregatedStats[date] = aggregatedStats[date]! + price;
-      } else {
-        aggregatedStats[date] = price;
-      }
-    }
-
-    // Ordina le date in ordine crescente
-    List<DateTime> sortedDates = aggregatedStats.keys.toList()
-      ..sort((a, b) => a.compareTo(b));
-
-    // Crea una lista ordinata di dati per il grafico e assegna alla variabile data
-    data = sortedDates.map((date) {
-      return OrdinazioneData(date, aggregatedStats[date]!);
-    }).toList();
+    List<OrdinazioneData> data = await db.getGuadagniTotaliFromDB();
 
     // Crea la serie di dati per il grafico
     charts.Series<OrdinazioneData, DateTime> series =
@@ -51,8 +29,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
       measureFn: (OrdinazioneData data, _) => data.price,
       data: data,
       // Configura l'etichetta del punto del grafico
-      labelAccessorFn: (OrdinazioneData data, _) => '${data.date.day}/${data
-          .date.month}/${data.date.year}\n${data.price.toStringAsFixed(2)}',
+      labelAccessorFn: (OrdinazioneData data, _) => '${data.date.day}/${data.date.month}/${data.date.year}\n${data.price.toStringAsFixed(2)}',
     );
 
     // Crea il grafico a linee
@@ -76,16 +53,16 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
       ],
       selectionModels: [
         charts.SelectionModelConfig(
-            type: charts.SelectionModelType.info,
-            changedListener: (model) {
-              if (model.hasDatumSelection) {
-                final selectedDatum = model.selectedDatum.first;
-                widget.selectedDataNotifier.value = selectedDatum.datum;
-              } else {
-                widget.selectedDataNotifier.value = null;
-              }
+          type: charts.SelectionModelType.info,
+          changedListener: (model) {
+            if (model.hasDatumSelection) {
+              final selectedDatum = model.selectedDatum.first;
+              widget.selectedDataNotifier.value = selectedDatum.datum;
+            } else {
+              widget.selectedDataNotifier.value = null;
             }
-        )
+          },
+        ),
       ],
     );
 
