@@ -13,6 +13,7 @@ class ThreadControl{
   @pragma('vm:entry-point')
   Future<void> NotificationCheck(Utente user) async { //TODO capire come killare sto thread al logout
     final communicationPort=ReceivePort();
+    //p.send(communicationPort.sendPort); //TODO l'isolate va spawnato passandogli direttamente una sendport
     Map<String, dynamic> localList=Map<String, dynamic>();
     Map<String, dynamic> newList=Map<String, dynamic>();
     bool popupWasFlashed=false;
@@ -20,6 +21,7 @@ class ThreadControl{
     BuildContext context;
 
     // print("utente:"+user.toString());
+
     /*await for (final message in communicationPort) {
         if (message is Utente) {
           usr=message;

@@ -70,7 +70,11 @@ class UtenteControl{
       //selectDrawer();
       ThreadControl TD = ThreadControl();
       //TODO mandare la porta per comunicare all'isolate e inizializzarla prima
+
       Isolate.spawn(TD.NotificationCheck,User);  //Non sono sicuro vada bene qui
+      //aspetto che l'isolate mi mandi la send port da cui inviargli i context che servono ogni volta ai popup
+      //sendPort = await outputFromIsolate.next;
+      //sendPort.send(User);
       if(primoAccesso == 'true')
       {
         return 'primoAccesso';
