@@ -16,17 +16,38 @@ class ThreadControl{
     Map<String, dynamic> localList=Map<String, dynamic>();
     Map<String, dynamic> newList=Map<String, dynamic>();
     bool popupWasFlashed=false;
+    Utente usr;
+    BuildContext context;
+
     // print("utente:"+user.toString());
+    /*await for (final message in communicationPort) {
+        if (message is Utente) {
+          usr=message;
+          // Send the result to the main isolate.
+        } else if (message == null) {
+          //TODO completare la logica e capire tuti i casi possibili
+        }*/
+
     while(user.getNome != ""){
       await Future.delayed(const Duration(seconds: 1));
       // print("entra nel loop");
+
+      // aspetta messagi dal thread principale.
+      /*await for (final message in communicationPort) {
+        if (message is BuildContext) {
+          context=message;
+          // Send the result to the main isolate.
+        } else if (message == null) {
+          //TODO completare la logica e capire tuti i casi possibili
+        }*/
 
       newList= await findUnreadMessages(user);
       popupWasFlashed=!areThereNewMessages(localList,newList);
       if(!popupWasFlashed)
       {
         //TODO la funzione per fare la notifica
-        // print("apro il popup");
+        print("apro il popup");
+        // showAlertNuoviMess(context);
         popupWasFlashed=true;
       }
       localList.clear();

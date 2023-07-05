@@ -69,6 +69,7 @@ class UtenteControl{
       User.setNome=name;
       //selectDrawer();
       ThreadControl TD = ThreadControl();
+      //TODO mandare la porta per comunicare all'isolate e inizializzarla prima
       Isolate.spawn(TD.NotificationCheck,User);  //Non sono sicuro vada bene qui
       if(primoAccesso == 'true')
       {
