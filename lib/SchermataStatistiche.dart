@@ -10,6 +10,12 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
 import 'entity/OrdinazioneData.dart';
 
+// const List<String> listaStatistiche = <String> [
+//   "Incasso Complessivo",
+//   "Valore Medio Conto",
+// ];
+// String dropdownValue = listaStatistiche.first;
+
 class SchermataStatistiche extends StatefulWidget {
   final ValueNotifier<OrdinazioneData?> selectedDataNotifier =
   ValueNotifier<OrdinazioneData?>(null);
@@ -139,7 +145,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                     if (selectedData == null) {
                       return const SizedBox.shrink();
                     }
-                    return Text('Guadagni del giorno: $selectedData');
+                    return Text('$selectedData');
                   },
                 ),
               ),
@@ -172,6 +178,28 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                           Text(dataFine!.toIso8601String()),
                       ],
                     ),
+                    // DropdownButton<String>(
+                    //   value: dropdownValue,
+                    //   elevation: 16,
+                    //   style: const TextStyle(color: Colors.black),
+                    //   underline: Container(
+                    //     height: 1,
+                    //     color: Colors.black,
+                    //   ),
+                    //   onChanged: (String? value) {
+                    //     setState(() {
+                    //       dropdownValue = value!;
+                    //     });
+                    //   },
+                    //   items: listaStatistiche.map<DropdownMenuItem<String>>(
+                    //         (String value) {
+                    //       return DropdownMenuItem<String>(
+                    //         value: value,
+                    //         child: Text(value),
+                    //       );
+                    //     },
+                    //   ).toList(),
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -179,11 +207,11 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                           padding: const EdgeInsets.all(16.0),
                           child: ElevatedButton(
                               onPressed: () async {
+                                StatisticheControl db = StatisticheControl();
                                 if(dataInizio == null || dataFine == null){
-                                  showAlertErrore("Inserisci l'intervallo di date in vuoi eseguire la ricerca!");
+                                  ordinazioni = await db.getStatistiche();
                                 } else{
-                                  StatisticheControl db = StatisticheControl();
-                                  ordinazioni = await db.getGuadagniInDateFromDB(dataInizio!, dataFine!);
+                                  ordinazioni = await db.getStatistiche(dataInizio: dataInizio!, dataFine: dataFine!);
                                   print(ordinazioni);
                                   setState(() {});
                                 }
@@ -202,6 +230,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                                 dataFine = null;
                                 dataInizio = null;
                                 widget.selectedDataNotifier.value = null;
+                                // dropdownValue = listaStatistiche.first;
                                 setState(() {});
                               },
                               style: ElevatedButton.styleFrom(
@@ -252,17 +281,9 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
     }
   }
 
-  void showAlertErrore(String errore) {
-    QuickAlert.show(context: context,
-        type: QuickAlertType.error,
-        text: errore,
-        title: "Attenzione"
-    );
-  }
-
   Future<List<OrdinazioneData>> setDefault() async {
     StatisticheControl db = StatisticheControl();
-    return StatisticheControl().getGuadagniTotaliFromDB();
+    return StatisticheControl().getStatistiche();
   }
 
 }

@@ -11,7 +11,7 @@ import '../entity/Utente.dart';
 
 class StatisticheControl {
 
-  Future<List<OrdinazioneData>> getGuadagniTotaliFromDB() async {
+  Future<List<OrdinazioneData>> _getGuadagniTotaliFromDB() async {
     var apiUrl = Uri.http(baseUrl, '/api/v1/ordinazione/statistiche-ordinazioni-chiuse');
     var response = await http.get(apiUrl);
 
@@ -19,26 +19,25 @@ class StatisticheControl {
       var jsonBody = utf8.decode(response.bodyBytes);
       var jsonResponse = jsonDecode(jsonBody);
 
-      Map<DateTime, double> stats = {};
+      Map<DateTime, List<double>> stats = {};
       jsonResponse.forEach((dateString, prices) {
         var date = DateTime.parse(dateString);
-        var pricesList = (prices as List<dynamic>).map((price) => price.toDouble()).toList();
-        var totalPrice = pricesList.reduce((value, element) => value + element);
-        stats[date] = totalPrice;
+        var pricesList = (prices as List<dynamic>).cast<double>();
+        stats[date] = pricesList;
       });
 
-      // Somma i valori dei conti di ordinazioni con la stessa data
-      Map<DateTime, double> aggregatedStats = {};
-      for (var entry in stats.entries) {
-        DateTime date = entry.key;
-        double price = entry.value;
+      // Calcola il numero totale dei conti per ogni data
+      Map<DateTime, int> numeroContiMap = {};
+      stats.forEach((date, pricesList) {
+        numeroContiMap[date] = pricesList.length;
+      });
 
-        if (aggregatedStats.containsKey(date)) {
-          aggregatedStats[date] = aggregatedStats[date]! + price;
-        } else {
-          aggregatedStats[date] = price;
-        }
-      }
+      // Somma i prezzi dei conti per ogni data
+      Map<DateTime, double> aggregatedStats = {};
+      stats.forEach((date, pricesList) {
+        var totalPrice = pricesList.reduce((value, element) => value + element);
+        aggregatedStats[date] = totalPrice;
+      });
 
       // Ordina le date in ordine crescente
       List<DateTime> sortedDates = aggregatedStats.keys.toList()
@@ -46,7 +45,10 @@ class StatisticheControl {
 
       // Crea una lista ordinata di dati per il grafico
       List<OrdinazioneData> data = sortedDates.map((date) {
-        return OrdinazioneData(date, aggregatedStats[date]!);
+        var price = aggregatedStats[date]!;
+        var numeroConti = numeroContiMap[date]!;
+        var mediaGiornaliera = price / numeroConti;
+        return OrdinazioneData(date, price, numeroConti: numeroConti, mediaGiornaliera: mediaGiornaliera);
       }).toList();
 
       return data;
@@ -55,7 +57,10 @@ class StatisticheControl {
     }
   }
 
-  Future<List<OrdinazioneData>> getGuadagniInDateFromDB(DateTime dataInizio, DateTime dataFine) async {
+
+
+
+  Future<List<OrdinazioneData>> _getGuadagniInDateFromDB(DateTime dataInizio, DateTime dataFine) async {
     var apiUrl = Uri.http(baseUrl, '/api/v1/ordinazione/statistiche-ordinazioni-by-date', {
       'dataInizio': DateFormat('yyyy-MM-dd').format(dataInizio),
       'dataFine': DateFormat('yyyy-MM-dd').format(dataFine),
@@ -67,26 +72,25 @@ class StatisticheControl {
       var jsonBody = utf8.decode(response.bodyBytes);
       var jsonResponse = jsonDecode(jsonBody);
 
-      Map<DateTime, double> stats = {};
+      Map<DateTime, List<double>> stats = {};
       jsonResponse.forEach((dateString, prices) {
         var date = DateTime.parse(dateString);
-        var pricesList = (prices as List<dynamic>).map((price) => price.toDouble()).toList();
-        var totalPrice = pricesList.reduce((value, element) => value + element);
-        stats[date] = totalPrice;
+        var pricesList = (prices as List<dynamic>).cast<double>(); // Aggiunta del cast
+        stats[date] = pricesList;
       });
 
-      // Somma i valori dei conti di ordinazioni con la stessa data
-      Map<DateTime, double> aggregatedStats = {};
-      for (var entry in stats.entries) {
-        DateTime date = entry.key;
-        double price = entry.value;
+      // Calcola il numero totale dei conti per ogni data
+      Map<DateTime, int> numeroContiMap = {};
+      stats.forEach((date, pricesList) {
+        numeroContiMap[date] = pricesList.length;
+      });
 
-        if (aggregatedStats.containsKey(date)) {
-          aggregatedStats[date] = aggregatedStats[date]! + price;
-        } else {
-          aggregatedStats[date] = price;
-        }
-      }
+      // Somma i prezzi dei conti per ogni data
+      Map<DateTime, double> aggregatedStats = {};
+      stats.forEach((date, pricesList) {
+        var totalPrice = pricesList.reduce((value, element) => value + element);
+        aggregatedStats[date] = totalPrice;
+      });
 
       // Ordina le date in ordine crescente
       List<DateTime> sortedDates = aggregatedStats.keys.toList()
@@ -94,7 +98,10 @@ class StatisticheControl {
 
       // Crea una lista ordinata di dati per il grafico
       List<OrdinazioneData> data = sortedDates.map((date) {
-        return OrdinazioneData(date, aggregatedStats[date]!);
+        var price = aggregatedStats[date]!;
+        var numeroConti = numeroContiMap[date]!;
+        var mediaGiornaliera = price / numeroConti;
+        return OrdinazioneData(date, price, numeroConti: numeroConti, mediaGiornaliera: mediaGiornaliera);
       }).toList();
 
       return data;
@@ -103,6 +110,15 @@ class StatisticheControl {
     }
   }
 
+
+  Future<List<OrdinazioneData>> getStatistiche({DateTime? dataInizio, DateTime? dataFine}) async {
+    List<OrdinazioneData> stats = [];
+    if (dataInizio != null && dataFine != null) {
+      return _getGuadagniInDateFromDB(dataInizio, dataFine);
+    } else {
+      return _getGuadagniTotaliFromDB();
+    }
+  }
 
 
 }
