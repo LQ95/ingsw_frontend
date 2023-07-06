@@ -7,9 +7,22 @@ import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'entity/Utente.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:ingsw_frontend/SchermataMessaggi.dart';
+
 final port= ReceivePort();
 final outputFromIsolate= StreamQueue<dynamic>(port);
 var sendPort; //inizializzato propriamente nel punto in cui è spawnato l'isolate.
+
+Future<void> showAlertNuoviMess(BuildContext context) async {
+  bool show = await outputFromIsolate.next;
+  if(show) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.info,
+        text: "Nuovi messaggi",
+        title: "Attenzione"
+    );
+  }
+}
+
 const String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
 
 

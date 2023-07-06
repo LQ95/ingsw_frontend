@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'dart:isolate';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../GlobImport.dart';
 import '../entity/Utente.dart';
@@ -11,51 +8,46 @@ import '../entity/Utente.dart';
 class ThreadControl{
 
   @pragma('vm:entry-point')
-  Future<void> NotificationCheck(Utente user) async { //TODO capire come killare sto thread al logout
+  Future<void> NotificationCheck(SendPort p) async { //TODO capire come killare sto thread al logout
     final communicationPort=ReceivePort();
-    //p.send(communicationPort.sendPort); //TODO l'isolate va spawnato passandogli direttamente una sendport
+    p.send(communicationPort.sendPort); //l'isolate va spawnato passandogli direttamente una sendport
     Map<String, dynamic> localList=Map<String, dynamic>();
     Map<String, dynamic> newList=Map<String, dynamic>();
     bool popupWasFlashed=false;
-    Utente usr;
-    BuildContext context;
+    Utente usr=Utente();
 
     // print("utente:"+user.toString());
 
-    /*await for (final message in communicationPort) {
-        if (message is Utente) {
-          usr=message;
-          // Send the result to the main isolate.
-        } else if (message == null) {
-          //TODO completare la logica e capire tuti i casi possibili
-        }*/
-
-    while(user.getNome != ""){
-      await Future.delayed(const Duration(seconds: 1));
-      // print("entra nel loop");
-
-      // aspetta messagi dal thread principale.
-      /*await for (final message in communicationPort) {
-        if (message is BuildContext) {
-          context=message;
-          // Send the result to the main isolate.
-        } else if (message == null) {
-          //TODO completare la logica e capire tuti i casi possibili
-        }*/
-
-      newList= await findUnreadMessages(user);
-      popupWasFlashed=!areThereNewMessages(localList,newList);
-      if(!popupWasFlashed)
-      {
-        //TODO la funzione per fare la notifica
-        print("apro il popup");
-        // showAlertNuoviMess(context);
-        popupWasFlashed=true;
+    await for (final message in communicationPort) {
+      if (message is Utente) {
+        print("ricevo utente");
+        usr = message;
+        // Send the result to the main isolate.
       }
-      localList.clear();
-      localList.addAll(newList);
+      else if (message is String) {
+        await Future.delayed(const Duration(seconds: 1));
+        print("entra nel loop");
+        print("il thread ha ricevuto una stringa");
+        newList= await findUnreadMessages(usr);
+        popupWasFlashed=!areThereNewMessages(localList,newList);
+        if(!popupWasFlashed)
+        {
+          //TODO la funzione per fare la notifica
+          print("apro il popup");
+          p.send(true); //attiva flag per mostrare il popup
+          popupWasFlashed=true;
+        }
+        localList.clear();
+        localList.addAll(newList);
+        // Send the result to the main isolate.
+      } else if (message == null) {
+        //TODO completare la logica e capire tuti i casi possibili
+      }
     }
-    // print("thread notifiche finito.è stato effettuato il logout?");
+    print("stampo utente");
+    print(usr);
+
+    print("thread notifiche finito.è stato effettuato il logout?");
 
   }
 
@@ -104,12 +96,6 @@ class ThreadControl{
 
   }
 
-  void showAlertNuoviMess(BuildContext context) {
-    QuickAlert.show(context: context,
-        type: QuickAlertType.info,
-        text: "Nuovi messaggi",
-        title: "Attenzione"
-    );
-  }
+
 
 }

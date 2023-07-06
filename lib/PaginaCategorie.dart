@@ -27,7 +27,10 @@ class PaginaCategorieState extends State<PaginaCategorie> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    //sendPort.send(context);
+    print("manda stringa");
+    sendPort.send(Utente().getNome);
+    print("costruisce widget");
+    showAlertNuoviMess(context);
     generaWidgetCategorie() async {
       CategoriaControl db = CategoriaControl();
       List<dynamic>? listaCategorie = await db.getAllCategorieFromDB();

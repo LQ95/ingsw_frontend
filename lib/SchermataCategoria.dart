@@ -30,7 +30,10 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    //sendPort.send(context);
+    print("manda stringa");
+    sendPort.send(Utente().getNome);
+    print("costruisce widget");
+    showAlertNuoviMess(context);
     generaWidgetPietanze() async{
 
       CategoriaControl db = CategoriaControl();

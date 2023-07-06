@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'GlobImport.dart';
 import "PaginaCategorie.dart";
 import "PaginaPietanze.dart";
+import 'entity/Utente.dart';
 
 class PaginaMenu extends StatefulWidget{
   final String title="PaginaMenu";
@@ -15,7 +16,10 @@ class PaginaMenu extends StatefulWidget{
 class PaginaMenuState extends State<PaginaMenu> {
   @override
   Widget build(BuildContext context) {
-    //sendPort.send(context);
+    print("manda stringa");
+    sendPort.send(Utente().getNome);
+    print("costruisce widget");
+    showAlertNuoviMess(context);
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
     return Scaffold(

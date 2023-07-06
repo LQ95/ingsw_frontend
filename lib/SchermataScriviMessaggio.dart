@@ -17,7 +17,10 @@ class SchermataScriviMessaggi extends StatefulWidget{
 class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
   final controller1 = TextEditingController();
   Widget build(BuildContext context) {
-    //sendPort.send(context);
+    print("manda stringa");
+    sendPort.send(Utente().getNome);
+    print("costruisce widget");
+    showAlertNuoviMess(context);
     context;
     return Scaffold(
       appBar:GlobalAppBar,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/PaginaMenu.dart';
 import 'package:ingsw_frontend/PaginaOrdinazioniTavoli.dart';
 import 'GlobImport.dart';
+import 'entity/Utente.dart';
 
 class MenuPrincipale extends StatefulWidget{
   final String title="MenuPrincipale";
@@ -16,7 +17,10 @@ class MenuPrincipale extends StatefulWidget{
 class MenuPrincipaleState extends State<MenuPrincipale>{
   @override
   Widget build(BuildContext context) {
-    //sendPort.send(context);
+    print("manda stringa");
+    sendPort.send(Utente().getNome);
+    print("costruisce widget");
+    showAlertNuoviMess(context);
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
     return WillPopScope(onWillPop: () async => false,
@@ -50,5 +54,6 @@ class MenuPrincipaleState extends State<MenuPrincipale>{
         ),
       ),
     );
+
   }
 }

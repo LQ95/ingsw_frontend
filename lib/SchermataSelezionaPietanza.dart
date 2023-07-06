@@ -32,7 +32,10 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    //sendPort.send(context);
+    print("manda stringa");
+    sendPort.send("continua");
+    print("costruisce widget");
+    showAlertNuoviMess(context);
     Future<List<Widget>> generaWidgetPietanze() async {
       CategoriaControl dbCat = CategoriaControl();
       List<dynamic>? listaPietanze =
