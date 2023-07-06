@@ -91,6 +91,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
 
   @override
   Widget build(BuildContext context) {
+    //sendPort.send(context);
     return Builder(
       builder: (BuildContext context) {
 

@@ -9,7 +9,7 @@ class SchermataFunzioniAmministratore extends StatelessWidget{
   Widget build(BuildContext context) {
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
-
+    //sendPort.send(context);
     return Scaffold(
       appBar:GlobalAppBar,
       drawer: buildDrawer(context),

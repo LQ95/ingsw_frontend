@@ -22,7 +22,7 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
+    //sendPort.send(context);
     generaWidgetPietanze() async {
       OrdinazioneControl db = OrdinazioneControl();
       List<dynamic>? listaPietanze = await db.getAllPietanzeFromOrdinazione(widget.idOrdinazione);

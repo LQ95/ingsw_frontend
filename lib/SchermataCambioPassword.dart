@@ -25,6 +25,7 @@ class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
 
   @override
   Widget build(BuildContext context) {
+    //sendPort.send(context);
     //ritrovano il testo immesso nei textfield
     final controller1 = TextEditingController();
     final controller2 = TextEditingController();

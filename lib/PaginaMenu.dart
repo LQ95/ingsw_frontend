@@ -15,7 +15,7 @@ class PaginaMenu extends StatefulWidget{
 class PaginaMenuState extends State<PaginaMenu> {
   @override
   Widget build(BuildContext context) {
-
+    //sendPort.send(context);
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
     return Scaffold(

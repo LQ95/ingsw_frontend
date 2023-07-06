@@ -17,6 +17,7 @@ class SchermataScriviMessaggi extends StatefulWidget{
 class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
   final controller1 = TextEditingController();
   Widget build(BuildContext context) {
+    //sendPort.send(context);
     context;
     return Scaffold(
       appBar:GlobalAppBar,

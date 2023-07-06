@@ -16,7 +16,7 @@ class MenuPrincipale extends StatefulWidget{
 class MenuPrincipaleState extends State<MenuPrincipale>{
   @override
   Widget build(BuildContext context) {
-
+    //sendPort.send(context);
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
     return WillPopScope(onWillPop: () async => false,

@@ -24,7 +24,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
+    //sendPort.send(context);
     generaWidgetTavoli() async {
       TavoloControl db = TavoloControl();
       List<dynamic>? listaTavoli = await db.getAllTavoliFromDB();

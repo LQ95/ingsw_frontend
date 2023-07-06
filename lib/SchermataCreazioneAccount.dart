@@ -29,6 +29,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
 
   @override
   Widget build(BuildContext context) {
+    //sendPort.send(context);
     //ritrovano il testo immesso nei textfield
     return Scaffold(
       resizeToAvoidBottomInset: false,
