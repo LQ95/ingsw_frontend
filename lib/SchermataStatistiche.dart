@@ -37,17 +37,18 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
     });
   }
 
-
   Future<Widget> generaGrafico(List<OrdinazioneData> data) async {
+    int height = MediaQuery.of(context).size.height.toInt();
 
-    charts.Series<OrdinazioneData, DateTime> series =
-    charts.Series<OrdinazioneData, DateTime>(
+    double incassoComplessivo = data.fold(0.0, (previousValue, element) => previousValue + element.price);
+    double incassoMedio = incassoComplessivo / data.fold(0, (previousValue, element) => previousValue + (element.numeroConti ?? 0));
+
+    charts.Series<OrdinazioneData, DateTime> series = charts.Series<OrdinazioneData, DateTime>(
       id: 'Ordinazioni',
       domainFn: (OrdinazioneData data, _) => data.date,
       measureFn: (OrdinazioneData data, _) => data.price,
       data: data,
-      labelAccessorFn: (OrdinazioneData data, _) =>
-      '${data.date.day}/${data.date.month}/${data.date.year}\n${data.price.toStringAsFixed(2)}',
+      labelAccessorFn: (OrdinazioneData data, _) => '${data.date.day}/${data.date.month}/${data.date.year}\n${data.price.toStringAsFixed(2)}',
     );
 
     charts.TimeSeriesChart chart = charts.TimeSeriesChart(
@@ -57,10 +58,8 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
       behaviors: [
         charts.LinePointHighlighter(
           symbolRenderer: charts.CircleSymbolRenderer(),
-          showHorizontalFollowLine:
-          charts.LinePointHighlighterFollowLineType.nearest,
-          showVerticalFollowLine:
-          charts.LinePointHighlighterFollowLineType.nearest,
+          showHorizontalFollowLine: charts.LinePointHighlighterFollowLineType.nearest,
+          showVerticalFollowLine: charts.LinePointHighlighterFollowLineType.nearest,
         ),
         charts.SelectNearest(
           eventTrigger: charts.SelectionTrigger.tapAndDrag,
@@ -82,15 +81,38 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
       ],
     );
 
-    return SizedBox(
-      height: 300,
-      child: chart,
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                'Incasso complessivo: ${incassoComplessivo.toStringAsFixed(2)}€',
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Incasso medio: ${incassoMedio.toStringAsFixed(2)}€',
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: height * 0.3,
+            child: chart,
+          ),
+        ],
+      ),
     );
   }
 
 
   @override
   Widget build(BuildContext context) {
+
+    int width = MediaQuery.of(context).size.width.toInt();
+    int height = MediaQuery.of(context).size.height.toInt();
     print("manda stringa");
     sendPort.send("continua");
     print("costruisce widget");
@@ -143,14 +165,17 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                 ),
               ),
               Center(
-                child: ValueListenableBuilder<OrdinazioneData?>(
-                  valueListenable: widget.selectedDataNotifier,
-                  builder: (context, selectedData, _) {
-                    if (selectedData == null) {
-                      return const SizedBox.shrink();
-                    }
-                    return Text('$selectedData');
-                  },
+                child: SizedBox(
+                  height: height*0.15,
+                  child: ValueListenableBuilder<OrdinazioneData?>(
+                    valueListenable: widget.selectedDataNotifier,
+                    builder: (context, selectedData, _) {
+                      if (selectedData == null) {
+                        return const SizedBox.shrink();
+                      }
+                      return Text('$selectedData');
+                    },
+                  ),
                 ),
               ),
               Padding(
@@ -182,28 +207,6 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                           Text(dataFine!.toIso8601String()),
                       ],
                     ),
-                    // DropdownButton<String>(
-                    //   value: dropdownValue,
-                    //   elevation: 16,
-                    //   style: const TextStyle(color: Colors.black),
-                    //   underline: Container(
-                    //     height: 1,
-                    //     color: Colors.black,
-                    //   ),
-                    //   onChanged: (String? value) {
-                    //     setState(() {
-                    //       dropdownValue = value!;
-                    //     });
-                    //   },
-                    //   items: listaStatistiche.map<DropdownMenuItem<String>>(
-                    //         (String value) {
-                    //       return DropdownMenuItem<String>(
-                    //         value: value,
-                    //         child: Text(value),
-                    //       );
-                    //     },
-                    //   ).toList(),
-                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [

@@ -21,7 +21,7 @@ class StatisticheControl {
 
       Map<DateTime, List<double>> stats = {};
       jsonResponse.forEach((dateString, prices) {
-        var date = DateTime.parse(dateString);
+        var date = DateTime.parse(dateString).toLocal();
         var pricesList = (prices as List<dynamic>).cast<double>();
         stats[date] = pricesList;
       });
@@ -74,7 +74,7 @@ class StatisticheControl {
 
       Map<DateTime, List<double>> stats = {};
       jsonResponse.forEach((dateString, prices) {
-        var date = DateTime.parse(dateString);
+        var date = DateTime.parse(dateString).toLocal();
         var pricesList = (prices as List<dynamic>).cast<double>(); // Aggiunta del cast
         stats[date] = pricesList;
       });
