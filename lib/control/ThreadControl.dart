@@ -42,12 +42,14 @@ class ThreadControl{
         // Send the result to the main isolate.
       } else if (message == null) {
         //TODO completare la logica e capire tuti i casi possibili
+        break;
       }
     }
     print("stampo utente");
     print(usr);
 
     print("thread notifiche finito.è stato effettuato il logout?");
+    Isolate.exit();
 
   }
 

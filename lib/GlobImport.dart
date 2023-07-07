@@ -146,7 +146,7 @@ void showAlertConfermaLogout(BuildContext context) {
       utente.setRuolo= "";
       utente.setPrimoAccesso= "";
       utente.setId = -1;
-      //sendPort.send(null);
+      sendPort.send(null);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>SchermataLogin()));  //Cancella lo stack e naviga verso login
     },
     onCancelBtnTap: () => Navigator.pop(context),
