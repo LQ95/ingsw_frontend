@@ -9,6 +9,7 @@ class ThreadControl{
 
   @pragma('vm:entry-point')
   Future<void> NotificationCheck(SendPort p) async { //TODO capire come killare sto thread al logout
+    print("entro nell'isolate");
     final communicationPort=ReceivePort();
     p.send(communicationPort.sendPort); //l'isolate va spawnato passandogli direttamente una sendport
     Map<String, dynamic> localList=Map<String, dynamic>();

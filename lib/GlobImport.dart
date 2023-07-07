@@ -8,9 +8,9 @@ import 'entity/Utente.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:ingsw_frontend/SchermataMessaggi.dart';
 
-final port= ReceivePort();
-final outputFromIsolate= StreamQueue<dynamic>(port);
-var sendPort; //inizializzato propriamente nel punto in cui è spawnato l'isolate.
+var port= ReceivePort();
+var outputFromIsolate;
+var sendPort; //inizializzati propriamente nel punto in cui è spawnato l'isolate.
 
 Future<void> showAlertNuoviMess(BuildContext context) async {
   bool show = await outputFromIsolate.next;
@@ -140,7 +140,7 @@ void showAlertConfermaLogout(BuildContext context) {
     title: "Sei sicuro di voler uscire?",
     confirmBtnText: "Si",
     cancelBtnText: "No",
-    onConfirmBtnTap: () {
+    onConfirmBtnTap: () async {
       Utente utente = Utente();
       utente.setNome = "";
       utente.setRuolo= "";
@@ -148,6 +148,8 @@ void showAlertConfermaLogout(BuildContext context) {
       utente.setId = -1;
       sendPort.send(null);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>SchermataLogin()));  //Cancella lo stack e naviga verso login
+      await outputFromIsolate.cancel(immediate: true);
+      outputFromIsolate=null;
     },
     onCancelBtnTap: () => Navigator.pop(context),
   );

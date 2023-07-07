@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:isolate';
+import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
 import 'package:ingsw_frontend/control/ThreadControl.dart';
 import 'MessaggiControl.dart';
@@ -70,9 +71,10 @@ class UtenteControl{
       //selectDrawer();
       ThreadControl TD = ThreadControl();
       //TODO mandare la porta per comunicare all'isolate e inizializzarla prima
-
+      port= ReceivePort();
       await Isolate.spawn(TD.NotificationCheck,port.sendPort);  //Non sono sicuro vada bene qui
       //aspetto che l'isolate mi mandi la send port da cui inviargli i context che servono ogni volta ai popup
+      outputFromIsolate= StreamQueue<dynamic>(port);
       sendPort = await outputFromIsolate.next;
       print("manda info utente");
       sendPort.send(User);
