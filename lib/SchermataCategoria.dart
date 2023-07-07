@@ -23,6 +23,9 @@ class SchermataCategoria extends StatefulWidget{
 class SchermataCategoriaState extends State<SchermataCategoria> {
   final int idCategoria;
 
+  Utente utente = Utente();
+  CategoriaControl db = CategoriaControl();
+
   SchermataCategoriaState(this.idCategoria);
 
   @override
@@ -36,7 +39,6 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
     showAlertNuoviMess(context);
     generaWidgetPietanze() async{
 
-      CategoriaControl db = CategoriaControl();
       List<dynamic>? listaPietanze = await  db.getPietanzeFromCategoria(widget.idCategoria);
 
       listaPietanze = listaPietanze?.reversed.toList();
@@ -138,7 +140,6 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
                         ),
                         child: IconButton(
                           onPressed: () {
-                            Utente utente = Utente();
                             if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
                               showAlertConferma(listaPietanze?[index]['id']);
                             } else {
@@ -162,6 +163,8 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
         return const Text("");
       }
     }
+
+
     return Scaffold(
       appBar: GlobalAppBar,
       drawer: buildDrawer(context),
@@ -196,7 +199,15 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
                       ),
                       ElevatedButton(onPressed: () async
                       {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  SchermataAggiungiPietanza(catId:idCategoria))).then((value) => setState(() {}));
+                        if ((utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE")) {
+                          Navigator.push(context, MaterialPageRoute(builder: (
+                              context) =>
+                              SchermataAggiungiPietanza(catId: idCategoria)))
+                              .then((value) => setState(() {}));
+                        }
+                        else {
+                          showAlertErrore("Non hai i permessi necessari per compiere quest'azione!");
+                        }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF66420F),
@@ -250,7 +261,6 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
       confirmBtnText: "Si",
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
-        CategoriaControl db = CategoriaControl();
         Navigator.pop(context);
         if(await db.deletePietanzaFromDB(widget.idCategoria, idPietanza) == "SUCCESSO") {
           setState((){});

@@ -31,7 +31,7 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+
     print("manda stringa");
     sendPort.send("continua");
     print("costruisce widget");
@@ -96,11 +96,18 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
                       style: TextStyle(color: Colors.white70),
                     ),
                   ),
-                  const Text(
-                    'Scegli quale pietanza aggiungere',
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontSize: 32,
+                  SizedBox(
+                    width: width*0.5,
+                    child: const Center(
+                      child: Text(
+                        'Scegli quale pietanza aggiungere',
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 32,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                   ElevatedButton(
@@ -254,7 +261,7 @@ class _ContatorePietanzaState extends State<ContatorePietanza> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.45,
+                      width: MediaQuery.of(context).size.width * 0.40,
                       child: Text(
                         widget.pietanza['name'],
                         style: const TextStyle(

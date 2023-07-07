@@ -4,6 +4,8 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'GlobImport.dart';
 import 'control/PietanzeControl.dart';
 import 'entity/Utente.dart';
+
+
 class PaginaPietanze extends StatefulWidget{
   final String title="PaginaPietanze";
 
@@ -14,7 +16,8 @@ class PaginaPietanze extends StatefulWidget{
 }
 
 class PaginaPietanzeState extends State<PaginaPietanze> {
-
+  Utente utente = Utente();
+  PietanzeControl db = PietanzeControl();
   //Popup per inserimento e modifica dati
   OverlayEntry? entry;
   bool overlayAperto = false;
@@ -33,7 +36,6 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
     showAlertNuoviMess(context);
     generaWidgetPietanze() async{
 
-      PietanzeControl db = PietanzeControl();
       List<dynamic>? listaPietanze = await  db.getAllPietanzeFromDB();
 
       listaPietanze = listaPietanze?.reversed.toList();
@@ -80,13 +82,19 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                                   ),
                                   child: IconButton(
                                     onPressed: () {
-                                      showOverlay(
-                                        idPietanza: listaPietanze?[index]['id'],
-                                        titolo: listaPietanze?[index]['name'],
-                                        descrizione: listaPietanze?[index]['descrizione'],
-                                        allergeni: listaPietanze?[index]['allergeni'],
-                                        costo: listaPietanze?[index]['costo'],
-                                      );
+                                      if ((utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") && overlayAperto == false) {
+                                        overlayAperto = true;
+                                        showOverlay(
+                                          idPietanza: listaPietanze?[index]['id'],
+                                          titolo: listaPietanze?[index]['name'],
+                                          descrizione: listaPietanze?[index]['descrizione'],
+                                          allergeni: listaPietanze?[index]['allergeni'],
+                                          costo: listaPietanze?[index]['costo'],
+                                        );
+                                      }
+                                      else {
+                                        showAlertErrore("Non hai i permessi per eseguire quest'azione!");
+                                      }
                                     },
                                     icon: const Icon(Icons.create_outlined),
                                     padding: EdgeInsets.zero,
@@ -121,7 +129,12 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                                   ),
                                   child: IconButton(
                                     onPressed: () {
-                                      showAlertConferma(listaPietanze?[index]['id']);
+                                      if ((utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE")) {
+                                        showAlertConferma(listaPietanze?[index]['id']);
+                                      }
+                                      else {
+                                        showAlertErrore("Non hai i permessi per eseguire quest'azione!");
+                                      }
                                     },
                                     icon: const Icon(Icons.delete_outline),
                                     padding: EdgeInsets.zero,
@@ -151,7 +164,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text(listaPietanze![index]['costo'].toString() + "€", style: const TextStyle(
+                                Text("${listaPietanze![index]['costo']}€", style: const TextStyle(
                                     color: Colors.black87),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,)
@@ -202,13 +215,15 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                               color: Colors.white70),),
                         ),
                         ElevatedButton(onPressed: () {
-                          Utente utente = Utente();
                           if ((utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") && overlayAperto == false) {
                             // Navigator.push(
                             //     localcontext, MaterialPageRoute(builder: (
                             //     context) => const SchermataScriviMessaggi()));
                             overlayAperto = true;
                             WidgetsBinding.instance!.addPostFrameCallback((timeStamp) => showOverlay());
+                          }
+                          else {
+                            showAlertErrore("Non hai i permessi per eseguire quest'azione!");
                           }
                         },
                           style: ElevatedButton.styleFrom(
@@ -326,7 +341,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                       controller: controllerTitolo,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Nome Categoria:',
+                        labelText: 'Nome Pietanza:',
                       ),
                     ),),)
                   ]
@@ -383,7 +398,6 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                         if (controllerTitolo.text.isNotEmpty && controllerCosto
                             .text
                             .isNotEmpty) {
-                          PietanzeControl db = PietanzeControl();
                           String creazioneAvvenutaConSuccesso = await db
                               .sendPietanzaToDb(
                               controllerTitolo.text, controllerDescrizione.text,
@@ -412,7 +426,6 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
 
                         }
                       } else {
-                        PietanzeControl db = PietanzeControl();
                         String modificaAvvenutaConSuccesso = await db.modificaPietanzainDB(idPietanza, controllerTitolo.text, controllerDescrizione.text,
                             controllerAllergeni.text, controllerCosto.text);
                         if (modificaAvvenutaConSuccesso ==
@@ -485,7 +498,6 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
       confirmBtnText: "Si",
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
-        PietanzeControl db = PietanzeControl();
         Navigator.pop(context);
         if(await db.deletePietanzaFromDB(idPietanza) == "SUCCESSO") {
           setState((){});

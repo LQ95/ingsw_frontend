@@ -23,7 +23,7 @@ Future<void> showAlertNuoviMess(BuildContext context) async {
   }
 }
 
-const String baseUrl = '192.168.1.3:8080'; //Ip Marco  192.168.1.138:8080
+const String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
 
 
 // ListTile funzioniAdmin=ListTile(

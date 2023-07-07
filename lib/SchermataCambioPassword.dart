@@ -4,7 +4,6 @@ import 'package:ingsw_frontend/control/UtenteControl.dart';
 import 'package:quickalert/quickalert.dart';
 
 import 'package:flutter/material.dart';
-
 import 'MenuPrincipale.dart';
 import 'entity/Utente.dart';
 
@@ -21,14 +20,14 @@ class SchermataCambioPassword extends StatefulWidget {
 }
 
 class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
-  //Ma
+
+  final controller1 = TextEditingController();
+  final controller2 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     //sendPort.send(context);
     //ritrovano il testo immesso nei textfield
-    final controller1 = TextEditingController();
-    final controller2 = TextEditingController();
     double altezzaBox = 0.0;
     if (Platform.isAndroid){
       altezzaBox = 0.6;
@@ -110,35 +109,42 @@ class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
                                       ],
                                     ),
                                     Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [Expanded(child:
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 64, right: 64,),
-                                          child: TextField(
-                                            controller: controller1,
-                                            obscureText: true,
-                                            decoration: const InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              labelText: 'Nuova Password:',
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(left: 64, right: 64,),
+                                            child: TextFormField(
+                                              controller: controller1,
+                                              obscureText: true,
+                                              decoration: const InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                labelText: 'Nuova Password:',
+                                              ),
                                             ),
-                                          ),),)
-                                        ]
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [Expanded(child:
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 64, right: 64,),
-                                          child: TextField(
-                                            controller: controller2,
-                                            obscureText: true,
-                                            decoration: const InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              labelText: 'Conferma Password:',
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(left: 64, right: 64,),
+                                            child: TextFormField(
+                                              controller: controller2,
+                                              obscureText: true,
+                                              decoration: const InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                labelText: 'Conferma Password:',
+                                              ),
                                             ),
-                                          ),),)
-                                        ]
+                                          ),
+                                        ),
+                                      ],
                                     ),
+
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
