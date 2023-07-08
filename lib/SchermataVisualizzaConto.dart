@@ -26,6 +26,8 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
     sendPort.send("continua");
     print("costruisce widget");
     showAlertNuoviMess(context);
+
+
     generaWidgetPietanze() async {
       OrdinazioneControl db = OrdinazioneControl();
       List<dynamic>? listaPietanze = await db.getAllPietanzeFromOrdinazione(widget.idOrdinazione);
@@ -382,11 +384,12 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
       cancelBtnText: "No",
       onConfirmBtnTap: ()  async {
         OrdinazioneControl db = OrdinazioneControl();
-        if(await db.closeCurrentOrdinazione(idTavolo) == true) {
+        try {
+          await db.closeCurrentOrdinazione(idTavolo);
           Navigator.pop(context);
           showAlertSuccesso("L'ordinazione è stata chiusa correttamente");
         }
-        else {
+        catch (e) {
           showAlertErrore("Qualcosa è andato storto, riprova più tadi...");
         }
 

@@ -5,22 +5,19 @@ import '../GlobImport.dart';
 import 'package:http/http.dart' as http;
 
 class OrdinazioneControl {
-
   Future<Map<String, dynamic>?> getCurrentOrdinazione(int tavolo) async {
-    var apiUrl = Uri.http(baseUrl, "api/v1/ordinazione/getcurrent",
-        {"tavoloId": tavolo.toString()});
+    var apiUrl = Uri.http(baseUrl, "api/v1/ordinazione/getcurrent", {"tavoloId": tavolo.toString()});
     var response = await http.get(apiUrl);
 
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
-        Map<String, dynamic> ordinazione = jsonDecode(
-            utf8.decode(response.bodyBytes));
+        Map<String, dynamic> ordinazione = jsonDecode(utf8.decode(response.bodyBytes));
         return ordinazione;
       } else {
-        return null; // Gestione del caso in cui il corpo della risposta sia vuoto
+        return null;
       }
     } else {
-      return null; // Gestione degli altri codici di stato HTTP diversi da 200
+        return null;
     }
   }
 
@@ -32,48 +29,40 @@ class OrdinazioneControl {
       var jsonResponse = jsonDecode(response.body);
       return jsonResponse;
     } else {
-      return null;
+      throw Exception("Codice di stato HTTP diverso da 200"); // Eccezione per codici di stato HTTP diversi da 200
     }
   }
 
-
-  Future<bool> closeCurrentOrdinazione(String tavolo) async {
-    var apiUrl = Uri.http(
-        baseUrl, "api/v1/ordinazione/closecurrent",
-        {"tavoloId": tavolo.toString()});
+  Future<void> closeCurrentOrdinazione(String tavolo) async {
+    var apiUrl = Uri.http(baseUrl, "api/v1/ordinazione/closecurrent", {"tavoloId": tavolo.toString()});
     var response = await http.put(apiUrl);
-    List<dynamic> ordinazione;
 
-    if (response.statusCode == 200) {
-      return true;
-    }
-    else {
-      return false;
+    if (response.statusCode != 200) {
+      throw Exception("Codice di stato HTTP diverso da 200"); // Eccezione per codici di stato HTTP diversi da 200
     }
   }
 
   Future<String> sendOrdinazioneToDb(int tavolo) async {
-    var apiUrl = Uri.http(baseUrl,
-        '/api/v1/ordinazione'); //URL del punto di contatto della API
-    var response = await http.post(apiUrl,
-        //questa è la response,in cui è definita anche la request, direttamente
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'tavolo': tavolo.toString(),})
+    var apiUrl = Uri.http(baseUrl, '/api/v1/ordinazione');
+    var response = await http.post(
+      apiUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'tavolo': tavolo.toString(),
+      }),
     );
 
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
 
-    if (response.statusCode.toInt() == 200) {
+    if (response.statusCode == 200) {
       return "SUCCESSO";
-    } else if (response.statusCode.toInt() == 500) {
+    } else if (response.statusCode == 500) {
       return "FALLIMENTO";
-    }
-    else {
-      return "ERRORE INASPETTATO";
+    } else {
+      throw Exception("Errore inaspettato"); // Eccezione per altri codici di stato HTTP
     }
   }
 
@@ -85,7 +74,7 @@ class OrdinazioneControl {
         'pietanzaId': pietanzaId.toString(),
         'OrdinazId': ordinazioneId.toString(),
       },
-    ); // URL del punto di contatto della API
+    );
 
     var response = await http.post(
       apiUrl,
@@ -94,13 +83,12 @@ class OrdinazioneControl {
       },
     );
 
-    if (response.statusCode.toInt() == 200) {
+    if (response.statusCode == 200) {
       return "SUCCESSO";
-    } else if (response.statusCode.toInt() == 500) {
-      return "FALLIMENTO";
+    } else if (response.statusCode == 500) {
+      throw Exception("Errore interno del server"); // Eccezione per codice di stato HTTP 500
     } else {
-      return "ERRORE INASPETTATO";
+      throw Exception("Errore inaspettato"); // Eccezione per altri codici di stato HTTP
     }
   }
-
 }

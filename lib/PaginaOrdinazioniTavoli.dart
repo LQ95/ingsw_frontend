@@ -57,25 +57,25 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                     borderRadius: BorderRadius.all(Radius.circular(25)),
                   ),
                   child: ElevatedButton(
-                    onPressed: () async {
-                      Utente utente = Utente();
-                      OrdinazioneControl db = OrdinazioneControl();
-                      Map<String, dynamic>? ordinazione = await db.getCurrentOrdinazione(listaTavoli![index]['id']);
-                      if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE"){
-                        if (ordinazione == null) {
-                          showAlert("Non è presente nessun'ordinazione per questo tavolo, per favore riprova dopo che né è stata aperta una!");
-                        }
-                        else {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataVisualizzaConto(idTavolo: listaTavoli![index]['id'].toString(), idOrdinazione: ordinazione['id'])));
-                        }
-                      } else {
-                        if(ordinazione == null){
-                          showAlertConferma(listaTavoli![index]['id']);
-                        }
-                        else {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'], idOrdinazione: ordinazione['id'])));
-                        }
+                    onPressed: () async {Utente utente = Utente();
+                    OrdinazioneControl db = OrdinazioneControl();
+                    Map<String, dynamic>? ordinazione = await db.getCurrentOrdinazione(listaTavoli![index]['id']);
+                    if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE"){
+                      if (ordinazione == null) {
+                        showAlert("Non è presente nessun'ordinazione per questo tavolo, per favore riprova dopo che né è stata aperta una!");
                       }
+                      else {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataVisualizzaConto(idTavolo: listaTavoli![index]['id'].toString(), idOrdinazione: ordinazione['id'])));
+                      }
+                    } else {
+                      if(ordinazione == null){
+                        showAlertConferma(listaTavoli![index]['id']);
+                      }
+                      else {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'], idOrdinazione: ordinazione['id'])));
+                      }
+                    }
+
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 7,
@@ -240,23 +240,22 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
       title: "Nessun'ordinazione presente",
       confirmBtnText: "Si",
       cancelBtnText: "No",
-      onConfirmBtnTap: ()  async {
-        OrdinazioneControl db = OrdinazioneControl();
+      onConfirmBtnTap: ()  async {OrdinazioneControl db = OrdinazioneControl();
+      try {
         String successo = await db.sendOrdinazioneToDb(idTavolo);
         Map<String, dynamic>? ordinazione = await db.getCurrentOrdinazione(idTavolo);
 
-        if(successo == "SUCCESSO"){
+        if (successo == "SUCCESSO") {
           Navigator.pop(context);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: idTavolo,idOrdinazione: ordinazione!['id'])));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: idTavolo, idOrdinazione: ordinazione!['id'])));
           showAlertSuccesso("Ordinazione aperta correttamente");
-        }
-        else {
+        } else {
           Navigator.pop(context);
           showAlertErrore("C'è stato un problema nell'aprire l'ordinazione, forse è già stata creata una nuova ordinazione per questo tavolo");
         }
-
-
-
+      } catch (e) {
+        showAlertErrore("Si è verificato un errore: ${e.toString()}");
+      }
       },
       onCancelBtnTap: () => Navigator.pop(context),
     );

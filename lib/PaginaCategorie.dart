@@ -21,6 +21,7 @@ class PaginaCategorieState extends State<PaginaCategorie> {
   OverlayEntry? entry;
   bool overlayAperto = false;
   final controllerTitolo = TextEditingController();
+  CategoriaControl db = CategoriaControl();
 
 
   @override
@@ -32,7 +33,6 @@ class PaginaCategorieState extends State<PaginaCategorie> {
     print("costruisce widget");
     showAlertNuoviMess(context);
     generaWidgetCategorie() async {
-      CategoriaControl db = CategoriaControl();
       List<dynamic>? listaCategorie = await db.getAllCategorieFromDB();
       if (listaCategorie != null) {
         return Align(
@@ -246,13 +246,12 @@ class PaginaCategorieState extends State<PaginaCategorie> {
       confirmBtnText: "Si",
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
-        CategoriaControl db = CategoriaControl();
         Navigator.pop(context);
-        if(await db.deleteCategoriaFromDB(idCategoria) == "SUCCESSO") {
-          setState((){});
+        try {
+          await db.deleteCategoriaFromDB(idCategoria);
+          setState(() {});
           showAlertSuccesso("La categoria è stata eliminata correttamente");
-        }
-        else {
+        } catch (e) {
           showAlertErrore("Non siamo riusciti ad eliminare la categoria, per favore riprova più tardi...");
         }
       },
@@ -335,22 +334,13 @@ class PaginaCategorieState extends State<PaginaCategorie> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (controllerTitolo.text.isNotEmpty) {
-                          CategoriaControl db = CategoriaControl();
-                          String creazioneAvvenutaConSuccesso = await db.sendCategoriaToDb(controllerTitolo.text);
-
-                          if (creazioneAvvenutaConSuccesso == "SUCCESSO") {
-                            showAlertSuccesso(
-                              "Eccellente, il piatto è stato inserito con successo!",
-                            );
+                          try {
+                            await db.sendCategoriaToDb(controllerTitolo.text);
+                            showAlertSuccesso("Eccellente, il piatto è stato inserito con successo!");
                             setState(() {});
                             hideOverlay();
-                          } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO") {
-                            showAlertErrore("Ops, riprova...");
-                            hideOverlay();
-                          } else {
-                            showAlertErrore(
-                              "Si è verificato un errore inaspettato, per favore riprovare...",
-                            );
+                          } catch (e) {
+                            showAlertErrore("Si è verificato un errore, per favore riprovare...");
                             hideOverlay();
                           }
                         } else {

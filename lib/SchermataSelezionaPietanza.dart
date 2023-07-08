@@ -27,6 +27,7 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
 
   Map<int, int> pietanzeSelezionate = {}; //il primo int è l'id dela pietanza, il secondo è la quantità
   Map<int,double> costi = {};
+  CategoriaControl dbCat = CategoriaControl();
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +37,22 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
     sendPort.send("continua");
     print("costruisce widget");
     showAlertNuoviMess(context);
+
+
     Future<List<Widget>> generaWidgetPietanze() async {
-      CategoriaControl dbCat = CategoriaControl();
-      List<dynamic>? listaPietanze =
-      await dbCat.getPietanzeFromCategoria(widget.idCategoria);
-      listaPietanze = listaPietanze?.reversed.toList();
-      if (listaPietanze != null) {
+      try {
+        List<dynamic>? listaPietanze = await dbCat.getPietanzeFromCategoria(widget.idCategoria);
+        listaPietanze = listaPietanze?.reversed.toList();
+
         List<int> contatori = [];
 
         return List.generate(
-          listaPietanze.length,
+          listaPietanze!.length,
               (index) {
             contatori.add(0);
             int nomePietanza = listaPietanze?[index]['id'];
             pietanzeSelezionate[nomePietanza] = contatori[index];
-            costi[nomePietanza]=listaPietanze?[index]['costo'];
+            costi[nomePietanza] = listaPietanze?[index]['costo'];
             return ContatorePietanza(
               pietanza: listaPietanze?[index],
               contatore: contatori[index],
@@ -67,10 +69,11 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
             );
           },
         );
-      } else {
+      } catch (e) {
         return [];
       }
     }
+
 
     return Scaffold(
       appBar: GlobalAppBar,

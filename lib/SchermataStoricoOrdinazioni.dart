@@ -30,100 +30,108 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
 
     generaWidgetPietanze() async {
       OrdinazioneControl db = OrdinazioneControl();
-      List<dynamic>? listaPietanze = await db.getAllPietanzeFromOrdinazione(widget.idOrdinazione);
 
-      listaPietanze = listaPietanze?.reversed.toList();
-      if (listaPietanze != null) {
-        Map<String, int> pietanzeQuantita = {};
+      try {
+        List<dynamic>? listaPietanze = await db.getAllPietanzeFromOrdinazione(
+            widget.idOrdinazione);
 
-        for (var pietanza in listaPietanze) {
-          String nomePietanza = pietanza['name'];
-          pietanzeQuantita[nomePietanza] = (pietanzeQuantita[nomePietanza] ?? 0) + 1;
-        }
+        listaPietanze = listaPietanze?.reversed.toList();
+        if (listaPietanze != null) {
+          Map<String, int> pietanzeQuantita = {};
 
-        return Wrap(
-          direction: Axis.vertical,
-          children: List.generate(
-            pietanzeQuantita.length,
-                (index) {
-              String nomePietanza = pietanzeQuantita.keys.elementAt(index);
-              int quantita = pietanzeQuantita.values.elementAt(index);
-              double costoPietanza = listaPietanze?.firstWhere((pietanza) => pietanza['name'] == nomePietanza)['costo'];
-              double costoTotale = costoPietanza * quantita;
+          for (var pietanza in listaPietanze) {
+            String nomePietanza = pietanza['name'];
+            pietanzeQuantita[nomePietanza] =
+                (pietanzeQuantita[nomePietanza] ?? 0) + 1;
+          }
 
-              return Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 16),
-                child: SizedBox(
-                  height: 100,
-                  width: width * 0.7,
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 7,
-                          spreadRadius: 5,
-                          color: Color(0xAA110505),
-                          offset: Offset(-8, 8),
-                        )
-                      ],
-                      color: Color(0xFF728514),
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              nomePietanza,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                quantita.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                costoTotale.toStringAsFixed(1) + "€",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ),
-                          ),
+          return Wrap(
+            direction: Axis.vertical,
+            children: List.generate(
+              pietanzeQuantita.length,
+                  (index) {
+                String nomePietanza = pietanzeQuantita.keys.elementAt(index);
+                int quantita = pietanzeQuantita.values.elementAt(index);
+                double costoPietanza = listaPietanze?.firstWhere((
+                    pietanza) => pietanza['name'] == nomePietanza)['costo'];
+                double costoTotale = costoPietanza * quantita;
+
+                return Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 16),
+                  child: SizedBox(
+                    height: 100,
+                    width: width * 0.7,
+                    child: DecoratedBox(
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 7,
+                            spreadRadius: 5,
+                            color: Color(0xAA110505),
+                            offset: Offset(-8, 8),
+                          )
                         ],
+                        color: Color(0xFF728514),
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                nomePietanza,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  quantita.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  costoTotale.toStringAsFixed(1) + "€",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        );
-
-      } else {
+                );
+              },
+            ),
+          );
+        } else {
+          return const Text("");
+        }
+      }
+      catch(e) {
         return const Text("");
       }
     }

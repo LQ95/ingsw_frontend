@@ -218,13 +218,14 @@ class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
       onConfirmBtnTap: () async {
         CategoriaControl db = CategoriaControl();
         Navigator.pop(context);
-        if(await db.addPietanzaToDB(idCategoria, idPietanza) == true) {
-          setState((){});
+        try {
+          await db.addPietanzaToDB(idCategoria, idPietanza);
+          setState(() {});
           showAlertSuccesso("La pietanza è stata aggiunta correttamente");
-        }
-        else {
+        } catch (e) {
           showAlertErrore("Non siamo riusciti ad aggiungere la pietanza, per favore riprova più tardi...");
         }
+
       },
       onCancelBtnTap: () => Navigator.pop(context),
     );

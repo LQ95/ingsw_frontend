@@ -262,12 +262,12 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
         Navigator.pop(context);
-        if(await db.deletePietanzaFromDB(widget.idCategoria, idPietanza) == "SUCCESSO") {
-          setState((){});
+        try {
+          await db.deletePietanzaFromDB(widget.idCategoria, idPietanza);
+          setState(() {});
           showAlertSuccesso("La pietanza è stata rimossa correttamente");
-        }
-        else {
-          showAlertErrore("Non siamo riusciti ad rimuovere la pietanza, per favore riprova più tardi...");
+        } catch (e) {
+          showAlertErrore("Non siamo riusciti a rimuovere la pietanza, per favore riprova più tardi...");
         }
       },
       onCancelBtnTap: () => Navigator.pop(context),

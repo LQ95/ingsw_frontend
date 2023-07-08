@@ -24,76 +24,83 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
     //Calcolo dell'altezza dello schermo
     double width = MediaQuery.of(context).size.width;
 
-    generaWidgetMessaggi() async{
-
+    generaWidgetMessaggi() async {
       MessaggiControl db = MessaggiControl();
-      List<dynamic>? listaMessaggi = await  db.getAllMessaggiFromDB();
-      listaMessaggi = listaMessaggi?.reversed.toList();
-      print("genero widget messaggi, e controllo messaggi non letti dal punto di vista della schermata dei messaggi");
-      List<bool> wasUnreadList=await wasUnread(listaMessaggi);
-      if (listaMessaggi != null) {
-        return Wrap(
-          direction: Axis.vertical,
-          children: List.generate(listaMessaggi.length, (index) =>
-              Padding(
+      try {
+        List<dynamic>? listaMessaggi = await db.getAllMessaggiFromDB();
+        listaMessaggi = listaMessaggi?.reversed.toList();
+        print("Genero widget messaggi e controllo messaggi non letti dal punto di vista della schermata dei messaggi");
+        List<bool> wasUnreadList = await wasUnread(listaMessaggi);
+        if (listaMessaggi != null) {
+          return Wrap(
+            direction: Axis.vertical,
+            children: List.generate(listaMessaggi.length, (index) {
+              return Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 16),
-                child: SizedBox(height: 300,
-                    width: width * 0.7,
-                    child: DecoratedBox(
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 7,
-                            spreadRadius: 5,
-                            color: Color(0xAA110505),
-                            offset: Offset(-8, 8),
-                          )
-                        ],
-                        color: Color(0xFFC89117),
-                        //border: Border.all(width: 0),
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                child: SizedBox(
+                  height: 300,
+                  width: width * 0.7,
+                  child: DecoratedBox(
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 7,
+                          spreadRadius: 5,
+                          color: Color(0xAA110505),
+                          offset: Offset(-8, 8),
+                        )
+                      ],
+                      color: Color(0xFFC89117),
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              Text(
+                                "Mittente: " + listaMessaggi?[index]['mittente'],
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("Mittente: "+ listaMessaggi?[index]['mittente'],
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,),
-                                  Row(
-                                    children: [
-                                      /*const Text("Letto", style: TextStyle(
-                                        color: Colors.black45,
-                                        fontSize: 12,
-                                        ),
-                                      ),*/
-                                      statefulReadButton(listaMessaggi?[index]['id'], wasUnreadList[index]),
-                                    ],
-                                  )
+                                  statefulReadButton(
+                                      listaMessaggi?[index]['id'], wasUnreadList[index]),
                                 ],
                               ),
-                              Expanded(
-                                child: SingleChildScrollView(
-                                  child: Text(listaMessaggi?[index]['corpo'], overflow: TextOverflow
-                                      .ellipsis, maxLines: 25,),
-                                ),
+                            ],
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Text(
+                                listaMessaggi?[index]['corpo'],
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 25,
                               ),
-                            ]
-                        ),
+                            ),
+                          ),
+                        ],
                       ),
-                    )
+                    ),
+                  ),
                 ),
-              ),),
-        );
-      }
-      else {
+              );
+            }),
+          );
+        } else {
+          return const Text("");
+        }
+      } catch (e) {
+        // Gestione dell'eccezione
+        print('Errore durante la generazione del widget messaggi: $e');
         return const Text("");
       }
     }
+
     return Scaffold(
       appBar: GlobalAppBar,
       drawer: buildDrawer(context),

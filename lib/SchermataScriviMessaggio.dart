@@ -81,11 +81,24 @@ class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
       onConfirmBtnTap: () async {
         MessaggiControl db = MessaggiControl();
         Utente utente = Utente();
-        String result = await db.sendMessaggioToDb(utente.getNome, controller1.text);
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
+        try {
+          await db.sendMessaggioToDb(utente.getNome, controller1.text);
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        } catch (e) {
+          showAlertErrore("Il messaggio non è stato inviato correttamente, per favore riprova più tardi...");
+        }
+
       },
       onCancelBtnTap: () => Navigator.pop(context),
+    );
+  }
+
+  void showAlertErrore(String errore) {
+    QuickAlert.show(context: context,
+        type: QuickAlertType.error,
+        text: errore,
+        title: "Attenzione!"
     );
   }
 }
