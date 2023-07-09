@@ -8,7 +8,7 @@ import '../entity/Utente.dart';
 class ThreadControl{
 
   @pragma('vm:entry-point')
-  Future<void> NotificationCheck(SendPort p) async { //TODO capire come killare sto thread al logout
+  Future<void> NotificationCheck(SendPort p) async {
     print("entro nell'isolate");
     final communicationPort=ReceivePort();
     p.send(communicationPort.sendPort); //l'isolate va spawnato passandogli direttamente una sendport
@@ -23,7 +23,6 @@ class ThreadControl{
       if (message is Utente) {
         print("ricevo utente");
         usr = message;
-        // Send the result to the main isolate.
       }
       else if (message is String) {
         await Future.delayed(const Duration(seconds: 1));
@@ -33,16 +32,15 @@ class ThreadControl{
         popupWasFlashed=!areThereNewMessages(localList,newList);
         if(!popupWasFlashed)
         {
-          //TODO la funzione per fare la notifica
+          //gestione della notifica
           print("apro il popup");
           p.send(true); //attiva flag per mostrare il popup
           popupWasFlashed=true;
         }
         localList.clear();
         localList.addAll(newList);
-        // Send the result to the main isolate.
       } else if (message == null) {
-        //TODO completare la logica e capire tuti i casi possibili
+        //esce quando riceve un messaggio nullo
         break;
       }
     }
