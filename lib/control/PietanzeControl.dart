@@ -23,7 +23,7 @@ class PietanzeControl{
       return jsonResponse;
     }
     else {
-      return null;
+      throw Exception("errore durante il recupero delle pietanze dal server");
     }
 
   }
@@ -37,7 +37,7 @@ class PietanzeControl{
       return "SUCCESSO";
     }
     else {
-      return "FALLIMENTO";
+      throw Exception("errore durante la cancellazione della pietanza");
     }
 
   }
@@ -66,10 +66,10 @@ class PietanzeControl{
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
     } else if(response.statusCode.toInt() == 500){
-      return "FALLIMENTO";
+      throw Exception("errore interno del server");
     }
     else {
-      return "ERRORE INASPETTATO";
+      throw Exception("errore inaspettato");
     }
 
   }
@@ -97,10 +97,10 @@ class PietanzeControl{
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
     } else if(response.statusCode.toInt() == 500){
-      return "FALLIMENTO";
+      throw Exception("errore interno del server");
     }
     else {
-      return "ERRORE INASPETTATO";
+      throw Exception("errore inaspettato");
     }
   }
 
