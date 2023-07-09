@@ -34,10 +34,10 @@ class UtenteControl{
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
     } else if(response.statusCode.toInt() == 500){
-      return "FALLIMENTO";
+      throw Exception("errore interno del server");
     }
     else {
-      return "ERRORE INASPETTATO";
+      throw Exception("errore inaspettato");
     }
 
   }
@@ -87,10 +87,10 @@ class UtenteControl{
         return ruolo;
       }
     } else if(response.statusCode.toInt() == 404){
-      return "FALLIMENTO";
+      return "FALLIMENTO"; //questo è necessario
     }
     else {
-      return "ERRORE INASPETTATO";
+      throw Exception("errore inaspettato");
     }
 
   }
@@ -116,10 +116,10 @@ class UtenteControl{
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
     } else if(response.statusCode.toInt() == 500){
-      return "FALLIMENTO";
+      throw Exception("errore interno del server");
     }
     else {
-      return "ERRORE INASPETTATO";
+      throw Exception("errore inaspettato");
     }
   }
 
@@ -127,7 +127,7 @@ class UtenteControl{
 
   Future<int> isSistemInitialized() async {
     var apiUrl = Uri.http(baseUrl,
-        '/api/v1/utente/init'); //URL del punto di contatto della API,più udsername e pass come parametri
+        '/api/v1/utente/init'); //URL del punto di contatto della API
     var response = await http.get(apiUrl);
     // print('Response status: ${response.statusCode}');
     // print('Response body: ${response.body}');
@@ -137,7 +137,7 @@ class UtenteControl{
       return 1; //false
     }
     else {
-      return 2; //error
+      throw Exception("errore inaspettato");
     }
   }
 
