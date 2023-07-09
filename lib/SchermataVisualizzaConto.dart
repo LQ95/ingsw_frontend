@@ -18,6 +18,8 @@ class SchermataVisualizzaConto extends StatefulWidget{
 
 class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
 
+  OrdinazioneControl db = OrdinazioneControl();
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -29,7 +31,7 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
 
 
     generaWidgetPietanze() async {
-      OrdinazioneControl db = OrdinazioneControl();
+
       List<dynamic>? listaPietanze = await db.getAllPietanzeFromOrdinazione(widget.idOrdinazione);
 
       listaPietanze = listaPietanze?.reversed.toList();
@@ -37,13 +39,21 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
         Map<String, int> pietanzeQuantita = {};
         double costoTotale = 0;
 
+        try{
+          Map<String, dynamic>? ordinazione = await db.getCurrentOrdinazione(int.parse(widget.idTavolo));
+          costoTotale = ordinazione?['conto'];
+        }
+        catch (e) {
+          costoTotale = 0;
+        }
+
         for (var pietanza in listaPietanze) {
           String nomePietanza = pietanza['name'];
           int quantita = (pietanzeQuantita[nomePietanza] ?? 0) + 1;
           pietanzeQuantita[nomePietanza] = quantita;
           double costoPietanza = pietanza['costo'];
-          double costoTotalePietanza = costoPietanza * quantita;
-          costoTotale += costoTotalePietanza;
+          // double costoTotalePietanza = costoPietanza * quantita;
+          // costoTotale += costoTotalePietanza;
         }
 
         List<Widget> generatedWidgets = List.generate(pietanzeQuantita.length, (index) {
@@ -346,7 +356,9 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
 
                         }
 
-                        showAlertConfermaVuoiSalvare(widget.idTavolo,listaPietanze!,costo);
+                        String? data = DateTime.now().toLocal().toString();
+
+                        showAlertConfermaVuoiSalvare(widget.idTavolo,listaPietanze!,costo, data!);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF66420F),
@@ -398,24 +410,24 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
     );
   }
 
-  void showAlertConfermaVuoiSalvare(String idTavolo,List<dynamic> pietanze, double conto) {
+  void showAlertConfermaVuoiSalvare(String idTavolo,List<dynamic> pietanze, double conto, String data) {
     QuickAlert.show(context: context,
-      type: QuickAlertType.confirm,
-      text: "Desideri salvare il conto come pdf prima di chiudere l'ordinazione?",
-      title: "Salvataggio in corso",
-      confirmBtnText: "Si",
-      cancelBtnText: "No",
-      onConfirmBtnTap: ()  async {
-        //SALVATAGGIO PDF
-        PdfControl.createPdfConto(pietanze,idTavolo,conto);
-        Navigator.pop(context);
-        showAlertConferma(idTavolo);
+        type: QuickAlertType.confirm,
+        text: "Desideri salvare il conto come pdf prima di chiudere l'ordinazione?",
+        title: "Salvataggio in corso",
+        confirmBtnText: "Si",
+        cancelBtnText: "No",
+        onConfirmBtnTap: ()  async {
+          //SALVATAGGIO PDF
+          PdfControl.createPdfConto(pietanze,idTavolo,conto, data);
+          Navigator.pop(context);
+          showAlertConferma(idTavolo);
 
-      },
-      onCancelBtnTap: () {
-        Navigator.pop(context);
-        showAlertConferma(idTavolo);
-      }
+        },
+        onCancelBtnTap: () {
+          Navigator.pop(context);
+          showAlertConferma(idTavolo);
+        }
     );
   }
 

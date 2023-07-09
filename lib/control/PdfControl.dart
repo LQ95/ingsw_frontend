@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdfWidgets;
 
 class PdfControl{
 
-  static createPdfConto(List<dynamic> pietanze, String tavoloId,double conto) async {
+  static createPdfConto(List<dynamic> pietanze, String tavoloId,double conto, String dataConto) async {
+    dataConto = convertDateFormat(dataConto);
     var data = await rootBundle.load("contents/fonts/Calibri.ttf");
     final font =  pdfWidgets.Font.ttf(data.buffer.asByteData());
   final pdf= pdfWidgets.Document();
@@ -18,6 +20,7 @@ class PdfControl{
         child: pdfWidgets.Column(
           children:[
             pdfWidgets.Text('Conto Tavolo n°$tavoloId',style: pdfWidgets.TextStyle(font: font,fontSize: 40)),
+            pdfWidgets.Text(dataConto,style: pdfWidgets.TextStyle(font: font,fontSize: 24)),
             pdfWidgets.ListView.builder(itemCount: pietanze.length,itemBuilder: (context,index){
               return
                 pdfWidgets.Padding(
@@ -52,7 +55,7 @@ class PdfControl{
     if (Platform.isWindows) { //Se è wqindows apre la finestra per selezionare il file
       output = await FilePicker.platform.saveFile(
           dialogTitle: 'Seleziona dove salvare il conto:',
-          fileName: 'conto.pdf',
+          fileName: 'Conto tavolo n°$tavoloId $dataConto.pdf',
           type: FileType.any);
     }
     else {
@@ -60,14 +63,21 @@ class PdfControl{
     }
     if (output != null) {
       if(Platform.isAndroid) {
-        output= "${output}/conto.pdf";
+        output= "$output/conto.pdf";
       } else {
-        output="${output}";
+        output=output;
       }
       final file = File(output);
       print(output);
       await file.writeAsBytes(await pdf.save());
     }
+  }
+
+  static String convertDateFormat(String dataConto) {
+    DateTime data = DateTime.parse(dataConto);
+    DateFormat nuovoFormato = DateFormat('dd-MM-yyyy');
+    String dataConvertita = nuovoFormato.format(data);
+    return dataConvertita;
   }
 
 }
