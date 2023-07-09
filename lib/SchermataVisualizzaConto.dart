@@ -356,9 +356,7 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
 
                         }
 
-                        String? data = DateTime.now().toLocal().toString();
-
-                        showAlertConfermaVuoiSalvare(widget.idTavolo,listaPietanze!,costo, data!);
+                        showAlertConfermaVuoiSalvare(widget.idTavolo,listaPietanze!,costo);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF66420F),
@@ -410,7 +408,7 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
     );
   }
 
-  void showAlertConfermaVuoiSalvare(String idTavolo,List<dynamic> pietanze, double conto, String data) {
+  void showAlertConfermaVuoiSalvare(String idTavolo,List<dynamic> pietanze, double conto) {
     QuickAlert.show(context: context,
         type: QuickAlertType.confirm,
         text: "Desideri salvare il conto come pdf prima di chiudere l'ordinazione?",
@@ -419,7 +417,7 @@ class SchermataVisualizzaContoState extends State<SchermataVisualizzaConto> {
         cancelBtnText: "No",
         onConfirmBtnTap: ()  async {
           //SALVATAGGIO PDF
-          PdfControl.createPdfConto(pietanze,idTavolo,conto, data);
+          PdfControl.createPdfConto(pietanze,idTavolo,conto);
           Navigator.pop(context);
           showAlertConferma(idTavolo);
 
