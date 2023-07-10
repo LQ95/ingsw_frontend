@@ -17,9 +17,7 @@ class MenuPrincipale extends StatefulWidget{
 class MenuPrincipaleState extends State<MenuPrincipale>{
   @override
   Widget build(BuildContext context) {
-    print("manda stringa");
     sendPort.send(Utente().getNome);
-    print("costruisce widget");
     showAlertNuoviMess(context);
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();

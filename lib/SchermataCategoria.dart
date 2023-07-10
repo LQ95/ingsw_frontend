@@ -33,10 +33,10 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    print("manda stringa");
     sendPort.send(Utente().getNome);
-    print("costruisce widget");
     showAlertNuoviMess(context);
+
+
     generaWidgetPietanze() async{
 
       List<dynamic>? listaPietanze = await  db.getPietanzeFromCategoria(widget.idCategoria);
@@ -160,7 +160,7 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
 
       }
       else {
-        return const Text("");
+        showAlertErrore("C'è stato un problema di connessione con il server, per favore riprova più tardi...");
       }
     }
 

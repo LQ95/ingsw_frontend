@@ -33,9 +33,8 @@ class SchermataSelezionaPietanzaState extends State<SchermataSelezionaPietanza> 
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    print("manda stringa");
     sendPort.send("continua");
-    print("costruisce widget");
+
     showAlertNuoviMess(context);
 
 

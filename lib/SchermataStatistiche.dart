@@ -29,6 +29,8 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
   DateTime? dataInizio;
   DateTime? dataFine;
 
+  StatisticheControl db = StatisticheControl();
+
   _SchermataStatisticheState() {
     setDefault().then((ordinazioni) {
       setState(() {
@@ -38,73 +40,94 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
   }
 
   Future<Widget> generaGrafico(List<OrdinazioneData> data) async {
-    int height = MediaQuery.of(context).size.height.toInt();
+    try {
+      int height = MediaQuery
+          .of(context)
+          .size
+          .height
+          .toInt();
 
-    double incassoComplessivo = data.fold(0.0, (previousValue, element) => previousValue + element.price);
-    double incassoMedio = incassoComplessivo / data.fold(0, (previousValue, element) => previousValue + (element.numeroConti ?? 0));
+      double incassoComplessivo = data.fold(
+          0.0, (previousValue, element) => previousValue + element.price);
+      double incassoMedio = incassoComplessivo / data.fold(
+          0, (previousValue, element) => previousValue +
+          (element.numeroConti ?? 0));
 
-    charts.Series<OrdinazioneData, DateTime> series = charts.Series<OrdinazioneData, DateTime>(
-      id: 'Ordinazioni',
-      domainFn: (OrdinazioneData data, _) => data.date,
-      measureFn: (OrdinazioneData data, _) => data.price,
-      data: data,
-      labelAccessorFn: (OrdinazioneData data, _) => '${data.date.day}/${data.date.month}/${data.date.year}\n${data.price.toStringAsFixed(2)}',
-    );
+      charts.Series<OrdinazioneData, DateTime> series = charts.Series<
+          OrdinazioneData,
+          DateTime>(
+        id: 'Ordinazioni',
+        domainFn: (OrdinazioneData data, _) => data.date,
+        measureFn: (OrdinazioneData data, _) => data.price,
+        data: data,
+        labelAccessorFn: (OrdinazioneData data, _) => '${data.date.day}/${data
+            .date.month}/${data.date.year}\n${data.price.toStringAsFixed(2)}',
+      );
 
-    charts.TimeSeriesChart chart = charts.TimeSeriesChart(
-      [series],
-      animate: true,
-      dateTimeFactory: const charts.LocalDateTimeFactory(),
-      behaviors: [
-        charts.LinePointHighlighter(
-          symbolRenderer: charts.CircleSymbolRenderer(),
-          showHorizontalFollowLine: charts.LinePointHighlighterFollowLineType.nearest,
-          showVerticalFollowLine: charts.LinePointHighlighterFollowLineType.nearest,
-        ),
-        charts.SelectNearest(
-          eventTrigger: charts.SelectionTrigger.tapAndDrag,
-          selectionModelType: charts.SelectionModelType.info,
-        )
-      ],
-      selectionModels: [
-        charts.SelectionModelConfig(
-          type: charts.SelectionModelType.info,
-          changedListener: (model) {
-            if (model.hasDatumSelection) {
-              final selectedDatum = model.selectedDatum.first;
-              widget.selectedDataNotifier.value = selectedDatum.datum;
-            } else {
-              widget.selectedDataNotifier.value = null;
-            }
-          },
-        ),
-      ],
-    );
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 12),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                'Incasso complessivo: ${incassoComplessivo.toStringAsFixed(2)}€',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'Incasso medio: ${incassoMedio.toStringAsFixed(2)}€',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ],
+      charts.TimeSeriesChart chart = charts.TimeSeriesChart(
+        [series],
+        animate: true,
+        dateTimeFactory: const charts.LocalDateTimeFactory(),
+        behaviors: [
+          charts.LinePointHighlighter(
+            symbolRenderer: charts.CircleSymbolRenderer(),
+            showHorizontalFollowLine: charts.LinePointHighlighterFollowLineType
+                .nearest,
+            showVerticalFollowLine: charts.LinePointHighlighterFollowLineType
+                .nearest,
           ),
-          SizedBox(
-            height: height * 0.3,
-            child: chart,
+          charts.SelectNearest(
+            eventTrigger: charts.SelectionTrigger.tapAndDrag,
+            selectionModelType: charts.SelectionModelType.info,
+          )
+        ],
+        selectionModels: [
+          charts.SelectionModelConfig(
+            type: charts.SelectionModelType.info,
+            changedListener: (model) {
+              if (model.hasDatumSelection) {
+                final selectedDatum = model.selectedDatum.first;
+                widget.selectedDataNotifier.value = selectedDatum.datum;
+              } else {
+                widget.selectedDataNotifier.value = null;
+              }
+            },
           ),
         ],
-      ),
-    );
+      );
+
+      return Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  'Incasso complessivo: ${incassoComplessivo.toStringAsFixed(
+                      2)}€',
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Incasso medio: ${incassoMedio.toStringAsFixed(2)}€',
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: height * 0.3,
+              child: chart,
+            ),
+          ],
+        ),
+      );
+    }
+    catch (e) {
+      showAlertErrore("Si è verificato un errore durante la generazione del grafico.");
+      return const SizedBox.shrink();
+    }
   }
 
 
@@ -113,9 +136,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
 
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
-    print("manda stringa");
     sendPort.send("continua");
-    print("costruisce widget");
     showAlertNuoviMess(context);
     return Builder(
       builder: (BuildContext context) {
@@ -214,13 +235,16 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                           padding: const EdgeInsets.all(16.0),
                           child: ElevatedButton(
                               onPressed: () async {
-                                StatisticheControl db = StatisticheControl();
-                                if(dataInizio == null || dataFine == null){
-                                  ordinazioni = await db.getStatistiche();
-                                } else{
-                                  ordinazioni = await db.getStatistiche(dataInizio: dataInizio!, dataFine: dataFine!);
-                                  print(ordinazioni);
-                                  setState(() {});
+                                try {
+                                  if (dataInizio == null || dataFine == null) {
+                                    ordinazioni = await db.getStatistiche();
+                                  } else {
+                                    ordinazioni = await db.getStatistiche(dataInizio: dataInizio!, dataFine: dataFine!);
+                                    setState(() {});
+                                  }
+                                }
+                                catch (e) {
+                                  showAlertErrore("La connessione è caduta, si prega di riprovare più tardi");
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -289,8 +313,22 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
   }
 
   Future<List<OrdinazioneData>> setDefault() async {
-    StatisticheControl db = StatisticheControl();
-    return StatisticheControl().getStatistiche();
+    try {
+      return await db.getStatistiche();
+    } catch (e) {
+      showAlertErrore("La connessione è caduta, si prega di riprovare più tardi");
+      return [];
+    }
+  }
+
+
+  void showAlertErrore(String errore) {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      text: errore,
+      title: "Qualcosa è andato storto",
+    );
   }
 
 }

@@ -9,7 +9,7 @@ class ThreadControl{
 
   @pragma('vm:entry-point')
   Future<void> NotificationCheck(SendPort p) async {
-    print("entro nell'isolate");
+    // print("entro nell'isolate");
     final communicationPort=ReceivePort();
     p.send(communicationPort.sendPort); //l'isolate va spawnato passandogli direttamente una sendport
     Map<String, dynamic> localList=Map<String, dynamic>();
@@ -21,19 +21,19 @@ class ThreadControl{
 
     await for (final message in communicationPort) {
       if (message is Utente) {
-        print("ricevo utente");
+        // print("ricevo utente");
         usr = message;
       }
       else if (message is String) {
         await Future.delayed(const Duration(seconds: 1));
-        print("entra nel loop");
-        print("il thread ha ricevuto una stringa");
+        // print("entra nel loop");
+        // print("il thread ha ricevuto una stringa");
         newList= await findUnreadMessages(usr);
         popupWasFlashed=!areThereNewMessages(localList,newList);
         if(!popupWasFlashed)
         {
           //gestione della notifica
-          print("apro il popup");
+          // print("apro il popup");
           p.send(true); //attiva flag per mostrare il popup
           popupWasFlashed=true;
         }
@@ -44,10 +44,10 @@ class ThreadControl{
         break;
       }
     }
-    print("stampo utente");
-    print(usr);
-
-    print("thread notifiche finito.è stato effettuato il logout?");
+    // print("stampo utente");
+    // print(usr);
+    //
+    // print("thread notifiche finito.è stato effettuato il logout?");
     Isolate.exit();
 
   }

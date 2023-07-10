@@ -29,14 +29,11 @@ class PietanzeControl{
   }
 
 
-  Future<String> deletePietanzaFromDB(int id) async {   //Work in Progres
+  Future<void> deletePietanzaFromDB(int id) async {   //Work in Progres
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/pietanza/delete/$id');
     var response = await http.delete(apiUrl);
-    if (response.statusCode == 200) {
-      return "SUCCESSO";
-    }
-    else {
+    if (response.statusCode != 200) {
       throw Exception("errore durante la cancellazione della pietanza");
     }
 
@@ -75,7 +72,7 @@ class PietanzeControl{
   }
 
 
-  Future<String> sendPietanzaToDb(String titolo, String descrizione, String allergeni, String costo) async{
+  Future<void> sendPietanzaToDb(String titolo, String descrizione, String allergeni, String costo) async{
 
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/pietanza'); //URL del punto di contatto della API
@@ -95,7 +92,7 @@ class PietanzeControl{
     //print('Response body: ${response.body}');
 
     if(response.statusCode.toInt() == 200) {
-      return "SUCCESSO";
+
     } else if(response.statusCode.toInt() == 500){
       throw Exception("errore interno del server");
     }

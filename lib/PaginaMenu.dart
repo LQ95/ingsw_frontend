@@ -16,12 +16,11 @@ class PaginaMenu extends StatefulWidget{
 class PaginaMenuState extends State<PaginaMenu> {
   @override
   Widget build(BuildContext context) {
-    print("manda stringa");
     sendPort.send(Utente().getNome);
-    print("costruisce widget");
     showAlertNuoviMess(context);
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
+
     return Scaffold(
       appBar:GlobalAppBar,
       drawer: buildDrawer(context),

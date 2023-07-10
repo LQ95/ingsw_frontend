@@ -20,18 +20,23 @@ class PaginaOrdinazioniTavoli extends StatefulWidget{
 class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
 
 
+  Utente utente = Utente();
+  TavoloControl db = TavoloControl();
+  OrdinazioneControl dbOrd = OrdinazioneControl();
+
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    print("manda stringa");
     sendPort.send(Utente().getNome);
-    print("costruisce widget");
+
     showAlertNuoviMess(context);
+
+
     generaWidgetTavoli() async {
-      TavoloControl db = TavoloControl();
-      List<dynamic>? listaTavoli = await db.getAllTavoliFromDB();
-      if (listaTavoli != null) {
+      try {
+        List<dynamic>? listaTavoli = await db.getAllTavoliFromDB();
         return Align(
           alignment: Alignment.center,
           child: Wrap(
@@ -39,11 +44,11 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
             runAlignment: WrapAlignment.center,
             runSpacing: 24,
             spacing: 24,
-            children: List.generate(listaTavoli.length, (index) {
+            children: List.generate(listaTavoli!.length, (index) {
               return Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 16),
                 child: Container(
-                  decoration:const BoxDecoration(
+                  decoration: const BoxDecoration(
                     boxShadow: [
                       BoxShadow(
                         blurRadius: 7,
@@ -57,25 +62,26 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                     borderRadius: BorderRadius.all(Radius.circular(25)),
                   ),
                   child: ElevatedButton(
-                    onPressed: () async {Utente utente = Utente();
-                    OrdinazioneControl db = OrdinazioneControl();
-                    Map<String, dynamic>? ordinazione = await db.getCurrentOrdinazione(listaTavoli![index]['id']);
-                    if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE"){
-                      if (ordinazione == null) {
-                        showAlert("Non è presente nessun'ordinazione per questo tavolo, per favore riprova dopo che né è stata aperta una!");
+                    onPressed: () async {
+                      Map<String, dynamic>? ordinazione = await dbOrd
+                          .getCurrentOrdinazione(listaTavoli![index]['id']);
+                      if (utente.getRuolo == "AMMINISTRATORE" ||
+                          utente.getRuolo == "SUPERVISORE") {
+                        if (ordinazione == null) {
+                          showAlert(
+                              "Non è presente nessun'ordinazione per questo tavolo, per favore riprova dopo che né è stata aperta una!");
+                        }
+                        else {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataVisualizzaConto(idTavolo: listaTavoli![index]['id'].toString(), idOrdinazione: ordinazione['id'])));
+                        }
+                      } else {
+                        if (ordinazione == null) {
+                          showAlertConferma(listaTavoli![index]['id']);
+                        }
+                        else {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'], idOrdinazione: ordinazione['id'])));
+                        }
                       }
-                      else {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataVisualizzaConto(idTavolo: listaTavoli![index]['id'].toString(), idOrdinazione: ordinazione['id'])));
-                      }
-                    } else {
-                      if(ordinazione == null){
-                        showAlertConferma(listaTavoli![index]['id']);
-                      }
-                      else {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: listaTavoli![index]['id'], idOrdinazione: ordinazione['id'])));
-                      }
-                    }
-
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 7,
@@ -109,13 +115,15 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
             }),
           ),
         );
-      } else {
+      }
+      catch (e){
+        showAlertErrore("C'è stato un problema di connessione con il server, per favore riprova più tardi...");
         return const Text("");
       }
     }
 
 
-  return Scaffold(
+    return Scaffold(
       appBar: GlobalAppBar,
       drawer: buildDrawer(context),
       body: Center(
@@ -130,9 +138,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton(onPressed: () async{
-                        Utente utente = Utente();
                         if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
-                          TavoloControl db = TavoloControl();
                           await db.deleteTavoloFromDB();
                           setState(() {});
                         } else {
@@ -154,9 +160,7 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
                         ),
                       ),
                       ElevatedButton(onPressed: () async {
-                        Utente utente = Utente();
                         if(utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") {
-                          TavoloControl db = TavoloControl();
                           await db.addTavoloToDB();
                           setState(() {});
                         } else {
@@ -240,22 +244,24 @@ class PaginaOrdinazioniTavoliState extends State<PaginaOrdinazioniTavoli> {
       title: "Nessun'ordinazione presente",
       confirmBtnText: "Si",
       cancelBtnText: "No",
-      onConfirmBtnTap: ()  async {OrdinazioneControl db = OrdinazioneControl();
-      try {
-        String successo = await db.sendOrdinazioneToDb(idTavolo);
-        Map<String, dynamic>? ordinazione = await db.getCurrentOrdinazione(idTavolo);
+      onConfirmBtnTap: ()  async {
+        try {
 
-        if (successo == "SUCCESSO") {
-          Navigator.pop(context);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: idTavolo, idOrdinazione: ordinazione!['id'])));
-          showAlertSuccesso("Ordinazione aperta correttamente");
-        } else {
-          Navigator.pop(context);
-          showAlertErrore("C'è stato un problema nell'aprire l'ordinazione, forse è già stata creata una nuova ordinazione per questo tavolo");
+          OrdinazioneControl db = OrdinazioneControl();
+          String successo = await db.sendOrdinazioneToDb(idTavolo);
+          Map<String, dynamic>? ordinazione = await db.getCurrentOrdinazione(idTavolo);
+
+          if (successo == "SUCCESSO") {
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStoricoOrdinazioni(idTavolo: idTavolo, idOrdinazione: ordinazione!['id'])));
+            showAlertSuccesso("Ordinazione aperta correttamente");
+          } else {
+            Navigator.pop(context);
+            showAlertErrore("C'è stato un problema nell'aprire l'ordinazione, forse è già stata creata una nuova ordinazione per questo tavolo");
+          }
+        } catch (e) {
+          showAlertErrore("Si è verificato un errore: ${e.toString()}");
         }
-      } catch (e) {
-        showAlertErrore("Si è verificato un errore: ${e.toString()}");
-      }
       },
       onCancelBtnTap: () => Navigator.pop(context),
     );

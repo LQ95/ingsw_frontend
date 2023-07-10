@@ -54,9 +54,6 @@ class OrdinazioneControl {
       }),
     );
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
     if (response.statusCode == 200) {
       return "SUCCESSO";
     } else if (response.statusCode == 500) {

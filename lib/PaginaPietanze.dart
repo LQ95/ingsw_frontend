@@ -30,156 +30,176 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    print("manda stringa");
     sendPort.send(Utente().getNome);
-    print("costruisce widget");
+
     showAlertNuoviMess(context);
+
+
     generaWidgetPietanze() async{
 
-      List<dynamic>? listaPietanze = await  db.getAllPietanzeFromDB();
+      try {
+        List<dynamic>? listaPietanze = await db.getAllPietanzeFromDB();
 
-      listaPietanze = listaPietanze?.reversed.toList();
-      if (listaPietanze != null) {
-        return Wrap(
-          direction: Axis.vertical,
-          children: List.generate(listaPietanze.length, (index) =>
-              Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 16),
-                child: SizedBox(height: 300,
-                    width: width * 0.7,
-                    child: DecoratedBox(
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 7,
-                            spreadRadius: 5,
-                            color: Color(0xAA110505),
-                            offset: Offset(-8, 8),
-                          )
-                        ],
-                        color: Color(0xFF728514),
-                        //border: Border.all(width: 0),
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    color: Colors.redAccent,
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    border: Border.all(
-                                      color: Colors.black,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      if ((utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE") && overlayAperto == false) {
-                                        overlayAperto = true;
-                                        showOverlay(
-                                          idPietanza: listaPietanze?[index]['id'],
-                                          titolo: listaPietanze?[index]['name'],
-                                          descrizione: listaPietanze?[index]['descrizione'],
-                                          allergeni: listaPietanze?[index]['allergeni'],
-                                          costo: listaPietanze?[index]['costo'],
-                                        );
-                                      }
-                                      else {
-                                        showAlertErrore("Non hai i permessi per eseguire quest'azione!");
-                                      }
-                                    },
-                                    icon: const Icon(Icons.create_outlined),
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                ),
-
-                                SizedBox(
-                                  width: width * 0.45,
-                                  child: Text(
-                                    listaPietanze?[index]['name'],
-                                    style: const TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    color: Colors.redAccent,
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    border: Border.all(
-                                      color: Colors.black,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      if ((utente.getRuolo == "AMMINISTRATORE" || utente.getRuolo == "SUPERVISORE")) {
-                                        showAlertConferma(listaPietanze?[index]['id']);
-                                      }
-                                      else {
-                                        showAlertErrore("Non hai i permessi per eseguire quest'azione!");
-                                      }
-                                    },
-                                    icon: const Icon(Icons.delete_outline),
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                ),
-
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("Descrizione: " + listaPietanze?[index]['descrizione'], style: const TextStyle(
-                                    color: Colors.black87),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("Allergeni: " + listaPietanze?[index]['allergeni'], style: const TextStyle(
-                                    color: Colors.black87),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text("${listaPietanze![index]['costo']}€", style: const TextStyle(
-                                    color: Colors.black87),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
-                              ],
-                            ),
+        listaPietanze = listaPietanze?.reversed.toList();
+        if (listaPietanze != null) {
+          return Wrap(
+            direction: Axis.vertical,
+            children: List.generate(listaPietanze.length, (index) =>
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 16),
+                  child: SizedBox(height: 300,
+                      width: width * 0.7,
+                      child: DecoratedBox(
+                        decoration: const BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 7,
+                              spreadRadius: 5,
+                              color: Color(0xAA110505),
+                              offset: Offset(-8, 8),
+                            )
                           ],
+                          color: Color(0xFF728514),
+                          //border: Border.all(width: 0),
+                          borderRadius: BorderRadius.all(Radius.circular(25)),
                         ),
-                      ),
-                    )
-                ),
-              ),),
-        );
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: Colors.redAccent,
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        if ((utente.getRuolo ==
+                                            "AMMINISTRATORE" ||
+                                            utente.getRuolo == "SUPERVISORE") &&
+                                            overlayAperto == false) {
+                                          overlayAperto = true;
+                                          showOverlay(
+                                            idPietanza: listaPietanze?[index]['id'],
+                                            titolo: listaPietanze?[index]['name'],
+                                            descrizione: listaPietanze?[index]['descrizione'],
+                                            allergeni: listaPietanze?[index]['allergeni'],
+                                            costo: listaPietanze?[index]['costo'],
+                                          );
+                                        }
+                                        else {
+                                          showAlertErrore(
+                                              "Non hai i permessi per eseguire quest'azione!");
+                                        }
+                                      },
+                                      icon: const Icon(Icons.create_outlined),
+                                      padding: EdgeInsets.zero,
+                                    ),
+                                  ),
+
+                                  SizedBox(
+                                    width: width * 0.45,
+                                    child: Text(
+                                      listaPietanze?[index]['name'],
+                                      style: const TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: Colors.redAccent,
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        if ((utente.getRuolo ==
+                                            "AMMINISTRATORE" ||
+                                            utente.getRuolo == "SUPERVISORE")) {
+                                          showAlertConferma(
+                                              listaPietanze?[index]['id']);
+                                        }
+                                        else {
+                                          showAlertErrore(
+                                              "Non hai i permessi per eseguire quest'azione!");
+                                        }
+                                      },
+                                      icon: const Icon(Icons.delete_outline),
+                                      padding: EdgeInsets.zero,
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text("Descrizione: " +
+                                      listaPietanze?[index]['descrizione'],
+                                    style: const TextStyle(
+                                        color: Colors.black87),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,)
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text("Allergeni: " +
+                                      listaPietanze?[index]['allergeni'],
+                                    style: const TextStyle(
+                                        color: Colors.black87),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,)
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text("${listaPietanze![index]['costo']}€",
+                                    style: const TextStyle(
+                                        color: Colors.black87),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,)
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                  ),
+                ),),
+          );
+        }
+        else {
+
+        }
       }
-      else {
-        return const Text("");
+      catch (e) {
+        showAlertErrore("C'è stato un problema di connessione con il server, per favore riprova più tardi...");
       }
     }
 
@@ -398,24 +418,19 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                         if (controllerTitolo.text.isNotEmpty && controllerCosto
                             .text
                             .isNotEmpty) {
-                          String creazioneAvvenutaConSuccesso = await db
-                              .sendPietanzaToDb(
-                              controllerTitolo.text, controllerDescrizione.text,
-                              controllerAllergeni.text, controllerCosto
-                              .text); //Il client attende la risposta del server prima di proseguire, in modo che
-                          if (creazioneAvvenutaConSuccesso ==
-                              "SUCCESSO") { //il valore di ritorno di tipo Future ottenga uno stato
+                          try {
+                            await db.sendPietanzaToDb(controllerTitolo.text,
+                                controllerDescrizione.text,
+                                controllerAllergeni.text, controllerCosto
+                                    .text); //Il client attende la risposta del server prima di proseguire, in modo che
+                            //il valore di ritorno di tipo Future ottenga uno stato
                             showAlertSuccesso(
                                 "Eccellente, il piatto è stato inserito con successo!");
                             setState(() {});
                             hideOverlay();
-                          } else
-                          if (creazioneAvvenutaConSuccesso == "FALLIMENTO") {
-                            showAlertErrore("Ops, riprova...");
-                            hideOverlay();
-                          } else {
-                            showAlertErrore(
-                                "Si è verificato un errore inaspettato, per favore riprovare...");
+                          }
+                          catch (e) {
+                            showAlertErrore("Si è verificato un errore, prova dinuovo...");
                             hideOverlay();
                           }
                         }
@@ -499,11 +514,12 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
       cancelBtnText: "No",
       onConfirmBtnTap: () async {
         Navigator.pop(context);
-        if(await db.deletePietanzaFromDB(idPietanza) == "SUCCESSO") {
-          setState((){});
+        try {
+          await db.deletePietanzaFromDB(idPietanza);
+          setState(() {});
           showAlertSuccesso("Il piatto è stato eliminato correttamente");
         }
-        else {
+        catch (e) {
           showAlertErrore("Non siamo riusciti ad eliminare la pietanza, per favore riprova più tardi...");
         }
       },

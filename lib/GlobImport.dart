@@ -18,7 +18,13 @@ Future<void> showAlertNuoviMess(BuildContext context) async {
     QuickAlert.show(context: context,
         type: QuickAlertType.info,
         text: "Nuovi messaggi",
-        title: "Attenzione"
+        title: "Attenzione",
+        onConfirmBtnTap: (){
+          Navigator.pop(context);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataMessaggi()),
+          );
+
+        }
     );
   }
 }

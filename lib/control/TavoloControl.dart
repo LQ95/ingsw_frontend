@@ -6,7 +6,7 @@ import '../entity/Utente.dart';
 
 class TavoloControl{
 
-  Future<List?> getAllTavoliFromDB() async {   //Work in Progres
+  Future<List?> getAllTavoliFromDB() async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/tavolo');
     var response = await http.get(apiUrl);
@@ -17,22 +17,21 @@ class TavoloControl{
       return jsonResponse;
     }
     else {
-      throw Exception('Errore inaspettato');
+      throw Exception('Errore di connessione');
     }
 
   }
 
-  Future<void> deleteTavoloFromDB() async {   //Work in Progres
+  Future<void> deleteTavoloFromDB() async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/tavolo/deleteHighest');
-    var response = await http.delete(apiUrl);
+    await http.delete(apiUrl);
   }
 
   Future<void> addTavoloToDB() async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/tavolo'); //URL del punto di contatto della API
-    var response = await http.post(apiUrl,
-        //questa è la response,in cui è definita anche la request, direttamente
+    await http.post(apiUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

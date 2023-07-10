@@ -29,10 +29,10 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
 
   @override
   Widget build(BuildContext context) {
-    print("manda stringa");
     sendPort.send("continua");
-    print("costruisce widget");
+
     showAlertNuoviMess(context);
+
     //ritrovano il testo immesso nei textfield
     return Scaffold(
       resizeToAvoidBottomInset: false,

@@ -69,7 +69,6 @@ class PdfControl{
         output=output;
       }
       final file = File(output);
-      print(output);
       await file.writeAsBytes(await pdf.save());
     }
   }

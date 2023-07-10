@@ -1,9 +1,12 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:ffi';
 import 'dart:isolate';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../GlobImport.dart';
 import '../entity/OrdinazioneData.dart';
 import '../entity/Utente.dart';
@@ -112,11 +115,14 @@ class StatisticheControl {
 
 
   Future<List<OrdinazioneData>> getStatistiche({DateTime? dataInizio, DateTime? dataFine}) async {
-    List<OrdinazioneData> stats = [];
-    if (dataInizio != null && dataFine != null) {
-      return _getGuadagniInDateFromDB(dataInizio, dataFine);
-    } else {
-      return _getGuadagniTotaliFromDB();
+    try {
+      if (dataInizio != null && dataFine != null) {
+        return await _getGuadagniInDateFromDB(dataInizio, dataFine);
+      } else {
+        return await _getGuadagniTotaliFromDB();
+      }
+    } catch (e) {
+      throw Exception();
     }
   }
 

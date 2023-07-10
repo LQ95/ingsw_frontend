@@ -9,9 +9,8 @@ class SchermataFunzioniAmministratore extends StatelessWidget{
   Widget build(BuildContext context) {
     int width = MediaQuery.of(context).size.width.toInt();
     int height = MediaQuery.of(context).size.height.toInt();
-    print("manda stringa");
     sendPort.send("continua");
-    print("costruisce widget");
+
     showAlertNuoviMess(context);
     return Scaffold(
       appBar:GlobalAppBar,

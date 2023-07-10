@@ -29,7 +29,6 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
       try {
         List<dynamic>? listaMessaggi = await db.getAllMessaggiFromDB();
         listaMessaggi = listaMessaggi?.reversed.toList();
-        print("Genero widget messaggi e controllo messaggi non letti dal punto di vista della schermata dei messaggi");
         List<bool> wasUnreadList = await wasUnread(listaMessaggi);
         if (listaMessaggi != null) {
           return Wrap(
@@ -96,8 +95,7 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
         }
       } catch (e) {
         // Gestione dell'eccezione
-        print('Errore durante la generazione del widget messaggi: $e');
-        return const Text("");
+        showAlertErrore("C'è stato un errore di connessione con il server, per favore riprova più tardi...");
       }
     }
 
@@ -185,10 +183,7 @@ class SchermataMessaggiState extends State<SchermataMessaggi> {
     List<bool> result= List<bool>.empty(growable:true);
     Map<String, dynamic> UnreadMessages=await MessaggiControl.getUnreadMessagesList(Utente());
     int i;
-    print("avendo:");
-    print(UnreadMessages);
     for(i=0;i<listaMessaggi!.length;i++){
-      print("aggiorno lista booleani");
     result.add(UnreadMessages.containsValue(listaMessaggi[i]['id'])); //l'id di questo messaggio sta nei messaggi non letti?
     }
     return result;

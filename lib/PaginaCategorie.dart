@@ -28,10 +28,9 @@ class PaginaCategorieState extends State<PaginaCategorie> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    print("manda stringa");
     sendPort.send(Utente().getNome);
-    print("costruisce widget");
     showAlertNuoviMess(context);
+
     generaWidgetCategorie() async {
       List<dynamic>? listaCategorie = await db.getAllCategorieFromDB();
       if (listaCategorie != null) {
@@ -129,7 +128,7 @@ class PaginaCategorieState extends State<PaginaCategorie> {
           ),
         );
       } else {
-        return const Text("");
+        showAlertErrore("C'è stato un problema di connessione con il server, per favore riprova più tardi...");
       }
     }
 

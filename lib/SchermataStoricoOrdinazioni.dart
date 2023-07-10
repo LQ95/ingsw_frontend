@@ -23,9 +23,8 @@ class SchermataStoricoOrdinazioniState extends State<SchermataStoricoOrdinazioni
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    print("manda stringa");
     sendPort.send("continua");
-    print("costruisce widget");
+
     showAlertNuoviMess(context);
 
     generaWidgetPietanze() async {

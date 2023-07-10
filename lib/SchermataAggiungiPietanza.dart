@@ -26,114 +26,131 @@ class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    print("manda stringa");
     sendPort.send(Utente().getNome);
-    print("costruisce widget");
+
     showAlertNuoviMess(context);
+
+
     generaWidgetPietanze() async{
 
-      PietanzeControl db = PietanzeControl();
-      CategoriaControl dbCat = CategoriaControl();
-      List<dynamic>? listaPietanze = await  db.getAllPietanzeFromDB();
-      List<dynamic>? listaGiaPresenti = await  dbCat.getPietanzeFromCategoria(widget.catId);
-      print(listaGiaPresenti);
-      listaPietanze = listaPietanze?.reversed.toList();
-      listaPietanze?.removeWhere((pietanzeElement) => isPietanzaPresent(pietanzeElement,listaGiaPresenti)
-      );
-      if (listaPietanze != null) {
-        return Wrap(
-          direction: Axis.vertical,
-          children: List.generate(listaPietanze.length, (index) =>
-              Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 16),
-                child: SizedBox(
-                    height: 300,
-                    width: width * 0.7,
-                    child: DecoratedBox(
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 7,
-                            spreadRadius: 5,
-                            color: Color(0xAA110505),
-                            offset: Offset(-8, 8),
-                          )
-                        ],
-                        color: Color(0xFF728514),
-                        //border: Border.all(width: 0),
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-
-                                SizedBox(
-                                  width: width * 0.45,
-                                  child: Text(
-                                    listaPietanze?[index]['name'],
-                                    style: const TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                ElevatedButton(
-                                    onPressed: () => showAlertConferma(listaPietanze?[index]['id'],catId),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF66420F),
-                                  ),
-                                  child: const Text("Aggiungi", style: TextStyle(
-                                      color: Colors.white70),),
-                                )
-
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("Descrizione: " + listaPietanze?[index]['descrizione'], style: const TextStyle(
-                                    color: Colors.black87),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("Allergeni: " + listaPietanze?[index]['allergeni'], style: const TextStyle(
-                                    color: Colors.black87),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(listaPietanze![index]['costo'].toString() + "€", style: const TextStyle(
-                                    color: Colors.black87),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,)
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                ),
-              ),),
+      try {
+        PietanzeControl db = PietanzeControl();
+        CategoriaControl dbCat = CategoriaControl();
+        List<dynamic>? listaPietanze = await db.getAllPietanzeFromDB();
+        List<dynamic>? listaGiaPresenti = await dbCat.getPietanzeFromCategoria(
+            widget.catId);
+        listaPietanze = listaPietanze?.reversed.toList();
+        listaPietanze?.removeWhere((pietanzeElement) =>
+            isPietanzaPresent(pietanzeElement, listaGiaPresenti)
         );
+        if (listaPietanze != null) {
+          return Wrap(
+            direction: Axis.vertical,
+            children: List.generate(listaPietanze.length, (index) =>
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 16),
+                  child: SizedBox(
+                      height: 300,
+                      width: width * 0.7,
+                      child: DecoratedBox(
+                        decoration: const BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 7,
+                              spreadRadius: 5,
+                              color: Color(0xAA110505),
+                              offset: Offset(-8, 8),
+                            )
+                          ],
+                          color: Color(0xFF728514),
+                          //border: Border.all(width: 0),
+                          borderRadius: BorderRadius.all(Radius.circular(25)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+
+                                  SizedBox(
+                                    width: width * 0.45,
+                                    child: Text(
+                                      listaPietanze?[index]['name'],
+                                      style: const TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () =>
+                                        showAlertConferma(
+                                            listaPietanze?[index]['id'], catId),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF66420F),
+                                    ),
+                                    child: const Text(
+                                      "Aggiungi", style: TextStyle(
+                                        color: Colors.white70),),
+                                  )
+
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text("Descrizione: " +
+                                      listaPietanze?[index]['descrizione'],
+                                    style: const TextStyle(
+                                        color: Colors.black87),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,)
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text("Allergeni: " +
+                                      listaPietanze?[index]['allergeni'],
+                                    style: const TextStyle(
+                                        color: Colors.black87),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,)
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    listaPietanze![index]['costo'].toString() +
+                                        "€", style: const TextStyle(
+                                      color: Colors.black87),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,)
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                  ),
+                ),),
+          );
+        }
+        else {
+          return const Text("");
+        }
       }
-      else {
-        return const Text("");
+      catch (e){
+        showAlertErrore("Si è verificato un errore di connessione, per favore riprova più tardi...");
       }
     }
 
