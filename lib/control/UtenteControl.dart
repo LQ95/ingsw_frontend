@@ -70,9 +70,9 @@ class UtenteControl{
       User.setNome=name;
       //selectDrawer();
       ThreadControl TD = ThreadControl();
-      //TODO mandare la porta per comunicare all'isolate e inizializzarla prima
+      //Manda la porta per comunicare all'isolate e la inizializza prima
       port= ReceivePort();
-      await Isolate.spawn(TD.NotificationCheck,port.sendPort);  //Non sono sicuro vada bene qui
+      await Isolate.spawn(TD.NotificationCheck,port.sendPort);  
       //aspetto che l'isolate mi mandi la send port da cui inviargli i context che servono ogni volta ai popup
       outputFromIsolate= StreamQueue<dynamic>(port);
       sendPort = await outputFromIsolate.next;

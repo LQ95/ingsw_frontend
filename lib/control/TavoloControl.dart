@@ -17,7 +17,7 @@ class TavoloControl{
       return jsonResponse;
     }
     else {
-      return null;
+      throw Exception('Errore inaspettato');
     }
 
   }
