@@ -28,14 +28,13 @@ class UtenteControl{
           'ruolo': ruolo})
     );
 
-    print('sendUserData Response status: ${response.statusCode}');
+    //print('sendUserData Response status: ${response.statusCode}');
     //print('Response body: ${response.body}');
 
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
-    } else if(response.statusCode.toInt() == 500){
-      throw Exception("errore interno del server");
-    }
+    } else if(response.statusCode.toInt() == 400){
+      return "FALLIMENTO";}
     else {
       throw Exception("errore inaspettato");
     }
@@ -115,11 +114,11 @@ class UtenteControl{
     // print('Response headers: ${response.headers}');
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
-    } else if(response.statusCode.toInt() == 400){
-      return "FALLIMENTO";
+    } else if(response.statusCode.toInt() == 500){
+      throw Exception("errore interno del server");
     }
     else {
-      throw Exception("errore interno del server");
+      throw Exception("errore inaspettato");
     }
   }
 
