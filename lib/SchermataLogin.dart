@@ -139,15 +139,21 @@ class  SchermataLogin extends StatelessWidget{
                                     if (controller1.text.isNotEmpty && controller2.text
                                         .isNotEmpty) {
                                       UtenteControl db = UtenteControl();
-                                      String esitoLogin = await db.sendLoginData(controller1.text, controller2.text);  //Il client attende la risposta del server prima di proseguire, in modo che
-                                      if (esitoLogin == "FALLIMENTO"){
-                                        showAlertErrore("Le credenziali non sono corrette.");
-                                      } else if (esitoLogin == "ERRORE INASPETTATO"){
-                                        showAlertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
-                                      } else if(esitoLogin == 'primoAccesso') {
-                                        showAlertPrimoAccesso();
-                                      } else  {
-                                        showAlertSuccesso();
+                                      try {
+                                        String esitoLogin = await db
+                                            .sendLoginData(controller1.text,
+                                            controller2
+                                                .text); //Il client attende la risposta del server prima di proseguire, in modo che
+                                        if (esitoLogin == "FALLIMENTO"){
+                                          showAlertErrore("Le credenziali non sono corrette.");
+                                        } else if (esitoLogin == 'primoAccesso') {
+                                          showAlertPrimoAccesso();
+                                        } else {
+                                          showAlertSuccesso();
+                                        }
+                                      }
+                                      on Exception{
+                                        showAlertErrore("Errore interno del server");
                                       }
                                     }
                                     else {

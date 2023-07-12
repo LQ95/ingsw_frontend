@@ -186,7 +186,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                                     if (controller1.text.isNotEmpty &&
                                         controller2.text.isNotEmpty) {
                                       UtenteControl db = UtenteControl();
-                                      String creazioneAvvenutaConSuccesso =
+                                      try {String creazioneAvvenutaConSuccesso =
                                       await db.sendUserData(controller1.text,
                                           controller2.text, dropdownValue);
                                       if (creazioneAvvenutaConSuccesso == "SUCCESSO") {
@@ -195,10 +195,11 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                                           "FALLIMENTO") {
                                         showAllertErrore(
                                             "Il nome che hai selezionato è già stato scelto...");
-                                      } else {
-                                        showAllertErrore(
-                                            "Si è verificato un errore inaspettato, per favore riprovare...");
                                       }
+                                      } on Exception{
+                                        showAllertErrore("Errore interno del server");
+                                      }
+
                                     } else {
                                       showAllertErrore(
                                           "Attenzione, i campi non sono stati compilati correttamente!");

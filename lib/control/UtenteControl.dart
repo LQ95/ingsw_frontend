@@ -28,7 +28,7 @@ class UtenteControl{
           'ruolo': ruolo})
     );
 
-    //print('Response status: ${response.statusCode}'); 
+    print('sendUserData Response status: ${response.statusCode}');
     //print('Response body: ${response.body}');
 
     if(response.statusCode.toInt() == 200) {
@@ -72,7 +72,7 @@ class UtenteControl{
       ThreadControl TD = ThreadControl();
       //Manda la porta per comunicare all'isolate e la inizializza prima
       port= ReceivePort();
-      await Isolate.spawn(TD.NotificationCheck,port.sendPort);  
+      await Isolate.spawn(TD.NotificationCheck,port.sendPort);
       //aspetto che l'isolate mi mandi la send port da cui inviargli i context che servono ogni volta ai popup
       outputFromIsolate= StreamQueue<dynamic>(port);
       sendPort = await outputFromIsolate.next;
@@ -90,7 +90,7 @@ class UtenteControl{
       return "FALLIMENTO"; //questo è necessario
     }
     else {
-      throw Exception("errore inaspettato");
+      throw Exception("errore inaspettato del server");
     }
 
   }
@@ -115,11 +115,11 @@ class UtenteControl{
     // print('Response headers: ${response.headers}');
     if(response.statusCode.toInt() == 200) {
       return "SUCCESSO";
-    } else if(response.statusCode.toInt() == 500){
-      throw Exception("errore interno del server");
+    } else if(response.statusCode.toInt() == 400){
+      return "FALLIMENTO";
     }
     else {
-      throw Exception("errore inaspettato");
+      throw Exception("errore interno del server");
     }
   }
 
