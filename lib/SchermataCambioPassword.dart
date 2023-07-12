@@ -152,19 +152,24 @@ class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
                                           if (controller1.text.isNotEmpty && controller2.text
                                               .isNotEmpty) {
                                             if(controller1.text != controller2.text){
-                                              showAllertErrore(
+                                              showAlertErrore(
                                                   "Attenzione, le password inserite sono diverse fra di loro!");
                                             }
                                             else {
                                               UtenteControl db = UtenteControl();
                                               Utente utente = Utente();
-                                              db.updateUtenteData(utente.getNome, controller1.text, utente.getRuolo, utente.getId.toString());
-                                              showAllertSuccesso();
+                                              try {
+                                                db.updateUtenteData(utente.getNome, controller1.text, utente.getRuolo, utente.getId.toString());
+                                                showAllertSuccesso();
+                                              }
+                                              catch (e) {
+                                                showAlertErrore("C'è stato un problema di connessione con il server, riprova più tardi...");
+                                              }
                                             }
 
                                           }
                                           else {
-                                            showAllertErrore(
+                                            showAlertErrore(
                                                 "Attenzione, i campi non sono stati compilati correttamente!");
                                           }
                                         },
@@ -197,7 +202,7 @@ class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
   }
 
 
-  void showAllertErrore(String errore) {
+  void showAlertErrore(String errore) {
     QuickAlert.show(context: context,
         type: QuickAlertType.error,
         text: errore,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ingsw_frontend/SchermataLogin.dart';
@@ -15,13 +17,18 @@ Future<void> main() async {
   }
   UtenteControl db= UtenteControl();
   Widget schermataHome;
-  int initialized = await db.isSistemInitialized() ;
-  if (initialized == 1) {
-    schermataHome=const InitAmministratoreHomePage();
-  } else {
-    schermataHome= SchermataLogin();
+  try {
+    int initialized = await db.isSistemInitialized();
+    if (initialized == 1) {
+      schermataHome = const InitAmministratoreHomePage();
+    } else {
+      schermataHome = SchermataLogin();
+    }
+    runApp(MyApp(schermataHome));
   }
-  runApp(MyApp(schermataHome));
+  catch (e) {
+    log("Errore di connessione, controllare lo stato del server.");
+  }
 }
 
 class MyApp extends StatelessWidget {

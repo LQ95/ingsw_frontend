@@ -144,13 +144,27 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                                           if (controller1.text.isNotEmpty && controller2.text
                                               .isNotEmpty) {
                                             UtenteControl db = UtenteControl();
-                                            String creazioneAvvenutaConSuccesso = await db.sendUserData(controller1.text, controller2.text, "AMMINISTRATORE");  //Il client attende la risposta del server prima di proseguire, in modo che
-                                            if (creazioneAvvenutaConSuccesso == "SUCCESSO") {                                                               //il valore di ritorno di tipo Future ottenga uno stato
-                                              showAlertSuccesso();
-                                            } else if (creazioneAvvenutaConSuccesso == "FALLIMENTO"){
-                                              showAlertErrore("Il nome che hai selezionato è già stato scelto...");
-                                            } else {
-                                              showAlertErrore("Si è verificato un errore inaspettato, per favore riprovare...");
+                                            try {
+                                              String creazioneAvvenutaConSuccesso = await db
+                                                  .sendUserData(
+                                                  controller1.text,
+                                                  controller2.text,
+                                                  "AMMINISTRATORE"); //Il client attende la risposta del server prima di proseguire, in modo che
+                                              if (creazioneAvvenutaConSuccesso ==
+                                                  "SUCCESSO") { //il valore di ritorno di tipo Future ottenga uno stato
+                                                showAlertSuccesso();
+                                              } else
+                                              if (creazioneAvvenutaConSuccesso ==
+                                                  "FALLIMENTO") {
+                                                showAlertErrore(
+                                                    "Il nome che hai selezionato è già stato scelto...");
+                                              } else {
+                                                showAlertErrore(
+                                                    "Si è verificato un errore inaspettato, per favore riprovare...");
+                                              }
+                                            }
+                                            catch (e) {
+                                              showAlertErrore("Si è verificato un problema di connessione con il server, per favore, riprova più tardi...");
                                             }
                                           }
                                           else {

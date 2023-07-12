@@ -94,7 +94,7 @@ class UtenteControl{
 
   }
 
-  Future<String?> updateUtenteData(String username,String newPassword,String ruolo,String id) async{
+  Future<void> updateUtenteData(String username,String newPassword,String ruolo,String id) async{
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente/firstupdate'); //URL del punto di contatto della API
     var response = await http.put(apiUrl,
@@ -113,7 +113,7 @@ class UtenteControl{
     // print('Response body: ${response.body}');
     // print('Response headers: ${response.headers}');
     if(response.statusCode.toInt() == 200) {
-      return "SUCCESSO";
+
     } else if(response.statusCode.toInt() == 500){
       throw Exception("errore interno del server");
     }
