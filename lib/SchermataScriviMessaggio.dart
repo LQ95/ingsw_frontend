@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ingsw_frontend/control/MessaggiControl.dart';
 import 'GlobImport.dart';
 import 'entity/Utente.dart';
@@ -54,13 +55,15 @@ class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: TextField(
-                    controller: controller1,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                    minLines: 10,
-                    maxLines: 20,
-                    style: const TextStyle(color: Colors.black87),
+                      controller: controller1,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                      ),
+                      minLines: 10,
+                      maxLines: 20,
+                      style: const TextStyle(color: Colors.black87),
+                      maxLength: 2048,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced
                   ),
                 )
               ]

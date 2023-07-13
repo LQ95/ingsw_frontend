@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'GlobImport.dart';
@@ -168,12 +169,14 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text("Allergeni: " +
-                                      listaPietanze?[index]['allergeni'],
-                                    style: const TextStyle(
-                                        color: Colors.black87),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,)
+                                  Expanded(
+                                    child: Text("Allergeni: " +
+                                        listaPietanze?[index]['allergeni'],
+                                      style: const TextStyle(
+                                          color: Colors.black87),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,),
+                                  )
                                 ],
                               ),
                               Row(
@@ -363,6 +366,8 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                         border: OutlineInputBorder(),
                         labelText: 'Nome Pietanza:',
                       ),
+                        maxLength: 255,
+                        maxLengthEnforcement: MaxLengthEnforcement.enforced
                     ),),)
                   ]
               ),
@@ -377,6 +382,8 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                         border: OutlineInputBorder(),
                         labelText: 'Descrizione:',
                       ),
+                        maxLength: 255,
+                        maxLengthEnforcement: MaxLengthEnforcement.enforced
                     ),),)
                   ]
               ),
@@ -391,6 +398,8 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                         border: OutlineInputBorder(),
                         labelText: 'Allergeni:',
                       ),
+                      maxLength: 255,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
                     ),),)
                   ]
               ),

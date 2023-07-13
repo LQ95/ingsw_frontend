@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:ingsw_frontend/control/UtenteControl.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:flutter/material.dart';
@@ -123,11 +124,13 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 64, right: 64),
                                     child: TextField(
-                                      controller: controller1,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Nome Account:',
-                                      ),
+                                        controller: controller1,
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          labelText: 'Nome Account:',
+                                        ),
+                                        maxLength: 255,
+                                        maxLengthEnforcement: MaxLengthEnforcement.enforced
                                     ),
                                   ),
                                 ),
@@ -140,12 +143,14 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 64, right: 64),
                                     child: TextField(
-                                      controller: controller2,
-                                      obscureText: true,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Password:',
-                                      ),
+                                        controller: controller2,
+                                        obscureText: true,
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          labelText: 'Password:',
+                                        ),
+                                        maxLength: 255,
+                                        maxLengthEnforcement: MaxLengthEnforcement.enforced
                                     ),
                                   ),
                                 ),

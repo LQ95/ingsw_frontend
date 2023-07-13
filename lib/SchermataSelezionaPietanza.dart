@@ -332,22 +332,26 @@ class _ContatorePietanzaState extends State<ContatorePietanza> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      "Descrizione: " + widget.pietanza['descrizione'],
-                      style: const TextStyle(color: Colors.black87),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: Text(
+                        "Descrizione: " + widget.pietanza['descrizione'],
+                        style: const TextStyle(color: Colors.black87),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      "Allergeni: " + widget.pietanza['allergeni'],
-                      style: const TextStyle(color: Colors.black87),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: Text(
+                        "Allergeni: " + widget.pietanza['allergeni'],
+                        style: const TextStyle(color: Colors.black87),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),

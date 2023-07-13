@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:ingsw_frontend/control/UtenteControl.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -115,12 +116,14 @@ class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
                                           child: Padding(
                                             padding: const EdgeInsets.only(left: 64, right: 64,),
                                             child: TextFormField(
-                                              controller: controller1,
-                                              obscureText: true,
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: 'Nuova Password:',
-                                              ),
+                                                controller: controller1,
+                                                obscureText: true,
+                                                decoration: const InputDecoration(
+                                                  border: OutlineInputBorder(),
+                                                  labelText: 'Nuova Password:',
+                                                ),
+                                                maxLength: 255,
+                                                maxLengthEnforcement: MaxLengthEnforcement.enforced
                                             ),
                                           ),
                                         ),
@@ -133,12 +136,14 @@ class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
                                           child: Padding(
                                             padding: const EdgeInsets.only(left: 64, right: 64,),
                                             child: TextFormField(
-                                              controller: controller2,
-                                              obscureText: true,
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: 'Conferma Password:',
-                                              ),
+                                                controller: controller2,
+                                                obscureText: true,
+                                                decoration: const InputDecoration(
+                                                  border: OutlineInputBorder(),
+                                                  labelText: 'Conferma Password:',
+                                                ),
+                                                maxLength: 255,
+                                                maxLengthEnforcement: MaxLengthEnforcement.enforced
                                             ),
                                           ),
                                         ),

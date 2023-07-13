@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:quickalert/quickalert.dart';
 
 import 'package:flutter/material.dart';
@@ -119,6 +120,8 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                                               border: OutlineInputBorder(),
                                               labelText: 'Nome Account:',
                                             ),
+                                              maxLength: 255,
+                                              maxLengthEnforcement: MaxLengthEnforcement.enforced
                                           ),),)
                                         ]
                                     ),
@@ -134,6 +137,8 @@ class InitAmministratoreHomePageState extends State<InitAmministratoreHomePage> 
                                               border: OutlineInputBorder(),
                                               labelText: 'Password:',
                                             ),
+                                              maxLength: 255,
+                                              maxLengthEnforcement: MaxLengthEnforcement.enforced
                                           ),),)
                                         ]
                                     ),

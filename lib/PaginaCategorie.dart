@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ingsw_frontend/SchermataCategoria.dart';
 import 'package:ingsw_frontend/SchermataVisualizzaConto.dart';
 import 'package:ingsw_frontend/control/CategoriaControl.dart';
@@ -320,6 +321,8 @@ class PaginaCategorieState extends State<PaginaCategorie> {
                           border: OutlineInputBorder(),
                           labelText: 'Nome Categoria:',
                         ),
+                          maxLength: 255,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced
                       ),
                     ),
                   ),

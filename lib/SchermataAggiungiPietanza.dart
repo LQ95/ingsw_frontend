@@ -107,23 +107,27 @@ class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text("Descrizione: " +
-                                      listaPietanze?[index]['descrizione'],
-                                    style: const TextStyle(
-                                        color: Colors.black87),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,)
+                                  Expanded(
+                                    child: Text("Descrizione: " +
+                                        listaPietanze?[index]['descrizione'],
+                                      style: const TextStyle(
+                                          color: Colors.black87),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,),
+                                  )
                                 ],
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text("Allergeni: " +
-                                      listaPietanze?[index]['allergeni'],
-                                    style: const TextStyle(
-                                        color: Colors.black87),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,)
+                                  Expanded(
+                                    child: Text("Allergeni: " +
+                                        listaPietanze?[index]['allergeni'],
+                                      style: const TextStyle(
+                                          color: Colors.black87),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,),
+                                  )
                                 ],
                               ),
                               Row(
@@ -188,6 +192,7 @@ class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
                             ),
                           ),
                         ),
+                        Container()
                       ],
                     ),
                   ),
