@@ -157,12 +157,12 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text("Descrizione: " +
+                                  Expanded(
+                                  child:Text("Descrizione: " +
                                       listaPietanze?[index]['descrizione'],
                                     style: const TextStyle(
                                         color: Colors.black87),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,)
+                                    maxLines: 6,)),
                                 ],
                               ),
                               Row(
