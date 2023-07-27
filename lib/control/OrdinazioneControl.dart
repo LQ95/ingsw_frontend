@@ -63,7 +63,7 @@ class OrdinazioneControl {
     }
   }
 
-  Future<String> addPietanzaToOrdinazione(int ordinazioneId, int pietanzaId) async {
+  Future<void> addPietanzaToOrdinazione(int ordinazioneId, int pietanzaId) async {
     var apiUrl = Uri.http(
       baseUrl,
       '/api/v1/ordinazione/addpietanza',
@@ -81,11 +81,11 @@ class OrdinazioneControl {
     );
 
     if (response.statusCode == 200) {
-      return "SUCCESSO";
+      // Aggiunta avvenuta con successo, non fare nulla
     } else if (response.statusCode == 500) {
-      throw Exception("Errore interno del server"); // Eccezione per codice di stato HTTP 500
+      throw Exception("Errore interno del server"); // Solleva eccezione per codice di stato HTTP 500
     } else {
-      throw Exception("Errore inaspettato"); // Eccezione per altri codici di stato HTTP
+      throw Exception("Errore inaspettato"); // Solleva eccezione per altri codici di stato HTTP
     }
   }
 }

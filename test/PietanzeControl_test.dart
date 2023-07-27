@@ -3,6 +3,8 @@ import 'package:ingsw_frontend/control/PietanzeControl.dart';
 
 
 void main() {
+
+  //Test sendPietanzaToDb
   group('PietanzeControl - sendPietanzaToDb', () {
     test('Test con parametri validi', () async {
       PietanzeControl control = PietanzeControl();
@@ -18,17 +20,31 @@ void main() {
       );
     });
 
-    test('Test con tutti i parametri null', () async {
+    test('Test con tutti i parametri vuoti', () async {
       PietanzeControl control = PietanzeControl();
       String titolo = "";
       String descrizione = "";
       String allergeni = "";
       String costo = "";
 
-      // Eseguo la funzione con tutti i parametri null
+      // Eseguo la funzione con tutti i parametri vuoti
       expect(
             () => control.sendPietanzaToDb(titolo, descrizione, allergeni, costo),
         throwsA(isA<Exception>()),
+      );
+    });
+
+    test('Test con i parametri opzionali vuoti', () async {
+      PietanzeControl control = PietanzeControl();
+      String titolo = "Pasta al forno";
+      String descrizione = "";
+      String allergeni = "";
+      String costo = "12.50";
+
+      // Eseguo la funzione con tutti i parametri null
+      expect(
+            () => control.sendPietanzaToDb(titolo, descrizione, allergeni, costo),
+        returnsNormally,
       );
     });
   });

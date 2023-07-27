@@ -25,7 +25,7 @@ class CategoriaControl {
     }
   }
 
-  Future<void> addPietanzaToDB(int catId, int pietanzaId) async {
+  Future<void> addPietanzaToCategoriaInDB(int catId, int pietanzaId) async {
     var apiUrl = Uri.http(baseUrl, '/api/v1/categoria/addpietanza', {
       'catId': catId.toString(),
       'pietanzaId': pietanzaId.toString(),
@@ -42,7 +42,7 @@ class CategoriaControl {
     }
   }
 
-  Future<void> deletePietanzaFromDB(int catId, int pietanzaId) async {
+  Future<void> deletePietanzaFromCategoriaInDB(int catId, int pietanzaId) async {
     var apiUrl = Uri.http(baseUrl, '/api/v1/categoria/delpietanza', {
       'pietanzaId': pietanzaId.toString(),
       'catId': catId.toString(),

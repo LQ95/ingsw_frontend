@@ -267,7 +267,7 @@ class SchermataCategoriaState extends State<SchermataCategoria> {
       onConfirmBtnTap: () async {
         Navigator.pop(context);
         try {
-          await db.deletePietanzaFromDB(widget.idCategoria, idPietanza);
+          await db.deletePietanzaFromCategoriaInDB(widget.idCategoria, idPietanza);
           setState(() {});
           showAlertSuccesso("La pietanza è stata rimossa correttamente");
         } catch (e) {

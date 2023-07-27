@@ -241,7 +241,7 @@ class SchermataAggiungiPietanzaState extends State<SchermataAggiungiPietanza> {
         CategoriaControl db = CategoriaControl();
         Navigator.pop(context);
         try {
-          await db.addPietanzaToDB(idCategoria, idPietanza);
+          await db.addPietanzaToCategoriaInDB(idCategoria, idPietanza);
           setState(() {});
           showAlertSuccesso("La pietanza è stata aggiunta correttamente");
         } catch (e) {
