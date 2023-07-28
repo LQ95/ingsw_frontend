@@ -42,7 +42,7 @@ class UtenteControl{
   }
 
 
-  sendLoginData(String name, String pass) async{ //Usa metodo GET
+  Future<String> sendLoginData(String name, String pass) async{ //Usa metodo GET
     var User= Utente();
     var loginParameters = {
       'username': name,
@@ -58,7 +58,7 @@ class UtenteControl{
       },
     );
     //print('Response status: ${response.statusCode}');
-    print('login Response headers: ${response.headers}');
+    // print('login Response headers: ${response.headers}');
     String? ruolo = response.headers['ruolo'];
     String? primoAccesso = response.headers['primo_accesso'];
     String? id = response.headers['id'];
@@ -75,7 +75,7 @@ class UtenteControl{
       //aspetto che l'isolate mi mandi la send port da cui inviargli i context che servono ogni volta ai popup
       outputFromIsolate= StreamQueue<dynamic>(port);
       sendPort = await outputFromIsolate.next;
-      print("manda info utente");
+      // print("manda info utente");
       sendPort.send(User);
       if(primoAccesso == 'true')
       {
