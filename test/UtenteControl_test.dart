@@ -61,6 +61,7 @@ void main() {
 
   });
 
+  //Test sui login
   group('UtenteControl - sendLoginData', () {
 
     test('Test sendLoginData, primo accesso di un utente', () async {
@@ -84,7 +85,7 @@ void main() {
       expect(result, equals("AMMINISTRATORE"));
     });
 
-    test('Test sendLoginData con dati esatti, su un utente che non è al primo accesso di tipo amministratore', () async {
+    test('Test sendLoginData con dati esatti, su un utente che non è al primo accesso di tipo sala', () async {
       String result = await utenteControl.sendLoginData('b', 'b'); //Vedi commento sopra
       expect(result, equals("SALA"));
     });
