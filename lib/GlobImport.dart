@@ -29,7 +29,7 @@ Future<void> showAlertNuoviMess(BuildContext context) async {
   }
 }
 
-const String baseUrl = '192.168.1.138:8080'; //Ip Marco  192.168.1.138:8080
+const String baseUrl = '13.36.210.80:8080'; //Ip server su AWS
 
 
 // ListTile funzioniAdmin=ListTile(
