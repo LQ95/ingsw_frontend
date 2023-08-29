@@ -67,12 +67,16 @@ class MessaggiControl {
     });
     response = await http.get(apiUrl);
 
-    if (response.statusCode.toInt() == 200) {
+    if (response.statusCode == 200) {
       localList = jsonDecode(response.body);
+    } else if (response.statusCode == 404) {
+      // In caso di errore 404, restituisci una lista vuota
+      localList = {};
     } else {
       throw Exception('Errore nel recupero dei messaggi non letti');
     }
 
     return localList;
   }
+
 }
