@@ -13,7 +13,7 @@ import 'GlobImport.dart';
 class InitAmministratoreHomePage extends StatefulWidget {
 
 
-  final String title = "Te prego";
+  final String title = "InitAmministratoreHomePage";
 
   const InitAmministratoreHomePage({super.key});
 

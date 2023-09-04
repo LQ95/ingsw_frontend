@@ -12,7 +12,7 @@ import 'entity/Utente.dart';
 class SchermataCambioPassword extends StatefulWidget {
 
 
-  final String title = "Te prego";
+  final String title = "Schermata Cambio Password";
 
   const SchermataCambioPassword({super.key});
 
@@ -165,7 +165,7 @@ class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
                                               Utente utente = Utente();
                                               try {
                                                 db.updateUtenteData(utente.getNome, controller1.text, utente.getRuolo, utente.getId.toString());
-                                                showAllertSuccesso();
+                                                showAlertSuccesso();
                                               }
                                               catch (e) {
                                                 showAlertErrore("C'è stato un problema di connessione con il server, riprova più tardi...");
@@ -216,7 +216,7 @@ class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
   }
 
 
-  void showAllertSuccesso() {
+  void showAlertSuccesso() {
     QuickAlert.show(context: context,
         type: QuickAlertType.success,
         text: "Eccellente, la password è stata aggiornata correttamente!",
