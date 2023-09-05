@@ -450,7 +450,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
 
                         }
                       } else {
-                        String modificaAvvenutaConSuccesso = await db.modificaPietanzainDB(idPietanza, controllerTitolo.text, controllerDescrizione.text,
+                        String modificaAvvenutaConSuccesso = await db.modificaPietanzaInDB(idPietanza, controllerTitolo.text, controllerDescrizione.text,
                             controllerAllergeni.text, controllerCosto.text);
                         if (modificaAvvenutaConSuccesso ==
                             "SUCCESSO") { //il valore di ritorno di tipo Future ottenga uno stato

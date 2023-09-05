@@ -40,7 +40,7 @@ class PietanzeControl{
   }
 
 
-  Future<String> modificaPietanzainDB(int id, String name, String descrizione, String allergeni, String costo) async {
+  Future<String> modificaPietanzaInDB(int id, String name, String descrizione, String allergeni, String costo) async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/pietanza'); //URL del punto di contatto della API
     var response = await http.put(apiUrl,
