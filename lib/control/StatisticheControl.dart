@@ -14,7 +14,7 @@ import '../entity/Utente.dart';
 
 class StatisticheControl {
 
-  Future<List<OrdinazioneData>> getGuadagniTotaliFromDB() async {
+  Future<List<OrdinazioneData>> _getGuadagniTotaliFromDB() async {
     var apiUrl = Uri.http(baseUrl, '/api/v1/ordinazione/statistiche-ordinazioni-chiuse');
     var response = await http.get(apiUrl);
 
@@ -119,7 +119,7 @@ class StatisticheControl {
       if (dataInizio != null && dataFine != null) {
         return await _getGuadagniInDateFromDB(dataInizio, dataFine);
       } else {
-        return await getGuadagniTotaliFromDB();
+        return await _getGuadagniTotaliFromDB();
       }
     } catch (e) {
       throw Exception();
