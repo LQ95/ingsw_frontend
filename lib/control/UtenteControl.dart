@@ -122,7 +122,7 @@ class UtenteControl{
     }
   }
 
-  //La prossima classe controlla se il sistema è stato inizzato
+  //La prossima funzione controlla se il sistema è stato inizzato
 
   Future<int> isSistemInitialized() async {
     var apiUrl = Uri.http(baseUrl,
