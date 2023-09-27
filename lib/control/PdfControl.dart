@@ -10,7 +10,7 @@ class PdfControl{
 
   static createPdfConto(List<dynamic> pietanze, String tavoloId,double conto) async {
     String dataConto = DateTime.now().toLocal().toString();
-    dataConto = convertDateFormat(dataConto);
+    dataConto = _convertDateFormat(dataConto);
     var data = await rootBundle.load("contents/fonts/Calibri.ttf");
     final font =  pdfWidgets.Font.ttf(data.buffer.asByteData());
   final pdf= pdfWidgets.Document();
