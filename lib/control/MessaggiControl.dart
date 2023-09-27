@@ -38,7 +38,7 @@ class MessaggiControl {
     }
   }
 
-  Future<String> setMessageAsRead(int id) async {
+  Future<void> setMessageAsRead(int id) async {
     var apiUrl = Uri.http(baseUrl, '/api/v1/Messaggio/readupdate');
     var response = await http.put(
       apiUrl,
@@ -51,12 +51,13 @@ class MessaggiControl {
       }),
     );
 
-    if (response.statusCode.toInt() == 200) {
-      return "SUCCESSO";
+    if (response.statusCode == 200) {
+      // La richiesta ha avuto successo
     } else {
       throw Exception('Errore nell\'aggiornamento del messaggio');
     }
   }
+
 
   static Future<Map<String, dynamic>> getUnreadMessagesList(Utente user) async {
     Map<String, dynamic> localList = Map<String, dynamic>();
@@ -67,7 +68,7 @@ class MessaggiControl {
     });
     response = await http.get(apiUrl);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 ||response.statusCode == 204) {
       localList = jsonDecode(response.body);
     } else if (response.statusCode == 404) {
       // In caso di errore 404, restituisci una lista vuota
