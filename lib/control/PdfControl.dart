@@ -73,7 +73,7 @@ class PdfControl{
     }
   }
 
-  static String convertDateFormat(String dataConto) {
+  static String _convertDateFormat(String dataConto) {
     DateTime data = DateTime.parse(dataConto);
     DateFormat nuovoFormato = DateFormat('dd-MM-yyyy');
     String dataConvertita = nuovoFormato.format(data);
