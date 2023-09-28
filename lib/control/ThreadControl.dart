@@ -28,8 +28,8 @@ class ThreadControl{
         await Future.delayed(const Duration(seconds: 1));
         // print("entra nel loop");
         // print("il thread ha ricevuto una stringa");
-        newList= await findUnreadMessages(usr);
-        popupWasFlashed=!areThereNewMessages(localList,newList);
+        newList= await _findUnreadMessages(usr);
+        popupWasFlashed=!_areThereNewMessages(localList,newList);
         if(!popupWasFlashed)
         {
           //gestione della notifica
@@ -52,7 +52,7 @@ class ThreadControl{
 
   }
 
-  static bool areThereNewMessages(Map<String, dynamic> localList, Map<String, dynamic> globalList) {
+  static bool _areThereNewMessages(Map<String, dynamic> localList, Map<String, dynamic> globalList) {
     bool newMessages=false;
     int i;
     String key;
@@ -76,7 +76,7 @@ class ThreadControl{
   }
 
 
-  static Future<Map<String, dynamic>> findUnreadMessages(Utente user) async {
+  static Future<Map<String, dynamic>> _findUnreadMessages(Utente user) async {
     Map<String, dynamic> localList=Map<String, dynamic>();
     var response;
     // print("invio userId "+user.getId.toString());
