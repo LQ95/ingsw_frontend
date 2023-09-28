@@ -252,7 +252,7 @@ class readButtonState extends State<statefulReadButton> {
       }
     } catch (e) {
       // Gestione dell'eccezione
-      (context as SchermataMessaggiState).showAlertErrore(
+      showAlertErrore(
           "Errore nell'aggiornamento del messaggio"
       );
     }
@@ -266,6 +266,15 @@ class readButtonState extends State<statefulReadButton> {
         backgroundColor: background,
       ),
       child: buttonText,
+    );
+  }
+
+  void showAlertErrore(String errore) {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      text: errore,
+      title: "Attenzione!",
     );
   }
 }
