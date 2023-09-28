@@ -450,21 +450,16 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
 
                         }
                       } else {
-                        String modificaAvvenutaConSuccesso = await db.modificaPietanzaInDB(idPietanza, controllerTitolo.text, controllerDescrizione.text,
-                            controllerAllergeni.text, controllerCosto.text);
-                        if (modificaAvvenutaConSuccesso ==
-                            "SUCCESSO") { //il valore di ritorno di tipo Future ottenga uno stato
+                        try {
+                          await db.modificaPietanzaInDB(idPietanza, controllerTitolo.text, controllerDescrizione.text,
+                              controllerAllergeni.text, controllerCosto.text);
                           showAlertSuccesso(
-                              "Eccellente, il piatto è modificato inserito con successo!");
+                              "Eccellente, il piatto è modificato con successo!");
                           setState(() {});
                           hideOverlay();
-                        } else
-                        if (modificaAvvenutaConSuccesso == "FALLIMENTO") {
-                          showAlertErrore("Ops, riprova...");
-                          hideOverlay();
-                        } else {
-                          showAlertErrore(
-                              "Si è verificato un errore inaspettato, per favore riprovare...");
+                        }
+                        catch(e){
+                          showAlertErrore("C'è stato un errore, riprova più tardi...");
                           hideOverlay();
                         }
                       }

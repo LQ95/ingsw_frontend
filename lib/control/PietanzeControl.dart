@@ -40,7 +40,7 @@ class PietanzeControl{
   }
 
 
-  Future<String> modificaPietanzaInDB(int id, String name, String descrizione, String allergeni, String costo) async {
+  Future<void> modificaPietanzaInDB(int id, String name, String descrizione, String allergeni, String costo) async {
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/pietanza'); //URL del punto di contatto della API
     var response = await http.put(apiUrl,
@@ -60,12 +60,7 @@ class PietanzeControl{
     //print('Response status: ${response.statusCode}');
     //print('Response body: ${response.body}');
 
-    if(response.statusCode.toInt() == 200) {
-      return "SUCCESSO";
-    } else if(response.statusCode.toInt() == 500){
-      throw Exception("errore interno del server");
-    }
-    else {
+    if(response.statusCode.toInt() != 200) {
       throw Exception("errore inaspettato");
     }
 
