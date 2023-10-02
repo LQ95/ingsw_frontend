@@ -83,16 +83,8 @@ class PietanzeControl{
           'costo' : costo})
     );
 
-    //print('Response status: ${response.statusCode}');
-    //print('Response body: ${response.body}');
-
-    if(response.statusCode.toInt() == 200) {
-
-    } else if(response.statusCode.toInt() == 500){
-      throw Exception("errore interno del server");
-    }
-    else {
-      throw Exception("errore inaspettato");
+    if(response.statusCode.toInt() != 200){
+      throw Exception("Errore nel inviare i dati della pietanza al server");
     }
   }
 

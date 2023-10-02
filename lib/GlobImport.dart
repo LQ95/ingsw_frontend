@@ -29,7 +29,7 @@ Future<void> showAlertNuoviMess(BuildContext context) async {
   }
 }
 
-const String baseUrl = '13.37.32.232:8080'; //Ip server su AWS 13.37.32.232
+const String baseUrl = '192.168.1.138:8080'; //Ip server su AWS 13.37.32.232
 
 
 // ListTile funzioniAdmin=ListTile(
