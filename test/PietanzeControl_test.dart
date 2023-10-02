@@ -145,7 +145,7 @@ void main() {
       String allergeni = '';
       String costo = '18.50';
 
-      expectLater(
+      await expectLater(
         control.sendPietanzaToDb(titolo, descrizione, allergeni, costo),
         throwsA(isA<Exception>()), // Aspettati un'eccezione di tipo Exception
       );
