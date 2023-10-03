@@ -37,7 +37,7 @@ class SchermataFunzioniAmministratore extends StatelessWidget{
                       InkWell(
                         onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataStatistiche()));},
                         child: Ink.image(
-                          image: const AssetImage('contents/images/Bottone statistiche.png'),
+                          image: const AssetImage('contents/images/Bottone Statistiche.png'),
                           width: width*0.4,
                           height: height*0.4,
                         ),
