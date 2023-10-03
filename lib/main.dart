@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ingsw_frontend/SchermataLogin.dart';
 import 'package:ingsw_frontend/control/UtenteControl.dart';
 import 'package:window_size/window_size.dart';
@@ -14,6 +15,13 @@ Future<void> main() async {
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('Ratatouille23');
     setWindowMinSize(const Size(1280, 720));
+  }
+  else{
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
   }
   UtenteControl db= UtenteControl();
   Widget schermataHome;
