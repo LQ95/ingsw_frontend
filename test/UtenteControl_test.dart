@@ -17,6 +17,16 @@ void main() {
       expect(result, equals("SUCCESSO"));
     });
 
+    test('Test sendUserData con parametri corretti, ma con caratteri speciali nel nome', () async {
+      String result = await utenteControl.sendUserData('John@!32', 'pass123', 'AMMINISTRATORE');
+      expect(result, equals("SUCCESSO"));
+    });
+
+    test('Test sendUserData con parametri corretti, ma con caratteri speciali nella password', () async {
+      String result = await utenteControl.sendUserData('Ernesto', 'pass123@!!?', 'AMMINISTRATORE');
+      expect(result, equals("SUCCESSO"));
+    });
+
     test('Test sendUserData con parametri corretti n°2 (e password già esistente)', () async {
       String result = await utenteControl.sendUserData('Piero', 'pass123', 'SUPERVISORE');
       expect(result, equals("SUCCESSO"));
@@ -57,6 +67,39 @@ void main() {
     test('Test sendUserData ruolo vuoto (Parametro not null, non si aspetta eccezione, ma l\'operazione non deve essere completata)', () async {
       String result = await utenteControl.sendUserData('Piero', 'pass', '');
       expect(result, equals("FALLIMENTO"));
+    });
+
+  });
+
+  //Flow control sendUserData
+
+  group('Utente - sendUserData - Flow Test', (){
+
+    test('test path: Inizio -> 1 -> 2 -> 3 -> 4 ->Fine', () async {
+
+      // Eseguire la funzione e attendere il completamento senza errori e con return successo
+      await expectLater(
+        utenteControl.sendUserData('Luigi', 'pass', 'CUCINA'),
+        completes,
+      );
+    });
+
+    test('test path: Inizio -> 1 -> 2 -> 3 -> 5 ->Fine', () async {
+
+      // Eseguire la funzione e attendere il completamento senza errori, ma con return FALLIMENTO
+      await expectLater(
+        utenteControl.sendUserData('Luigi', 'pass', 'CUCINA'),  //Nome già inserito
+        completes,
+      );
+    });
+
+    test('test path: Inizio -> 1 -> 2 -> 3 -> 6 ->Fine', () async {
+
+      // Eseguire la funzione e attendere il completamento senza errori, ma con return FALLIMENTO
+      await expectLater(
+        utenteControl.sendUserData('', '', 'CUCINA'),  //Nome già inserito
+        throwsA(isA<Exception>()),
+      );
     });
 
   });
