@@ -75,23 +75,23 @@ void main() {
 
   group('Utente - sendUserData - Flow Test', (){
 
-    test('test path: Inizio -> 1 -> 2 -> 3 -> 4 ->Fine', () async {
-
-      // Eseguire la funzione e attendere il completamento senza errori e con return successo
-      await expectLater(
+    test('test path: Inizio -> 1 -> 2 -> 3 -> 4 -> Fine', () {
+      // Eseguire la funzione e attendere il completamento senza errori e con il risultato "SUCCESSO"
+      expect(
         utenteControl.sendUserData('Luigi', 'pass', 'CUCINA'),
-        completes,
+        completion(equals("SUCCESSO")),
       );
     });
 
-    test('test path: Inizio -> 1 -> 2 -> 3 -> 5 ->Fine', () async {
 
-      // Eseguire la funzione e attendere il completamento senza errori, ma con return FALLIMENTO
-      await expectLater(
-        utenteControl.sendUserData('Luigi', 'pass', 'CUCINA'),  //Nome già inserito
-        completes,
+    test('test path: Inizio -> 1 -> 2 -> 3 -> 5 -> Fine', () {
+      // Eseguire la funzione e attendere il completamento senza errori e con il risultato "FALLIMENTO"
+      expect(
+        utenteControl.sendUserData('Luigi', 'pass', 'CUCINA'),
+        completion(equals("FALLIMENTO")),
       );
     });
+
 
     test('test path: Inizio -> 1 -> 2 -> 3 -> 6 ->Fine', () async {
 
@@ -111,7 +111,6 @@ void main() {
       String result = await utenteControl.sendLoginData('John', 'pass123');
       expect(result, equals("primoAccesso"));
     });
-
 
     test('Test sendLoginData con dati errati', () async {
       String result = await utenteControl.sendLoginData('Errore', 'Inesistente');
@@ -135,4 +134,36 @@ void main() {
 
 
   });
+
+  //Flow control sendLoginData
+
+  group('Utente - sendLoginData - Flow Test', (){
+
+    test('test path: Inizio -> 1 -> 2 -> 3 -> 4 -> 8 -> Fine', () {
+      // Eseguire la funzione e attendere il completamento senza errori e con il risultato "primoAccesso"
+      expect(
+        utenteControl.sendLoginData('Luigi', 'pass'),
+        completion(equals("primoAccesso")),
+      );
+    });
+
+    test('test path: Inizio -> 1 -> 2 -> 3 -> 4 -> 7 -> Fine', () {
+      // Eseguire la funzione e attendere il completamento senza errori e con il risultato "SALA"
+      expect(
+        utenteControl.sendLoginData('b', 'b'),
+        completion(equals("SALA")),
+      );
+    });
+
+
+    test('test path: Inizio -> 1 -> 2 -> 3 -> 5 -> Fine', () {
+      // Eseguire la funzione e attendere il completamento senza errori e con il risultato "FALLIMENTO"
+      expect(
+        utenteControl.sendLoginData('non', 'esiste'),
+        completion(equals("FALLIMENTO")),
+      );
+    });
+  });
+
+
 }

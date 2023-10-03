@@ -48,7 +48,6 @@ class UtenteControl{
       'username': name,
       'password': pass,
     };
-
     var apiUrl = Uri.http(baseUrl,
         '/api/v1/utente/auth',loginParameters); //URL del punto di contatto della API,più udsername e pass come parametri
     var response = await http.get(apiUrl,
@@ -57,8 +56,6 @@ class UtenteControl{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    //print('Response status: ${response.statusCode}');
-    // print('login Response headers: ${response.headers}');
     String? ruolo = response.headers['ruolo'];
     String? primoAccesso = response.headers['primo_accesso'];
     String? id = response.headers['id'];
@@ -67,15 +64,11 @@ class UtenteControl{
       User.setId=int.parse(id!);
       User.setPrimoAccesso = primoAccesso!;
       User.setNome=name;
-      //selectDrawer();
       ThreadControl TD = ThreadControl();
-      //Manda la porta per comunicare all'isolate e la inizializza prima
       port= ReceivePort();
       await Isolate.spawn(TD.NotificationCheck,port.sendPort);
-      //aspetto che l'isolate mi mandi la send port da cui inviargli i context che servono ogni volta ai popup
       outputFromIsolate= StreamQueue<dynamic>(port);
       sendPort = await outputFromIsolate.next;
-      // print("manda info utente");
       sendPort.send(User);
       if(primoAccesso == 'true')
       {
@@ -91,7 +84,6 @@ class UtenteControl{
     else {
       throw Exception("errore inaspettato del server");
     }
-
   }
 
   Future<void> updateUtenteData(String username,String newPassword,String ruolo,String id) async{
