@@ -117,7 +117,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
               ],
             ),
             SizedBox(
-              height: height * 0.3,
+              height: height * 0.26,
               child: chart,
             ),
           ],
@@ -148,7 +148,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 18, top: 9, right: 18),
+                padding: const EdgeInsets.only(left: 18, top: 6, right: 18),
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -164,7 +164,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(4.0),
                   child: FutureBuilder(
                     future: generaGrafico(ordinazioni),
                     builder: (context, snapshot) {
@@ -187,7 +187,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
               ),
               Center(
                 child: SizedBox(
-                  height: height*0.15,
+                  height: height*0.1,
                   child: ValueListenableBuilder<OrdinazioneData?>(
                     valueListenable: widget.selectedDataNotifier,
                     builder: (context, selectedData, _) {
@@ -200,7 +200,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 18),
+                padding: const EdgeInsets.only(left: 11),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -232,7 +232,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(11.0),
                           child: ElevatedButton(
                               onPressed: () async {
                                 try {
@@ -254,7 +254,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(11.0),
                           child: ElevatedButton(
                               onPressed: () async {
                                 ordinazioni = await setDefault();
@@ -267,7 +267,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF66420F),
                               ),
-                              child: const Text("Reseta", style: TextStyle(color: Colors.white70))
+                              child: const Text("Resetta", style: TextStyle(color: Colors.white70))
                           ),
                         ),
                       ],
