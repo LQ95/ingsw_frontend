@@ -65,7 +65,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                 child: Center(
                   child: FractionallySizedBox(
                     widthFactor: 0.7,
-                    heightFactor: 0.7,
+                    heightFactor: 0.95,
                     alignment: FractionalOffset.topCenter,
                     child: DecoratedBox(
                       decoration: const BoxDecoration(
@@ -81,7 +81,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                         borderRadius: BorderRadius.all(Radius.circular(25)),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(32),
+                        padding: const EdgeInsets.all(22),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
@@ -110,7 +110,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                                   child: Text(
                                     "Inserisci le seguenti informazioni per creare un account:",
                                     style:
-                                    TextStyle(fontSize: 16, color: Colors.white60),
+                                    TextStyle(fontSize: 14, color: Colors.white60),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 3,
                                   ),
@@ -124,6 +124,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 64, right: 64),
                                     child: TextField(
+                                        style: const TextStyle(fontSize: 8.0),
                                         controller: controller1,
                                         decoration: const InputDecoration(
                                           border: OutlineInputBorder(),
@@ -144,6 +145,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                                     padding: const EdgeInsets.only(left: 64, right: 64),
                                     child: TextField(
                                         controller: controller2,
+                                        style: const TextStyle(fontSize: 8.0),
                                         obscureText: true,
                                         decoration: const InputDecoration(
                                           border: OutlineInputBorder(),
@@ -162,7 +164,7 @@ class SchermataCreazioneAccountState extends State<SchermataCreazioneAccount> {
                                 DropdownButton<String>(
                                   value: dropdownValue,
                                   elevation: 16,
-                                  style: const TextStyle(color: Colors.black),
+                                  style: const TextStyle(color: Colors.black,fontSize: 12.0),
                                   underline: Container(
                                     height: 1,
                                     color: Colors.black,
