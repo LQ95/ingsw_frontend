@@ -55,8 +55,8 @@ class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
                     height: 100,
                   ),
                   SizedBox(
-                    height: height*0.7,
-                    width: width*0.7,
+                    height: height*0.75,
+                    width: width*0.75,
                     child: DecoratedBox(
                         decoration: const BoxDecoration(
                           boxShadow: [
@@ -79,7 +79,7 @@ class SchermataCambioPasswordState extends State<SchermataCambioPassword> {
                               physics: NeverScrollableScrollPhysics(),
                               child: ConstrainedBox(
                                 constraints: BoxConstraints(
-                                  maxHeight: height*0.65,
+                                  maxHeight: height*0.62 ,
                                   maxWidth: width*0.7,
                                   minHeight: height*0.2,
                                   minWidth: width*0.2,
