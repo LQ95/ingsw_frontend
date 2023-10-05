@@ -23,6 +23,7 @@ class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
     showAlertNuoviMess(context);
     context;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar:GlobalAppBar,
       drawer: buildDrawer(context),
       body:  Center(
