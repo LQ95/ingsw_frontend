@@ -236,7 +236,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF66420F),
                           ),
-                          child: const Text("Indietro", style: TextStyle(
+                          child: const Text("Torna Indietro", style: TextStyle(
                               color: Colors.white70),),
                         ),
                         ElevatedButton(onPressed: () {
@@ -295,6 +295,26 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
     );
   }
 
+  ScrollPhysics fisicaScroll(){
+    if(Platform.isAndroid) {
+      return AlwaysScrollableScrollPhysics();
+    } else {
+      return NeverScrollableScrollPhysics();
+    }
+  }
+
+  Widget extraItem(){
+    if(Platform.isAndroid) {
+      return const SizedBox(
+        height: 250,
+      );
+    } else {
+      return const SizedBox(
+        height: 0,
+      );
+    }
+  }
+
   void showOverlay({int? idPietanza, String? titolo, String? descrizione, String? allergeni, double? costo}) {
     final overlay = Overlay.of(context)!;
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
@@ -336,156 +356,184 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
 
   Widget buildOverlay({int? idPietanza}) {
 
-    return
-      WillPopScope(onWillPop: ()=> exit(0),
-    child:FractionallySizedBox(
-      widthFactor: 0.7,
-      heightFactor: 0.7,
-      child:Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.transparent,
-        body: DecoratedBox(
-          decoration: const BoxDecoration( boxShadow: [
-            BoxShadow(
-              blurRadius: 7,
-              spreadRadius: 5,
-              color: Color(0xAA110505),
-              offset: Offset(-8, 8),
-            )
-          ],
-            color: Color(0xFFD9D9D9),
-            //border: Border.all(width: 0),
-            borderRadius: BorderRadius.all(Radius.circular(25)),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Expanded(child:
-                    Padding(
-                    padding: const EdgeInsets.only(left: 64, right: 64),
-                    child: TextField(
-                      controller: controllerTitolo,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Nome Pietanza:',
-                      ),
-                        maxLength: 255,
-                        maxLengthEnforcement: MaxLengthEnforcement.enforced
-                    ),),)
-                  ]
-              ),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Expanded(child:
-                  Padding(
-                    padding: const EdgeInsets.only(left: 64, right: 64),
-                    child: TextField(
-                      controller: controllerDescrizione,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Descrizione:',
-                      ),
-                        maxLength: 255,
-                        maxLengthEnforcement: MaxLengthEnforcement.enforced
-                    ),),)
-                  ]
-              ),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Expanded(child:
-                  Padding(
-                    padding: const EdgeInsets.only(left: 64, right: 64),
-                    child: TextField(
-                      controller: controllerAllergeni,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Allergeni:',
-                      ),
-                      maxLength: 255,
-                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    ),),)
-                  ]
-              ),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Expanded(child:
-                  Padding(
-                    padding: const EdgeInsets.only(left: 64, right: 64),
-                    child: TextField(
-                      controller: controllerCosto,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Prezzo:',
-                      ),
-                    ),),)
-                  ]
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: ElevatedButton(onPressed: () async { //INSERIMENTO DI UN ELEMENTO NEL DB
-                      if(idPietanza == null) {
-                        if (controllerTitolo.text.isNotEmpty && controllerCosto
-                            .text
-                            .isNotEmpty) {
-                          try {
-                            await db.sendPietanzaToDb(controllerTitolo.text,
-                                controllerDescrizione.text,
-                                controllerAllergeni.text, controllerCosto
-                                    .text); //Il client attende la risposta del server prima di proseguire, in modo che
-                            //il valore di ritorno di tipo Future ottenga uno stato
-                            showAlertSuccesso(
-                                "Eccellente, il piatto è stato inserito con successo!");
-                            setState(() {});
-                            hideOverlay();
-                          }
-                          catch (e) {
-                            showAlertErrore("Si è verificato un errore, prova dinuovo...");
-                            hideOverlay();
-                          }
-                        }
-                        else {
-                          hideOverlay();
-                          showAlertErrore(
-                              "Attenzione, i campi non sono stati compilati correttamente!");
-
-                        }
-                      } else {
-                        try {
-                          await db.modificaPietanzaInDB(idPietanza, controllerTitolo.text, controllerDescrizione.text,
-                              controllerAllergeni.text, controllerCosto.text);
-                          showAlertSuccesso(
-                              "Eccellente, il piatto è modificato con successo!");
-                          setState(() {});
-                          hideOverlay();
-                        }
-                        catch(e){
-                          showAlertErrore("C'è stato un errore, riprova più tardi...");
-                          hideOverlay();
-                        }
-                      }
-                    },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF66420F),
-                      ),
-                      child: const Text("Conferma", style: TextStyle(
-                          color: Colors.white70),),
-                    ),
-                  )
-                ],
-              ),
-
+    return WillPopScope(onWillPop: ()=> exit(0),
+      child:
+      FractionallySizedBox(
+        widthFactor: 0.7,
+        heightFactor: 0.7,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.transparent,
+          body: DecoratedBox(
+            decoration: const BoxDecoration( boxShadow: [
+              BoxShadow(
+                blurRadius: 7,
+                spreadRadius: 5,
+                color: Color(0xAA110505),
+                offset: Offset(-8, 8),
+              )
             ],
+              color: Color(0xFFD9D9D9),
+              //border: Border.all(width: 0),
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+            ),
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                double larghezzaTextfield = 0.0;
+                if (Platform.isAndroid){
+                  larghezzaTextfield= 0.5;
+                }
+                else{
+                  larghezzaTextfield = 0.2;
+                }
+                return ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                  child: SingleChildScrollView(
+                    physics: fisicaScroll(),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                        maxWidth: constraints.maxHeight+400
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [Expanded(child:
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 64, right: 64, top: 64),
+                                    child: TextField(
+                                        controller: controllerTitolo,
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          labelText: 'Nome Pietanza:',
+                                        ),
+                                        maxLength: 255,
+                                        maxLengthEnforcement: MaxLengthEnforcement.enforced
+                                    ),),)
+                                  ]
+                              ),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [Expanded(child:
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 64, right: 64),
+                                    child: TextField(
+                                        controller: controllerDescrizione,
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          labelText: 'Descrizione:',
+                                        ),
+                                        maxLength: 255,
+                                        maxLengthEnforcement: MaxLengthEnforcement.enforced
+                                    ),),)
+                                  ]
+                              ),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [Expanded(child:
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 64, right: 64),
+                                    child: TextField(
+                                      controller: controllerAllergeni,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        labelText: 'Allergeni:',
+                                      ),
+                                      maxLength: 255,
+                                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                                    ),),)
+                                  ]
+                              ),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [Expanded(child:
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 64, right: 64),
+                                    child: TextField(
+                                      controller: controllerCosto,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        labelText: 'Prezzo:',
+                                      ),
+                                    ),),)
+                                  ]
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 16, top: 16),
+                                    child: ElevatedButton(onPressed: () async { //INSERIMENTO DI UN ELEMENTO NEL DB
+                                      if(idPietanza == null) {
+                                        if (controllerTitolo.text.isNotEmpty && controllerCosto
+                                            .text
+                                            .isNotEmpty) {
+                                          try {
+                                            await db.sendPietanzaToDb(controllerTitolo.text,
+                                                controllerDescrizione.text,
+                                                controllerAllergeni.text, controllerCosto
+                                                    .text); //Il client attende la risposta del server prima di proseguire, in modo che
+                                            //il valore di ritorno di tipo Future ottenga uno stato
+                                            showAlertSuccesso(
+                                                "Eccellente, il piatto è stato inserito con successo!");
+                                            setState(() {});
+                                            hideOverlay();
+                                          }
+                                          catch (e) {
+                                            showAlertErrore("Si è verificato un errore, prova dinuovo...");
+                                            hideOverlay();
+                                          }
+                                        }
+                                        else {
+                                          hideOverlay();
+                                          showAlertErrore(
+                                              "Attenzione, i campi non sono stati compilati correttamente!");
+
+                                        }
+                                      } else {
+                                        try {
+                                          await db.modificaPietanzaInDB(idPietanza, controllerTitolo.text, controllerDescrizione.text,
+                                              controllerAllergeni.text, controllerCosto.text);
+                                          showAlertSuccesso(
+                                              "Eccellente, il piatto è modificato con successo!");
+                                          setState(() {});
+                                          hideOverlay();
+                                        }
+                                        catch(e){
+                                          showAlertErrore("C'è stato un errore, riprova più tardi...");
+                                          hideOverlay();
+                                        }
+                                      }
+                                    },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xFF66420F),
+                                      ),
+                                      child: const Text("Conferma", style: TextStyle(
+                                          color: Colors.white70),),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          extraItem()
+
+                        ],
+                      ), // your column
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
-    ),
-
-      );
+    );
   }
 
   void hideOverlay() {
