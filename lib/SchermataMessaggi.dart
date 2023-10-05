@@ -251,11 +251,14 @@ class readButtonState extends State<statefulReadButton> {
         });
       }
     } catch (e) {
+      print("eccezione aggiornamento messaggi");
       // Gestione dell'eccezione
       showAlertErrore(
           "Errore nell'aggiornamento del messaggio"
       );
+      return;
     }
+
   }
 
   @override
