@@ -164,7 +164,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.only(left: 4, top: 4, right: 4),
                   child: FutureBuilder(
                     future: generaGrafico(ordinazioni),
                     builder: (context, snapshot) {
@@ -187,7 +187,7 @@ class _SchermataStatisticheState extends State<SchermataStatistiche> {
               ),
               Center(
                 child: SizedBox(
-                  height: height*0.1,
+                  height: height*0.2,
                   child: ValueListenableBuilder<OrdinazioneData?>(
                     valueListenable: widget.selectedDataNotifier,
                     builder: (context, selectedData, _) {
