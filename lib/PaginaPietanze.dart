@@ -341,8 +341,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
     child:FractionallySizedBox(
       widthFactor: 0.7,
       heightFactor: 0.7,
-      child:SingleChildScrollView(
-    child:Scaffold(
+      child:Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         body: DecoratedBox(
@@ -485,7 +484,7 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
         ),
       ),
     ),
-    ),
+
       );
   }
 
