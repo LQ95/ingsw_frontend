@@ -292,6 +292,7 @@ class PaginaCategorieState extends State<PaginaCategorie> {
       widthFactor: 0.7,
       heightFactor: 0.7,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         body: DecoratedBox(
           decoration: const BoxDecoration(

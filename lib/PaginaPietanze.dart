@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -334,10 +336,13 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
 
   Widget buildOverlay({int? idPietanza}) {
 
-    return FractionallySizedBox(
+    return
+      WillPopScope(onWillPop: ()=> exit(0),
+    child:FractionallySizedBox(
       widthFactor: 0.7,
       heightFactor: 0.7,
-      child: Scaffold(
+      child:Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         body: DecoratedBox(
           decoration: const BoxDecoration( boxShadow: [
@@ -478,7 +483,9 @@ class PaginaPietanzeState extends State<PaginaPietanze> {
           ),
         ),
       ),
-    );
+    ),
+
+      );
   }
 
   void hideOverlay() {
