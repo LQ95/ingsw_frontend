@@ -24,9 +24,13 @@ class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
     context;
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      extendBody:true,
       appBar:GlobalAppBar,
       drawer: buildDrawer(context),
-      body:  Center(
+      body:
+    SingleChildScrollView(
+    physics: AlwaysScrollableScrollPhysics(),
+    child:Center(
           child:
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +64,7 @@ class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
-                      minLines: 10,
+                      minLines: 12,
                       maxLines: 20,
                       style: const TextStyle(color: Colors.black87),
                       maxLength: 2048,
@@ -70,6 +74,7 @@ class SchermataScriviMessaggiState extends State<SchermataScriviMessaggi> {
               ]
           )
       ),
+    ),
     );
   }
 
