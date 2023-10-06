@@ -1,11 +1,7 @@
-import 'dart:collection';
 import 'dart:convert';
-import 'dart:ffi';
-import 'dart:isolate';
 import 'package:http/http.dart' as http;
 
-import '../GlobImport.dart';
-import '../entity/Utente.dart';
+import 'ipConifig.dart';
 
 
 //Classe di controllo che gestisce il salvataggio, la visualizzazione e l'eliminazione di pietanze sul db

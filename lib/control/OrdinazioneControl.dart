@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:ffi';
-
-import '../GlobImport.dart';
 import 'package:http/http.dart' as http;
+
+import 'ipConifig.dart';
 
 class OrdinazioneControl {
   Future<Map<String, dynamic>?> getCurrentOrdinazione(int tavolo) async {

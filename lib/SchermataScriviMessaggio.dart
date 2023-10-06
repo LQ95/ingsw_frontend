@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ingsw_frontend/control/MessaggiControl.dart';
-import 'GlobImport.dart';
+import 'control/MessaggiControl.dart';
+import 'topBar.dart';
 import 'entity/Utente.dart';
 import 'package:quickalert/quickalert.dart';
 

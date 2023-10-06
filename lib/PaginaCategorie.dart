@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ingsw_frontend/SchermataCategoria.dart';
-import 'package:ingsw_frontend/SchermataVisualizzaConto.dart';
-import 'package:ingsw_frontend/control/CategoriaControl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'GlobImport.dart';
-import 'SchermataStoricoOrdinazioni.dart';
+import 'SchermataCategoria.dart';
+import 'control/CategoriaControl.dart';
+import 'topBar.dart';
 import 'entity/Utente.dart';
 
 class PaginaCategorie extends StatefulWidget{

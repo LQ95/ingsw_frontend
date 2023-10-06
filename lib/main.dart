@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ingsw_frontend/SchermataLogin.dart';
-import 'package:ingsw_frontend/control/UtenteControl.dart';
 import 'package:window_size/window_size.dart';
 import 'dart:io' show Platform;
 import 'InitAmministratoreHomePage.dart';
+import 'SchermataLogin.dart';
+import 'control/UtenteControl.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

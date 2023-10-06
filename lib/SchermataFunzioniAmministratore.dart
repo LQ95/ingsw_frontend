@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ingsw_frontend/SchermataCreazioneAccount.dart';
-import 'GlobImport.dart';
+import 'SchermataCreazioneAccount.dart';
+import 'topBar.dart';
 import 'SchermataStatistiche.dart';
 
 class SchermataFunzioniAmministratore extends StatelessWidget{

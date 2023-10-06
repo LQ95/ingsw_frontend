@@ -1,15 +1,8 @@
-import 'dart:collection';
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:ffi';
-import 'dart:isolate';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
-import '../GlobImport.dart';
 import '../entity/OrdinazioneData.dart';
-import '../entity/Utente.dart';
+import 'ipConifig.dart';
 
 
 class StatisticheControl {

@@ -1,7 +1,7 @@
-import 'package:ingsw_frontend/control/OrdinazioneControl.dart';
-import 'package:ingsw_frontend/entity/Utente.dart';
+
+import 'package:Ratatouille23/control/UtenteControl.dart';
+import 'package:Ratatouille23/entity/Utente.dart';
 import 'package:test/test.dart';
-import 'package:ingsw_frontend/control/UtenteControl.dart';
 
 
 void main() {

@@ -1,20 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ingsw_frontend/SchermataCreazioneAccount.dart';
-import 'package:ingsw_frontend/control/StatisticheControl.dart';
-import 'package:intl/intl.dart';
+import 'control/StatisticheControl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'GlobImport.dart';
+import 'topBar.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:intl/intl.dart';
 import 'entity/OrdinazioneData.dart';
-
-// const List<String> listaStatistiche = <String> [
-//   "Incasso Complessivo",
-//   "Valore Medio Conto",
-// ];
-// String dropdownValue = listaStatistiche.first;
 
 class SchermataStatistiche extends StatefulWidget {
   final ValueNotifier<OrdinazioneData?> selectedDataNotifier =

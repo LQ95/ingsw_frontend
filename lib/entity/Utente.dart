@@ -1,5 +1,3 @@
-import 'dart:ffi';
-import '../GlobImport.dart';
 class Utente{//Singleton
   String _nome="";
   String _ruolo="";

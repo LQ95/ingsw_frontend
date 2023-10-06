@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ingsw_frontend/control/OrdinazioneControl.dart';
-import 'GlobImport.dart';
+import 'control/OrdinazioneControl.dart';
+import 'topBar.dart';
 import 'SchermataSelezionaCategoria.dart';
 import 'package:flutter/material.dart';
 

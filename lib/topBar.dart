@@ -1,12 +1,10 @@
-import 'dart:collection';
-import 'package:async/async.dart';
 import 'dart:isolate';
 import 'package:flutter/material.dart';
-import 'package:ingsw_frontend/SchermataFunzioniAmministratore.dart';
-import 'package:ingsw_frontend/SchermataLogin.dart';
+import 'SchermataFunzioniAmministratore.dart';
+import 'SchermataLogin.dart';
+import 'SchermataMessaggi.dart';
 import 'entity/Utente.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:ingsw_frontend/SchermataMessaggi.dart';
 
 var port= ReceivePort();
 var outputFromIsolate;
@@ -29,25 +27,6 @@ Future<void> showAlertNuoviMess(BuildContext context) async {
   }
 }
 
-const String baseUrl = '192.168.1.138:8080'; //Ip server su AWS 13.37.32.232
-
-
-// ListTile funzioniAdmin=ListTile(
-//   title:  const Text("Funzioni Admin"),
-//   onTap: () {Navigator.push(localcontext, MaterialPageRoute(builder: (context) =>SchermataFunzioniAmministratore()));}, //IMPORTANTE SETTARE LOCALCONTEXT OGNI VOLTA OPPURE TROVRE UN MODO PER RICOSTRUIRLO
-//   trailing: const Icon(Icons.admin_panel_settings),
-// );
-//
-// ListTile notifiche=ListTile(
-//   title: const Text("Notifiche"),
-//   onTap: () {Navigator.push(localcontext, MaterialPageRoute(builder: (context) =>SchermataMessaggi()));},
-//   trailing: const Icon(Icons.mail_outlined),
-// );
-// ListTile logout= ListTile(
-//   title: const Text("Logout"),
-//   onTap: () {showAlertConferma();},
-//   trailing: const Icon(Icons.logout),
-// );
 
 ListTile FunzioniAdmin(BuildContext context) {
   return ListTile(
@@ -89,32 +68,6 @@ var GlobalAppBar=
 AppBar(
   title: const Text("Ratatouille23",),
 );
-
-// var globalDrawer=null;
-//
-// var adminDrawer= Drawer(
-//   child: ListView(
-//     children: [
-//       funzioniAdmin,
-//       notifiche,
-//       logout
-//     ],
-//   ),
-// );
-// var userDrawer=Drawer(
-//   child: ListView(
-//     children: [
-//       notifiche,
-//       logout
-//     ],
-//   ),
-// );
-//
-// void selectDrawer(){
-//   if(Utente().getRuolo == "AMMINISTRATORE")
-//     globalDrawer=adminDrawer;
-//   else globalDrawer=userDrawer;
-// }
 
 Drawer buildDrawer(BuildContext context) {
   if (Utente().getRuolo == "AMMINISTRATORE") {

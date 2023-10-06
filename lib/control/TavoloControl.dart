@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../GlobImport.dart';
-import '../entity/Utente.dart';
+import 'ipConifig.dart';
 
 class TavoloControl{
 

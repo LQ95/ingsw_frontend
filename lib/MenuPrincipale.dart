@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ingsw_frontend/PaginaMenu.dart';
-import 'package:ingsw_frontend/PaginaOrdinazioniTavoli.dart';
-import 'GlobImport.dart';
+import 'PaginaMenu.dart';
+import 'PaginaOrdinazioniTavoli.dart';
+import 'topBar.dart';
 import 'entity/Utente.dart';
 
 class MenuPrincipale extends StatefulWidget{

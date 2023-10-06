@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ingsw_frontend/SchermataVisualizzaConto.dart';
-import 'package:ingsw_frontend/control/CategoriaControl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'GlobImport.dart';
+import 'control/CategoriaControl.dart';
+import 'topBar.dart';
 import 'SchermataAggiungiPietanza.dart';
-import 'SchermataStoricoOrdinazioni.dart';
-import 'control/PietanzeControl.dart';
 import 'entity/Utente.dart';
 
 class SchermataCategoria extends StatefulWidget{
